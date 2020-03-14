@@ -14,7 +14,6 @@ bool isSyncTime;
 RTC_TimeTypeDef rtcTimeStruct;
 RTC_DateTypeDef rtcDateStruct;
 
-
 void showTime() {
     M5.Rtc.GetTime(&rtcTimeStruct);
     M5.Rtc.GetData(&rtcDateStruct);
