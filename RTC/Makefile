@@ -3,32 +3,33 @@
 
 UNAME := $(shell uname)
 
-ENV_DIR = $(THIS_DIR)/../../buildEnvironment
+ENV_DIR = $(THIS_DIR)../buildEnvironment
 # ENV_DIR = $(HOME)/Apps/ESP8266Development/buildEnvironment
-ENV_DIR = ../../buildEnvironment
+ENV_DIR = ../buildEnvironment
 ESP_ROOT = $(ENV_DIR)/esp32Arduino
 ESP_LIBS = $(ESP_ROOT)/libraries
-SHARE_LIBS = ../../libs
+SHARE_LIBS = ../libraries
 
 SKETCH = RTC.ino
 # VERBOSE = 0
 SINGLE_THREAD = 1
 
 LIBS = \
-	$(ESP_LIBS)/ESP32				\
-	$(ESP_LIBS)/WebServer		\
-	$(ESP_LIBS)/WiFi				\
+	$(ESP_LIBS)/ESP32					\
+	$(ESP_LIBS)/WebServer				\
+	$(ESP_LIBS)/WiFi			   		\
 	$(ESP_LIBS)/ArduinoOTA				\
 	$(ESP_LIBS)/SPI						\
+	$(ESP_LIBS)/FS						\
+	$(ESP_LIBS)/Wire					\
+	$(ESP_LIBS)/SPIFFS					\
+	$(SHARE_LIBS)/NTPClient				\
 	$(SHARE_LIBS)/TimeLib				\
 	$(SHARE_LIBS)/M5StickC
 
-	#	$(ESP_LIBS)/mDNS
-	#	$(SHARE_LIBS)/NTPClient				
-
 CHIP=esp32
 BOARD=m5stick-c
-FLASH_DEF=
+FLASH_DEF=4MB
 
 # BOARD ?= $(BOARD_$(DEVICE))
 # FLASH_DEF ?= $(FLASH_DEF_$(DEVICE))
@@ -39,11 +40,11 @@ FLASH_DEF := 4M3M
 endif
 
 ifeq ($(BOARD),)
-BOARD := generic
+BOARD := esp32
 endif
 
 ifeq ($(BUILD_TYPE),)
-BUILD_TYPE := generic
+BUILD_TYPE := ESP32
 endif
 
 # ifndef DEVICE
@@ -61,7 +62,8 @@ ifeq ($(UNAME), Linux)
 endif
 ifeq ($(UNAME), Darwin)
 #	UPLOAD_PORT=/dev/cu.usbserial-1410
-	UPLOAD_PORT=/dev/tty.usbserial
+	UPLOAD_PORT=$(shell ls -1 /dev/tty.usbserial-*)
+#	UPLOAD_PORT=/dev/tty.usbserial
 #	UPLOAD_PORT=/dev/tty.SLAB_USBtoUART
 
 endif
