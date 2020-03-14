@@ -1,0 +1,3 @@
+[submodule "libraries/M5StickC"]
+	path = libraries/M5StickC
+	url = https://github.com/m5stack/M5StickC.git
