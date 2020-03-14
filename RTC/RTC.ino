@@ -18,16 +18,29 @@ NTPClient ntpClient(ntpUDP, "sg.pool.ntp.org", 8 * SECS_PER_HOUR);
 bool isSyncTime;
 RTC_TimeTypeDef rtcTimeStruct;
 RTC_DateTypeDef rtcDateStruct;
+uint8_t lastDisplayMinute;
 
-int calcMinuteToX(int minute, int radius) {
+float calcMinuteToX(int minute, int radius) {
     float angle = (((float) minute / 60) * 360) - 90;
     return radius * cos((angle * PI) / 180);
 }
-int calcMinuteToY(int minute, int radius) {
+float calcMinuteToY(int minute, int radius) {
     float angle = (((float)minute / 60) * 360) - 90;
     return radius * sin((angle * PI) / 180);
 }
 
+void showClockHand(uint16_t position, uint16_t radius, uint16_t baseWidth, uint16_t baseLength, uint16_t color) {
+    uint16_t clockLeft = SCREEN_WIDTH - CLOCK_RADIUS - 10;
+    uint16_t clockTop = CLOCK_RADIUS + 2;
+    uint16_t hourFromTopX = clockLeft + calcMinuteToX(30 + position - baseWidth, baseLength);
+    uint16_t hourFromTopY = clockTop + calcMinuteToY(30 + position - baseWidth, baseLength);
+    uint16_t hourFromBottomX = clockLeft + calcMinuteToX(30 + position + baseWidth, baseLength);
+    uint16_t hourFromBottomY = clockTop + calcMinuteToY(30 + position + baseWidth, baseLength);
+    uint16_t hourToX = clockLeft + calcMinuteToX(position, radius);
+    uint16_t hourToY = clockTop + calcMinuteToY(position, radius);
+    M5.Lcd.fillTriangle(hourFromTopX, hourFromTopY, hourToX, hourToY, hourFromBottomX, hourFromBottomY, color);
+
+}
 void showClock() {
     int clockLeft = SCREEN_WIDTH - CLOCK_RADIUS - 10;
     int clockTop = CLOCK_RADIUS + 2;
@@ -41,25 +54,33 @@ void showClock() {
 
         M5.Lcd.drawLine(fromX, fromY, toX, toY, WHITE);
     }
-    int hourInMinutes = (rtcTimeStruct.Hours % 12) * 5;
-    int hourToX = clockLeft + calcMinuteToX(hourInMinutes, CLOCK_RADIUS / 2);
-    int hourToY = clockTop + calcMinuteToY(hourInMinutes, CLOCK_RADIUS / 2);
-    M5.Lcd.drawLine(clockLeft, clockTop, hourToX, hourToY, GREEN);
 
-    int minuteToX = clockLeft + calcMinuteToX(rtcTimeStruct.Minutes, CLOCK_RADIUS - 4);
-    int minuteToY = clockTop + calcMinuteToY(rtcTimeStruct.Minutes, CLOCK_RADIUS - 4);
-    M5.Lcd.drawLine(clockLeft, clockTop, minuteToX, minuteToY, YELLOW);
+    int hourInMinutes = (rtcTimeStruct.Hours % 12) * 5;
+    showClockHand(hourInMinutes, CLOCK_RADIUS / 2, 6, 4, GREEN);
+    showClockHand(rtcTimeStruct.Minutes, CLOCK_RADIUS - 5, 2, 4, YELLOW);
+    // M5.Lcd.fillCircle(clockLeft, clockTop, 4, BLACK);
 }
 
 void showTime() {
     M5.Rtc.GetTime(&rtcTimeStruct);
     M5.Rtc.GetData(&rtcDateStruct);
-    M5.Lcd.setCursor(0, 2);
-//    M5.Lcd.printf("Data: %04d-%02d-%02d\n",rtcDateStruct.Year, rtcDateStruct.Month,rtcDateStruct.Date);
-    // M5.Lcd.printf("Week: %d\n",RTC_DateStruct.WeekDay);
-    M5.Lcd.printf("%02d : %02d : %02d\n",rtcTimeStruct.Hours, rtcTimeStruct.Minutes, rtcTimeStruct.Seconds);
-    if ( rtcTimeStruct.Seconds == 0) {
+    if ( lastDisplayMinute != rtcTimeStruct.Minutes) {
+        M5.Lcd.setCursor(0, 2);
+        M5.Lcd.setTextSize(2);
+        // M5.Lcd.printf("Data: %04d-%02d-%02d\n",rtcDateStruct.Year, rtcDateStruct.Month,rtcDateStruct.Date);
+        // M5.Lcd.printf("Week: %d\n",RTC_DateStruct.WeekDay);
+        // M5.Lcd.printf("%02d : %02d : %02d\n",rtcTimeStruct.Hours, rtcTimeStruct.Minutes, rtcTimeStruct.Seconds);
+        M5.Lcd.printf("%2d:%02d ", rtcTimeStruct.Hours % 12, rtcTimeStruct.Minutes);
+        /*
+        if ( rtcTimeStruct.Hours >= 12) {
+            M5.Lcd.print("pm");
+        }
+        else {
+            M5.Lcd.print("am");
+        }
+        */
         showClock();
+        lastDisplayMinute = rtcTimeStruct.Minutes;
     }
 
 
@@ -110,12 +131,10 @@ void setup() {
     M5.Lcd.setRotation(3);
     M5.Lcd.fillScreen(BLACK);
 
-    M5.Lcd.setTextSize(1);
-    M5.Lcd.setCursor(40, 0, 2);
-
 //    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 //    ntpClient.begin();
     isSyncTime = false;
+    lastDisplayMinute = 0xFF;
     // ntpClient.setOnSync(onSync);
 }
 
@@ -129,5 +148,6 @@ void loop() {
     if ( M5.BtnA.isPressed() ) {
         isSyncTime = false;
     }
-    delay(500);
+    // delay(500);
+    M5.Axp.LightSleep(1000 * 1000);
 }
