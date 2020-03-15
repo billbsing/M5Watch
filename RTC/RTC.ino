@@ -207,7 +207,7 @@ void showTime() {
         uint8_t inputPower = M5.Axp.GetInputPowerStatus();
         uint8_t chargeStatus = M5.Axp.GetBatteryChargingStatus();
         float batteryPower = M5.Axp.GetBatPower();
-        M5.Lcd.printf("%d %d 0.1f", inputPower, chargeStatus, batteryPower);
+        M5.Lcd.printf("%d %d %0.1f", inputPower, chargeStatus, batteryPower);
         if ( inputPower <= 1 ) {
             saveTimeData();
         }
