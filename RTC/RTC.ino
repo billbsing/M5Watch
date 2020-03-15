@@ -13,7 +13,7 @@
 #define SCREEN_HEIGHT               80
 #define CLOCK_RADIUS                36
 #define PI                          3.1415926535897932384626433832795
-
+#define DISPLAY_TIMEOUT             (10 * 1000)
 
 #define TIME_DATA_FILE              "/timeData.dat"
 
@@ -32,6 +32,8 @@ typedef struct {
 
 TimeData timeData;
 
+time_t displayTimeout;
+bool isDisplaySleeping;
 
 void saveTimeData() {
 
@@ -98,6 +100,32 @@ void clearTimeData() {
     saveTimeData();
 }
 
+void checkDisplaySleep() {
+    float gx,gy,gz;
+    M5.IMU.getAccelData(&gx, &gy, &gz);
+    if ( gx> 1 ) {
+/*
+        Serial.print(gx);
+        Serial.print(" ");
+        Serial.print(gy);
+        Serial.print(" ");
+        Serial.println(gz);
+*/
+        displayTimeout = millis() + DISPLAY_TIMEOUT;
+        if ( isDisplaySleeping) {
+            M5.Axp.ScreenBreath(80);
+//            M5.Lcd.begin();
+            isDisplaySleeping = false;
+            lastDisplayMinute = 0xFF;
+        }
+    }
+    if ( displayTimeout < millis() && !isDisplaySleeping) {
+        // M5.Lcd.sleep();
+        //M5.Axp.PowerOff();
+        M5.Axp.ScreenBreath(0);
+        isDisplaySleeping = true;
+    }
+}
 float calcMinuteToX(int minute, int radius) {
     float angle = (((float) minute / 60) * 360) - 90;
     return radius * cos((angle * PI) / 180);
@@ -172,12 +200,18 @@ void showTime() {
 
         M5.Lcd.setTextSize(1);
         M5.Lcd.setCursor(5, 2);
-        M5.Lcd.printf("%d:%02d:%02d", hours, minutes, seconds);
+        M5.Lcd.printf("%d:%02d", hours, minutes);
         lastDisplayMinute = rtcTimeStruct.Minutes;
-        saveTimeData();
+
+        M5.Lcd.setCursor(5, 20);
+        uint8_t inputPower = M5.Axp.GetInputPowerStatus();
+        uint8_t chargeStatus = M5.Axp.GetBatteryChargingStatus();
+        float batteryPower = M5.Axp.GetBatPower();
+        M5.Lcd.printf("%d %d 0.1f", inputPower, chargeStatus, batteryPower);
+        if ( inputPower <= 1 ) {
+            saveTimeData();
+        }
     }
-
-
 //    M5.Lcd.printf("Bat power %.3fmw", M5.Axp.GetBatPower());
     // M5.Lcd.printf("%d", M5.Axp.GetInputPowerStatus());
 
@@ -224,16 +258,21 @@ void setup() {
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);
 
+    M5.IMU.Init();
+
 //    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 //    ntpClient.begin();
     isSyncTime = false;
     lastDisplayMinute = 0xFF;
     // ntpClient.setOnSync(onSync);
     readTimeData();
+    isDisplaySleeping = false;
+    displayTimeout = millis() + DISPLAY_TIMEOUT;
 
 }
 
 void loop() {
+    checkDisplaySleep();
     showTime();
     // ntpClient.update();
     if ( !isSyncTime ) {
@@ -245,6 +284,7 @@ void loop() {
         clearTimeData();
         lastDisplayMinute = 0xFF;
     }
+
     // delay(500);
-    M5.Axp.LightSleep(1000 * 1000);
+    M5.Axp.LightSleep(100 * 1000);
 }
