@@ -172,7 +172,7 @@ void showClock() {
 void showTime() {
     M5.Rtc.GetTime(&rtcTimeStruct);
     M5.Rtc.GetData(&rtcDateStruct);
-    if ( lastDisplayMinute != rtcTimeStruct.Minutes) {
+    if ( lastDisplayMinute != rtcTimeStruct.Minutes && !isDisplaySleeping) {
         M5.Lcd.fillScreen(BLACK);
         M5.Lcd.setCursor(0, SCREEN_HEIGHT - 20);
         M5.Lcd.setTextSize(2);
