@@ -1,9 +1,0 @@
-[submodule "libraries/M5StickC"]
-	path = libraries/M5StickC
-	url = https://github.com/m5stack/M5StickC.git
-[submodule "libraries/TimeLib"]
-	path = libraries/TimeLib
-	url = https://github.com/PaulStoffregen/Time.git
-[submodule "libraries/NTPClient"]
-	path = libraries/NTPClient
-	url = https://github.com/arduino-libraries/NTPClient.git
