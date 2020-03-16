@@ -1,0 +1,21 @@
+#ifndef PERSISTENT_H
+#define PERSISTENT_H
+
+
+#include <Arduino.h>
+#include "StreamReaderWriter.h"
+
+class PersistentFile
+{
+public:
+    boolean readFromFile(String filename);
+    boolean writeToFile(String filename);
+    boolean writeToFile(String filename, String mode);
+
+    virtual void readFromStream(Stream *stream) = 0;
+    virtual size_t writeToStream(Stream *stream) = 0;
+
+};
+
+
+#endif          // PERSISTENT_H
