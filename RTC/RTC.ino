@@ -1,6 +1,6 @@
 #include <M5StickC.h>
 #include <WiFi.h>
-#include <WifiUDP.h>
+#include <WiFiUDP.h>
 #include <NTPClient.h>
 #include <TimeLib.h>
 #include <FS.h>
