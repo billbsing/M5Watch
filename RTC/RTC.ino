@@ -9,8 +9,6 @@
 
 #include "private.h"
 
-#define DEBUG_SERIAL
-
 #define LED_PIN                     10
 #define SCREEN_WIDTH                160
 #define SCREEN_HEIGHT               80
@@ -59,8 +57,6 @@ void saveTimeData() {
             ptr ++;
         }
 */
-        Serial.println(timeData.startTime);
-        Serial.println(timeData.lastTime);
 
         f.close();
     }
@@ -94,14 +90,11 @@ void readTimeData() {
 */
             f.close();
         }
-        Serial.println(timeData.startTime);
-        Serial.println(timeData.lastTime);
     }
     SPIFFS.end();
 }
 
 void clearTimeData() {
-    Serial.println("clear time");
 /*
     SPIFFS.begin();
     SPIFFS.format();
@@ -115,17 +108,9 @@ void checkDisplaySleep() {
     float gx,gy,gz;
     M5.IMU.getAccelData(&gx, &gy, &gz);
     if ( gx> 1 ) {
-/*
-        Serial.print(gx);
-        Serial.print(" ");
-        Serial.print(gy);
-        Serial.print(" ");
-        Serial.println(gz);
-*/
         displayTimeout = millis() + DISPLAY_TIMEOUT;
         if ( isDisplaySleeping) {
             M5.Axp.ScreenBreath(80);
-//            M5.Lcd.begin();
             isDisplaySleeping = false;
             lastDisplayMinute = 0xFF;
         }
@@ -236,9 +221,6 @@ bool syncTime() {
 
     bool result = false;
     if ( !getLocalTime(&timeinfo) ) {
-        #ifdef DEBUG_SERIAL
-        Serial.println("Sync time");
-        #endif
         rtcTimeStruct.Hours   = timeinfo.tm_hour;
         rtcTimeStruct.Minutes = timeinfo.tm_min;
         rtcTimeStruct.Seconds = timeinfo.tm_sec;
@@ -254,16 +236,6 @@ bool syncTime() {
 
 void setup() {
     moduleManager.addModule(&debugModule);
-
-    #ifdef DEBUG_SERIAL
-    Serial.begin(115200);
-    Serial.setTimeout(2000);
-
-    // Wait for serial to initialize.
-    while(!Serial) { }
-    Serial.println("Start Debug");
-
-    #endif
 
     pinMode(LED_PIN, OUTPUT);
     digitalWrite(LED_PIN, 1);
@@ -304,7 +276,9 @@ void loop() {
         clearTimeData();
         lastDisplayMinute = 0xFF;
     }
+
     moduleManager.loop();
+
     // delay(500);
     M5.Axp.LightSleep(100 * 1000);
 }
