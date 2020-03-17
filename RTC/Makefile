@@ -9,6 +9,7 @@ ENV_DIR = ../buildEnvironment
 ESP_ROOT = $(ENV_DIR)/esp32Arduino
 ESP_LIBS = $(ESP_ROOT)/libraries
 SHARE_LIBS = ../libraries
+LOCAL_LIBS = ../local_libraries
 
 SKETCH = RTC.ino
 # VERBOSE = 0
@@ -23,9 +24,15 @@ LIBS = \
 	$(ESP_LIBS)/FS						\
 	$(ESP_LIBS)/Wire					\
 	$(ESP_LIBS)/SPIFFS					\
-	$(SHARE_LIBS)/NTPClient				\
+	$(SHARE_LIBS)/M5StickC				\
 	$(SHARE_LIBS)/TimeLib				\
-	$(SHARE_LIBS)/M5StickC
+	$(LOCAL_LIBS)/ModuleManager		    \
+	$(LOCAL_LIBS)/modules			    \
+	$(LOCAL_LIBS)/Persistent
+
+
+
+#	$(SHARE_LIBS)/TimeLib
 
 CHIP=esp32
 BOARD=m5stick-c

@@ -1,9 +1,12 @@
 #include <M5StickC.h>
 #include <WiFi.h>
 #include <WiFiUdp.h>
-#include <NTPClient.h>
+//#include <NTPClient.h>
 #include <TimeLib.h>
 #include <FS.h>
+#include <ModuleManager.h>
+#include <DebugModule.h>
+
 #include "private.h"
 
 #define DEBUG_SERIAL
@@ -16,10 +19,13 @@
 #define DISPLAY_TIMEOUT             (10 * 1000)
 
 #define TIME_DATA_FILE              "/timeData.dat"
+#define IS_NETWORK_TIME
+#define NTP_GMT_OFFSET_SECONDS      (8 * SECS_PER_HOUR)
+#define NTP_DAYLIGHT_SAVING_OFFSET  0
+#define NTP_SERVER                  "sg.pool.ntp.org"
 
-
-WiFiUDP ntpUDP;
-NTPClient ntpClient(ntpUDP, "sg.pool.ntp.org", 8 * SECS_PER_HOUR);
+//WiFiUDP ntpUDP;
+//NTPClient ntpClient(ntpUDP, "sg.pool.ntp.org", 8 * SECS_PER_HOUR);
 bool isSyncTime;
 RTC_TimeTypeDef rtcTimeStruct;
 RTC_DateTypeDef rtcDateStruct;
@@ -34,6 +40,11 @@ TimeData timeData;
 
 time_t displayTimeout;
 bool isDisplaySleeping;
+
+#define     DEBUG_MODULE_ID     0x01
+
+DebugModule debugModule(DEBUG_MODULE_ID, "debug", 15200);
+ModuleManager moduleManager;
 
 void saveTimeData() {
 
@@ -221,26 +232,29 @@ void showTime() {
 }
 
 bool syncTime() {
+    struct tm timeinfo;
+
     bool result = false;
-    if ( ntpClient.getEpochTime() > SECS_YR_2000) {
+    if ( !getLocalTime(&timeinfo) ) {
         #ifdef DEBUG_SERIAL
         Serial.println("Sync time");
         #endif
-        setTime(ntpClient.getEpochTime());
-        rtcTimeStruct.Hours   = hour();
-        rtcTimeStruct.Minutes = minute();
-        rtcTimeStruct.Seconds = second();
+        rtcTimeStruct.Hours   = timeinfo.tm_hour;
+        rtcTimeStruct.Minutes = timeinfo.tm_min;
+        rtcTimeStruct.Seconds = timeinfo.tm_sec;
         M5.Rtc.SetTime(&rtcTimeStruct);
-        rtcDateStruct.WeekDay = weekday();
-        rtcDateStruct.Month = month();
-        rtcDateStruct.Date = day();
-        rtcDateStruct.Year = year();
+        rtcDateStruct.WeekDay = timeinfo.tm_wday;
+        rtcDateStruct.Month = timeinfo.tm_mon;
+        rtcDateStruct.Date = timeinfo.tm_mday;
+        rtcDateStruct.Year = timeinfo.tm_year;
         M5.Rtc.SetData(&rtcDateStruct);
         result = true;
     }
 }
 
 void setup() {
+    moduleManager.addModule(&debugModule);
+
     #ifdef DEBUG_SERIAL
     Serial.begin(115200);
     Serial.setTimeout(2000);
@@ -260,8 +274,9 @@ void setup() {
 
     M5.IMU.Init();
 
-//    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-//    ntpClient.begin();
+    #ifdef IS_NETWORK_TIME
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    #endif
     isSyncTime = false;
     lastDisplayMinute = 0xFF;
     // ntpClient.setOnSync(onSync);
@@ -272,6 +287,11 @@ void setup() {
 }
 
 void loop() {
+    #ifdef IS_NETWORK_TIME
+    if ( WiFi.status() == WL_CONNECTED ) {
+        configTime(NTP_GMT_OFFSET_SECONDS, NTP_DAYLIGHT_SAVING_OFFSET, NTP_SERVER);
+    }
+    #endif
     checkDisplaySleep();
     showTime();
     // ntpClient.update();
@@ -284,7 +304,7 @@ void loop() {
         clearTimeData();
         lastDisplayMinute = 0xFF;
     }
-
+    moduleManager.loop();
     // delay(500);
     M5.Axp.LightSleep(100 * 1000);
 }

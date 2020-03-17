@@ -1,5 +1,6 @@
 
 #include <FS.h>
+#include <SPIFFS.h>
 #include "PersistentFile.h"
 
 
