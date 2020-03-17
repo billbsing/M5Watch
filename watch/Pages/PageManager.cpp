@@ -7,7 +7,7 @@ _width(width),
 _height(height),
 _count(0),
 _position(0) {
-    memset(_pageList, 0, sizeof(void *) * PAGE_MANGER_PAGE_LIST_SIZE);
+    memset(_pageList, 0, sizeof(Page *) * PAGE_MANGER_PAGE_LIST_SIZE);
 }
 void PageManager::add(Page *page) {
     _pageList[_count] = page;
