@@ -15,15 +15,19 @@ class PageManager
 {
 
 public:
-    PageManager();
+    PageManager(uint16_t width, uint16_t height);
     void add(Page *page);
+    void setLCD(M5Display *lcd) {_lcd = lcd;}
     void next();
-    void show(M5Display &lcd);
+    void show();
 
 private:
+    M5Display *_lcd;
     Page *_pageList[PAGE_MANGER_PAGE_LIST_SIZE];
     uint8_t _count;
     uint8_t _position;
+    uint16_t _width;
+    uint16_t _height;
 
 };
 

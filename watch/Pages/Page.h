@@ -10,7 +10,7 @@ class Page
 {
 public:
     Page();
-    virtual void show(M5Display &lcd) = 0;
+    virtual void show(M5Display *lcd) = 0;
 
 protected:
     uint8_t getIndex() { return _index; }

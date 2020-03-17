@@ -11,7 +11,7 @@ class TextPage: public Page
 public:
     TextPage(String text): _text(text){}
 
-    void show(M5Display &lcd);
+    void show(M5Display *lcd);
 
 private:
     String _text;
