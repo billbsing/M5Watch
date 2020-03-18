@@ -5,6 +5,7 @@
 
 #include <Arduino.h>
 #include <M5StickC.h>
+#include <EventQueue.h>
 #include "Widget.h"
 
 #define WIDGET_MANAGER_LIST_SIZE            40
@@ -21,7 +22,7 @@ public:
     void setFocus(uint8_t index) { setFocus(index, true); }
     void setFocus(uint8_t index, bool value);
     void next();
-    void raiseEvent();
+    void raiseEvent(EventQueue &eventQueue);
 
 protected:
     void showWidget(M5Display &lcd, Widget *widget);

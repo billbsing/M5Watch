@@ -5,6 +5,7 @@
 
 #include <Arduino.h>
 #include <M5StickC.h>
+#include <EventQueue.h>
 
 class Widget
 {
@@ -38,6 +39,11 @@ public:
     void setFocus(bool value) { _isFocus = value; }
     bool isFocus() { return _isFocus; }
 
+    void setEventId(uint16_t value) { _eventId = value; }
+    uint16_t getEventId() { return _eventId; }
+    
+    void raiseEvent(EventQueue &eventQueue);
+
 private:
     uint16_t _left;
     uint16_t _top;
@@ -46,6 +52,7 @@ private:
     uint8_t _leftPadding;
     uint8_t _topPadding;
     bool _isFocus;
+    uint16_t _eventId;
 
 };
 

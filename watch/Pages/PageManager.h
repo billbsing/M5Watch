@@ -6,6 +6,7 @@
 
 #include <Arduino.h>
 #include <M5StickC.h>
+#include <EventQueue.h>
 #include "WidgetManager.h"
 
 #define PAGE_MANGER_PAGE_LIST_SIZE       10
@@ -33,6 +34,7 @@ private:
     uint16_t _width;
     uint16_t _height;
     WidgetManager _widgetManager;
+    EventQueue _eventQueue;
 
 };
 

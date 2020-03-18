@@ -76,8 +76,11 @@ void WidgetManager::next() {
     }
 }
 
-void WidgetManager::raiseEvent() {
+void WidgetManager::raiseEvent(EventQueue &eventQueue) {
     uint8_t index = getFocusIndex();
     if ( index < _count ) {
+        if ( _widgetList[index]) {
+            _widgetList[index]->raiseEvent(eventQueue);
+        }
     }
 }

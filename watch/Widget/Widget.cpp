@@ -7,7 +7,8 @@ _width(width),
 _height(height),
 _leftPadding(leftPadding),
 _topPadding(topPadding),
-_isFocus(false) {
+_isFocus(false),
+_eventId(0) {
 }
 
 Widget::Widget(uint16_t width, uint16_t height, uint8_t leftPadding, uint8_t topPadding):
@@ -28,4 +29,8 @@ void Widget::showFocus(M5Display &lcd) {
         color = WHITE;
     }
     lcd.drawRect(getLeft(), getTop(), getWidth(), getHeight(), WHITE);
+}
+
+void Widget::raiseEvent(EventQueue &eventQueue) {
+    eventQueue.push(_eventId);
 }

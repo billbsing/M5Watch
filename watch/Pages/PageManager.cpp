@@ -53,6 +53,6 @@ void PageManager::loop(M5StickC &m5) {
     }
     M5.BtnA.read();
     if ( m5.BtnA.isPressed() ) {
-        _widgetManager.raiseEvent();
+        _widgetManager.raiseEvent(_eventQueue);
     }
 }
