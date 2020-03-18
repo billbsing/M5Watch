@@ -13,7 +13,7 @@ public:
 
     String getText() { return _text; }
     void setText(String text) { _text = text; }
-    void show(M5Display *lcd);
+    void show(M5Display &lcd);
 
 private:
     String _text;

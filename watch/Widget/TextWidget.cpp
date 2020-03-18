@@ -12,8 +12,6 @@ _text(text) {
 
 }
 
-void TextWidget::show(M5Display *lcd) {
-    lcd->drawRect(getLeft(), getTop(), getWidth(), getHeight(), WHITE);
-    lcd->setCursor(getLeft() + getLeftPadding(), getTop() + getTopPadding());
-    lcd->print(_text);
+void TextWidget::show(M5Display &lcd) {
+    lcd.print(_text);
 }

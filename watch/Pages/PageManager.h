@@ -6,7 +6,7 @@
 
 #include <Arduino.h>
 #include <M5StickC.h>
-#include "TextWidget.h"
+#include "WidgetManager.h"
 
 #define PAGE_MANGER_PAGE_LIST_SIZE       10
 
@@ -19,7 +19,11 @@ public:
     PageManager(uint16_t width, uint16_t height);
     void add(Page *page);
     void next();
-    void show(M5Display *lcd);
+    void show(M5Display &lcd);
+    void loop(M5StickC &m5);
+
+protected:
+    void loadWidgets();
 
 private:
     M5Display *_lcd;
@@ -28,7 +32,7 @@ private:
     uint8_t _position;
     uint16_t _width;
     uint16_t _height;
-    TextWidget _nextPageWidget;
+    WidgetManager _widgetManager;
 
 };
 

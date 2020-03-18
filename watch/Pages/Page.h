@@ -5,12 +5,14 @@
 
 #include <Arduino.h>
 #include <M5StickC.h>
+#include "WidgetManager.h"
 
 class Page
 {
 public:
     Page();
-    virtual void show(M5Display *lcd) = 0;
+    virtual void loadWidgets(WidgetManager *manager) = 0;
+    virtual void show(M5Display &lcd) = 0;
 
 protected:
     uint8_t getIndex() { return _index; }
