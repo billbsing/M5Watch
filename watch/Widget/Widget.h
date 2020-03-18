@@ -10,9 +10,9 @@
 class Widget
 {
 public:
-    Widget(uint16_t left, uint16_t top, uint16_t width, uint16_t height, uint8_t leftPadding, uint8_t topPadding);
-    Widget(uint16_t width, uint16_t height, uint8_t leftPadding, uint8_t topPadding);
-    Widget(uint16_t width, uint16_t height);
+    Widget(uint16_t eventId, uint16_t left, uint16_t top, uint16_t width, uint16_t height, uint8_t leftPadding, uint8_t topPadding);
+    Widget(uint16_t eventId, uint16_t width, uint16_t height, uint8_t leftPadding, uint8_t topPadding);
+    Widget(uint16_t eventId, uint16_t width, uint16_t height);
 
     virtual void show(M5Display &lcd) = 0;
     void showFocus(M5Display &lcd);
@@ -41,7 +41,7 @@ public:
 
     void setEventId(uint16_t value) { _eventId = value; }
     uint16_t getEventId() { return _eventId; }
-    
+
     void raiseEvent(EventQueue &eventQueue);
 
 private:

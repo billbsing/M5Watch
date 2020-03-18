@@ -12,7 +12,10 @@ void HomePage::show(M5Display &lcd) {
     lcd.printf("%d:%02d", hour(), minute());
 }
 
-void HomePage::loadWidgets(WidgetManager *manager)
-{
+void HomePage::loadWidgets(WidgetManager *manager) {
+
+}
+
+void HomePage::processEvent(uint16_t eventId) {
 
 }

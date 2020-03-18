@@ -13,6 +13,7 @@ public:
     Page();
     virtual void loadWidgets(WidgetManager *manager) = 0;
     virtual void show(M5Display &lcd) = 0;
+    virtual void processEvent(uint16_t eventId) = 0;
 
 protected:
     uint8_t getIndex() { return _index; }

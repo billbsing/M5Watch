@@ -11,6 +11,7 @@
 
 #define PAGE_MANGER_PAGE_LIST_SIZE       10
 
+#define PAGE_NUMBER_NEXT_PAGE_EVENT_ID      0x01
 class Page;
 
 class PageManager

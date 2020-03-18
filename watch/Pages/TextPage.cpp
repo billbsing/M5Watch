@@ -6,7 +6,10 @@ void TextPage::show(M5Display &lcd) {
     lcd.print(_text);
 }
 
-void TextPage::loadWidgets(WidgetManager *manager)
-{
+void TextPage::loadWidgets(WidgetManager *manager) {
+
+}
+
+void TextPage::processEvent(uint16_t eventId) {
 
 }

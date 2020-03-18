@@ -2,7 +2,7 @@
 
 #include "PageManager.h"
 #include "HomePage.h"
-#include "TextPage.h"
+#include "SettingsPage.h"
 #include "RTCTime.h"
 
 #define SCREEN_WIDTH                160
@@ -13,11 +13,11 @@ RTCTime rtcTime;
 
 PageManager pageManager(SCREEN_WIDTH, SCREEN_HEIGHT);
 HomePage homePage;
-TextPage resetPage("Reset");
+SettingsPage settingsPage;
 
 void setup() {
     pageManager.add(&homePage);
-    pageManager.add(&resetPage);
+    pageManager.add(&settingsPage);
     M5.begin();
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);

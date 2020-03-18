@@ -13,6 +13,7 @@ public:
 
     void loadWidgets(WidgetManager *manager);
     void show(M5Display &lcd);
+    void processEvent(uint16_t eventId);
 
 private:
     String _text;

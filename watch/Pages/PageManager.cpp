@@ -26,7 +26,7 @@ void PageManager::next() {
 void PageManager::loadWidgets() {
     _widgetManager.clear_and_delete();
     _pageList[_position]->loadWidgets(&_widgetManager);
-    TextWidget *nextPageWidget = new TextWidget(30, 12, 4, 2, "Next");
+    TextWidget *nextPageWidget = new TextWidget(PAGE_NUMBER_NEXT_PAGE_EVENT_ID, 30, 12, 4, 2, "Next");
     nextPageWidget->setPosition(_width - nextPageWidget->getWidth(), _height -  nextPageWidget->getHeight());
     uint8_t index = _widgetManager.add(nextPageWidget);
     _widgetManager.setFocus(index);
