@@ -21,14 +21,14 @@ void setup() {
     rtcTime.setRTC(&M5.Rtc);
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);
-    pageManager.setLCD(&M5.Lcd);
-    pageManager.show();
+    pageManager.show(&M5.Lcd);
 }
 
 void loop() {
     M5.BtnB.read();
     if ( M5.BtnB.isPressed() ) {
         pageManager.next();
+        pageManager.show(&M5.Lcd);
     }
     delay(500);
 }
