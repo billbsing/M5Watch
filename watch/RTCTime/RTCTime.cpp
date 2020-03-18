@@ -1,20 +1,15 @@
 #include "RTCTime.h"
 
 
-RTCTime::RTCTime():
-_rtc(NULL) {
-
+RTCTime::RTCTime() {
 }
 
-void RTCTime::read() {
-    if ( _rtc) {
-        _rtc->GetTime(&_rtcTime);
-        _rtc->GetData(&_rtcDate);
-    }
+void RTCTime::read(RTC &rtc) {
+    rtc.GetTime(&_rtcTime);
+    rtc.GetData(&_rtcDate);
 }
 
 time_t RTCTime::setLocalTime() {
-    read();
     setTime(_rtcTime.Hours, _rtcTime.Minutes, _rtcTime.Seconds, \
                 _rtcDate.Date, _rtcDate.Month, _rtcDate.Year);
     return now();

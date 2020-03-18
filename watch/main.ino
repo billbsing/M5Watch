@@ -18,7 +18,7 @@ void setup() {
     pageManager.add(&homePage);
     pageManager.add(&resetPage);
     M5.begin();
-    rtcTime.setRTC(&M5.Rtc);
+    rtcTime.read(M5.Rtc);
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);
     pageManager.show(M5.Lcd);
