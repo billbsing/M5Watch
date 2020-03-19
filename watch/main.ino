@@ -12,12 +12,14 @@
 RTCTime rtcTime;
 
 PageManager pageManager(SCREEN_WIDTH, SCREEN_HEIGHT);
-HomePage homePage;
-SettingsPage settingsPage;
+HomePage homePage(pageManager);
+SettingsPage settingsPage(pageManager);
 
 void setup() {
     pageManager.add(&homePage);
     pageManager.add(&settingsPage);
+    pageManager.init();
+    
     M5.begin();
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);

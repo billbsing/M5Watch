@@ -8,10 +8,11 @@
 #include <M5StickC.h>
 #include <EventQueue.h>
 #include "WidgetManager.h"
+#include "TextWidget.h"
 
-#define PAGE_MANGER_PAGE_LIST_SIZE       10
+#define PAGE_MANGER_PAGE_LIST_SIZE              10
+#define PAGE_MANAGER_NEXT_PAGE_EVENT_ID         0x00001
 
-#define PAGE_NUMBER_NEXT_PAGE_EVENT_ID      0x01
 class Page;
 
 class PageManager
@@ -19,6 +20,7 @@ class PageManager
 
 public:
     PageManager(uint16_t width, uint16_t height);
+    void init();
     void add(Page *page);
     void next();
     void show(M5Display &lcd);
@@ -36,6 +38,7 @@ private:
     uint16_t _height;
     WidgetManager _widgetManager;
     EventQueue _eventQueue;
+    TextWidget _nextPageWidget;
 
 };
 

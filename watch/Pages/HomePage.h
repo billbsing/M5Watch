@@ -13,8 +13,9 @@
 class HomePage: public Page
 {
 public:
-    HomePage();
+    HomePage(PageManager &manager);
 
+    void init();
     void loadWidgets(WidgetManager *manager);
     void show(M5Display &lcd);
     void processEvent(uint16_t eventId);

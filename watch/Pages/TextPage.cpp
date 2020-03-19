@@ -1,5 +1,16 @@
 #include "TextPage.h"
 
+TextPage::TextPage(PageManager &manager, String text):
+Page(manager),
+_text(text) {
+
+}
+
+
+void TextPage::init() {
+    
+}
+
 void TextPage::show(M5Display &lcd) {
     lcd.setCursor(4, 10);
     lcd.setTextSize(2);

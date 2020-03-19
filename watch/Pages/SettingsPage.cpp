@@ -1,6 +1,15 @@
 #include "SettingsPage.h"
 #include "TextWidget.h"
 
+SettingsPage::SettingsPage(PageManager &manager):
+Page(manager) {
+}
+
+void SettingsPage::init() {
+    _menuSetSleep = TextWidget(getNextEventId(), 4, 10, 30, 10, 1, 1, "Sleep Time");
+    _menuPowerOff = TextWidget(getNextEventId(), 4, 20, 30, 10, 1, 1, "Power Off");
+}
+
 void SettingsPage::show(M5Display &lcd) {
     lcd.setCursor(4, 0);
     lcd.setTextSize(2);
@@ -8,8 +17,8 @@ void SettingsPage::show(M5Display &lcd) {
 }
 
 void SettingsPage::loadWidgets(WidgetManager *manager) {
-    manager->add(new TextWidget(SETTINGS_PAGE_MENU_SLEEP_TIME_EVENT_ID, 4, 10, 30, 10, "Sleep Time"));
-    manager->add(new TextWidget(SETTINGS_PAGE_MENU_POWER_EVENT_ID, 4, 20, 30, 10, "Power Off"));
+    manager->add(&_menuSetSleep);
+    manager->add(&_menuPowerOff);
 }
 
 void SettingsPage::processEvent(uint16_t evendId) {

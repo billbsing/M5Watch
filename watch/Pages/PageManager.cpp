@@ -1,7 +1,6 @@
 
 #include "PageManager.h"
 #include "Page.h"
-#include "TextWidget.h"
 
 PageManager::PageManager(uint16_t width, uint16_t height):
 _width(width),
@@ -9,11 +8,21 @@ _height(height),
 _count(0),
 _position(0) {
     memset(_pageList, 0, sizeof(Page *) * PAGE_MANGER_PAGE_LIST_SIZE);
+    _nextPageWidget = TextWidget(PAGE_MANAGER_NEXT_PAGE_EVENT_ID, 30, 12, 4, 2, "Next");
+}
+
+void PageManager::init() {
+    for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE; index ++) {
+        if ( _pageList[index] ) {
+            _pageList[index]->init();
+        }
+    }
 }
 
 void PageManager::add(Page *page) {
     _pageList[_count] = page;
     _count ++;
+    page->setIndex(_count);
 }
 
 void PageManager::next() {
@@ -24,11 +33,11 @@ void PageManager::next() {
 }
 
 void PageManager::loadWidgets() {
-    _widgetManager.clear_and_delete();
+    _widgetManager.clear();
     _pageList[_position]->loadWidgets(&_widgetManager);
-    TextWidget *nextPageWidget = new TextWidget(PAGE_NUMBER_NEXT_PAGE_EVENT_ID, 30, 12, 4, 2, "Next");
-    nextPageWidget->setPosition(_width - nextPageWidget->getWidth(), _height -  nextPageWidget->getHeight());
-    uint8_t index = _widgetManager.add(nextPageWidget);
+    _nextPageWidget.setPosition(_width - _nextPageWidget.getWidth(), \
+                                _height -  _nextPageWidget.getHeight());
+    uint8_t index = _widgetManager.add(&_nextPageWidget);
     _widgetManager.setFocus(index);
 }
 

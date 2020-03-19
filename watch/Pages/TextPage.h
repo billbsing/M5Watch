@@ -9,8 +9,9 @@
 class TextPage: public Page
 {
 public:
-    TextPage(String text): _text(text){}
+    TextPage(PageManager &manager, String text);
 
+    void init();
     void loadWidgets(WidgetManager *manager);
     void show(M5Display &lcd);
     void processEvent(uint16_t eventId);

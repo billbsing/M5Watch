@@ -5,22 +5,23 @@
 
 
 #include "Page.h"
-
-#define SETTINGS_PAGE_MENU_SLEEP_TIME_EVENT_ID              0x01
-#define SETTINGS_PAGE_MENU_POWER_EVENT_ID                   0x02
+#include "TextWidget.h"
+#define SETTINGS_PAGE_MAX_MENU_SIZE                 4
 
 
 class SettingsPage: public Page
 {
 public:
-    SettingsPage() {;}
+    SettingsPage(PageManager &manager);
 
+    void init();
     void loadWidgets(WidgetManager *manager);
     void show(M5Display &lcd);
     void processEvent(uint16_t eventId);
 
 private:
-
+    TextWidget _menuSetSleep;
+    TextWidget _menuPowerOff;
 };
 
 

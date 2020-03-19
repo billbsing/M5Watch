@@ -6,20 +6,27 @@
 #include <Arduino.h>
 #include <M5StickC.h>
 #include "WidgetManager.h"
+#include "PageManager.h"
 
 class Page
 {
 public:
-    Page();
+    Page(PageManager &manager);
+    virtual void init() = 0;
     virtual void loadWidgets(WidgetManager *manager) = 0;
     virtual void show(M5Display &lcd) = 0;
     virtual void processEvent(uint16_t eventId) = 0;
 
-protected:
-    uint8_t getIndex() { return _index; }
+    uint8_t getIndex() const { return _index; }
+    void setIndex(uint8_t value) { _index = value; }
 
+protected:
+    PageManager &getManager();
+    uint16_t getNextEventId();
 
 private:
+    PageManager _manager;
     uint8_t _index;
+    uint8_t _eventIndex;
 };
 #endif          // PAGE_H

@@ -8,10 +8,13 @@
 class TextWidget: public Widget
 {
 public:
-    TextWidget(uint16_t eventId, uint16_t width, uint16_t height, String text);
+    TextWidget(uint16_t eventId, uint16_t left, uint16_t top, uint16_t width, uint16_t height, uint16_t leftPadding, uint16_t topPadding, String text);
     TextWidget(uint16_t eventId, uint16_t width, uint16_t height, uint16_t leftPadding, uint16_t topPadding, String text);
+    TextWidget(uint16_t eventId, uint16_t width, uint16_t height, String text);
+    TextWidget(const TextWidget &textWidget);
+    TextWidget() {;}
 
-    String getText() { return _text; }
+    String getText() const { return _text; }
     void setText(String text) { _text = text; }
     void show(M5Display &lcd);
 
