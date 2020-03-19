@@ -23,6 +23,6 @@ _text(textWidget.getText()) {
 
 }
 
-void TextWidget::show(M5Display &lcd) {
+void TextWidget::draw(M5Display &lcd) {
     lcd.print(_text);
 }

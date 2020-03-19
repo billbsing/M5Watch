@@ -12,11 +12,11 @@
 class SettingsPage: public Page
 {
 public:
-    SettingsPage(PageManager &manager);
+    SettingsPage(String name, PageManager &manager);
 
     void init();
     void loadWidgets(WidgetManager *manager);
-    void show(M5Display &lcd);
+    void draw(M5Display &lcd);
     void processEvent(uint16_t eventId);
 
 private:

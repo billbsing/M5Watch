@@ -1,17 +1,17 @@
 #include "TextPage.h"
 
-TextPage::TextPage(PageManager &manager, String text):
-Page(manager),
+TextPage::TextPage(String name, PageManager &manager, String text):
+Page(name, manager),
 _text(text) {
 
 }
 
 
 void TextPage::init() {
-    
+
 }
 
-void TextPage::show(M5Display &lcd) {
+void TextPage::draw(M5Display &lcd) {
     lcd.setCursor(4, 10);
     lcd.setTextSize(2);
     lcd.print(_text);

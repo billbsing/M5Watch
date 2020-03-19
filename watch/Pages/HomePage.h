@@ -13,11 +13,11 @@
 class HomePage: public Page
 {
 public:
-    HomePage(PageManager &manager);
+    HomePage(String name, PageManager &manager);
 
     void init();
     void loadWidgets(WidgetManager *manager);
-    void show(M5Display &lcd);
+    void draw(M5Display &lcd);
     void processEvent(uint16_t eventId);
 
 private:

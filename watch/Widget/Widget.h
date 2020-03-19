@@ -16,7 +16,7 @@ public:
     Widget();
     Widget(const Widget &widget);
 
-    virtual void show(M5Display &lcd) = 0;
+    virtual void draw(M5Display &lcd) = 0;
     void showFocus(M5Display &lcd);
     void setCursor(M5Display &lcd);
 

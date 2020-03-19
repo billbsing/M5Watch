@@ -19,18 +19,24 @@ class PageManager
 {
 
 public:
-    PageManager(uint16_t width, uint16_t height);
+    PageManager(M5StickC &m5, uint16_t width, uint16_t height);
     void init();
     void add(Page *page);
     void next();
-    void show(M5Display &lcd);
-    void loop(M5StickC &m5);
+    void draw();
+    void processEvent(uint16_t eventId);
+    void loop();
 
+    M5StickC& getM5() { return _m5; }
+    void selectPage(String name);
+
+    void setPosition(uint8_t index) { _position = index; }
 protected:
     void loadWidgets();
+    uint8_t getIndexFromName(String name);
 
 private:
-    M5Display *_lcd;
+    M5StickC _m5;
     Page *_pageList[PAGE_MANGER_PAGE_LIST_SIZE];
     uint8_t _count;
     uint8_t _position;

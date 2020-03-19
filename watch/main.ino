@@ -11,25 +11,25 @@
 
 RTCTime rtcTime;
 
-PageManager pageManager(SCREEN_WIDTH, SCREEN_HEIGHT);
-HomePage homePage(pageManager);
-SettingsPage settingsPage(pageManager);
+PageManager pageManager(M5, SCREEN_WIDTH, SCREEN_HEIGHT);
+HomePage homePage("home", pageManager);
+SettingsPage settingsPage("settings", pageManager);
 
 void setup() {
     pageManager.add(&homePage);
     pageManager.add(&settingsPage);
     pageManager.init();
-    
+
     M5.begin();
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);
     rtcTime.read(M5.Rtc);
     rtcTime.setLocalTime();
 
-    pageManager.show(M5.Lcd);
+    pageManager.draw();
 }
 
 void loop() {
-    pageManager.loop(M5);
+    pageManager.loop();
     delay(500);
 }

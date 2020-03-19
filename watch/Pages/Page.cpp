@@ -1,7 +1,8 @@
 #include "Page.h"
 #include "PageManager.h"
 
-Page::Page(PageManager &manager):
+Page::Page(String name, PageManager &manager):
+_name(name),
 _manager(manager),
 _eventIndex(0),
 _index(0) {

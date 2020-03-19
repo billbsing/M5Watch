@@ -29,17 +29,19 @@ uint8_t WidgetManager::add(Widget *widget) {
     return index;
 }
 
-void WidgetManager::showWidget(M5Display &lcd, Widget *widget) {
-    widget->showFocus(lcd);
-    widget->setCursor(lcd);
-    widget->show(lcd);
+void WidgetManager::drawWidget(M5Display &lcd, Widget *widget) {
+    if ( widget ) {
+        widget->showFocus(lcd);
+        widget->setCursor(lcd);
+        widget->draw(lcd);
+    }
 }
 
 
-void WidgetManager::show(M5Display &lcd) {
+void WidgetManager::draw(M5Display &lcd) {
     for ( uint8_t index = 0; index < _count ; index ++) {
         if ( _widgetList[index] ) {
-            showWidget(lcd, _widgetList[index]);
+            drawWidget(lcd, _widgetList[index]);
         }
     }
 }
@@ -63,7 +65,7 @@ uint8_t WidgetManager::getFocusIndex() {
     return focusIndex;
 }
 
-void WidgetManager::next() {
+void WidgetManager::nextFocus(M5Display &lcd) {
     uint8_t index = getFocusIndex();
     uint8_t lastIndex = index;
     index ++;
@@ -72,7 +74,9 @@ void WidgetManager::next() {
     }
     if ( lastIndex != index) {
         setFocus(lastIndex, false);
+        drawWidget(lcd, _widgetList[lastIndex]);
         setFocus(index, true);
+        drawWidget(lcd, _widgetList[index]);
     }
 }
 

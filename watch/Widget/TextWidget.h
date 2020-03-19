@@ -16,7 +16,7 @@ public:
 
     String getText() const { return _text; }
     void setText(String text) { _text = text; }
-    void show(M5Display &lcd);
+    void draw(M5Display &lcd);
 
 private:
     String _text;
