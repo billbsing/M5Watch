@@ -8,10 +8,13 @@ _height(height),
 _count(0),
 _position(0) {
     memset(_pageList, 0, sizeof(Page *) * PAGE_MANGER_PAGE_LIST_SIZE);
-    _nextPageWidget = TextWidget(PAGE_MANAGER_NEXT_PAGE_EVENT_ID, 30, 12, 4, 2, "Next");
 }
 
 void PageManager::init() {
+    _nextPageWidget = TextWidget(PAGE_MANAGER_NEXT_PAGE_EVENT_ID, 30, 12, 4, 2, "Next");
+    _nextPageWidget.setPosition(_width - _nextPageWidget.getWidth(), \
+                                _height -  _nextPageWidget.getHeight());
+    
     for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE; index ++) {
         if ( _pageList[index] ) {
             _pageList[index]->init();
@@ -35,8 +38,6 @@ void PageManager::next() {
 void PageManager::loadWidgets() {
     _widgetManager.clear();
     _pageList[_position]->loadWidgets(&_widgetManager);
-    _nextPageWidget.setPosition(_width - _nextPageWidget.getWidth(), \
-                                _height -  _nextPageWidget.getHeight());
     uint8_t index = _widgetManager.add(&_nextPageWidget);
     _widgetManager.setFocus(index);
 }
