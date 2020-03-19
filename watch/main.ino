@@ -1,8 +1,8 @@
 #include <M5StickC.h>
+#include <PageManager.h>
 
 #include "RTCTime.h"
 
-#include "PageManager.h"
 #include "HomePage.h"
 #include "SettingsPage.h"
 #include "SetSleepTimePage.h"
@@ -22,7 +22,7 @@ void setup() {
     pageManager.add("Home", &homePage, 0);
     pageManager.add("Settings", &settingsPage, 0);
     pageManager.add("SetSleepTime", &setSleepTime, 1);
-    pageManager.init();
+    pageManager.build();
 
     M5.begin();
     M5.Lcd.setRotation(1);

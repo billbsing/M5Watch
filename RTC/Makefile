@@ -26,8 +26,9 @@ LIBS = \
 	$(ESP_LIBS)/SPIFFS					\
 	$(SHARE_LIBS)/M5StickC				\
 	$(SHARE_LIBS)/TimeLib				\
-	$(LOCAL_LIBS)/ModuleManager		    \
-	$(LOCAL_LIBS)/modules			    \
+	$(LOCAL_LIBS)/Events				\
+	$(LOCAL_LIBS)/ModuleManager			\
+	$(LOCAL_LIBS)/modules				\
 	$(LOCAL_LIBS)/Persistent
 
 

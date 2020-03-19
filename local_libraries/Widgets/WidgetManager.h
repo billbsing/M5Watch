@@ -6,7 +6,7 @@
 #include <Arduino.h>
 #include <M5StickC.h>
 #include <EventQueue.h>
-#include "Widget.h"
+#include <Widget.h>
 
 #define WIDGET_MANAGER_LIST_SIZE            40
 

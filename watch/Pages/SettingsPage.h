@@ -4,8 +4,8 @@
 #define SETTINGS_PAGE_H
 
 
-#include "Page.h"
-#include "TextWidget.h"
+#include <Page.h>
+#include <TextWidget.h>
 #define SETTINGS_PAGE_MAX_MENU_SIZE                 4
 
 

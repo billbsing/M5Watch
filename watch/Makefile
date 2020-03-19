@@ -27,6 +27,8 @@ LIBS = \
 	$(SHARE_LIBS)/M5StickC				\
 	$(SHARE_LIBS)/TimeLib				\
 	$(LOCAL_LIBS)/Events				\
+	$(LOCAL_LIBS)/Pages					\
+	$(LOCAL_LIBS)/Widgets				\
 	$(LOCAL_LIBS)/Persistent
 
 

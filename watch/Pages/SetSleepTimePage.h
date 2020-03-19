@@ -4,8 +4,8 @@
 #define SET_SLEEP_TIME_PAGE_H
 
 
-#include "Page.h"
-#include "TextWidget.h"
+#include <Page.h>
+#include <TextWidget.h>
 
 
 class SetSleepTimePage: public Page

@@ -1,6 +1,6 @@
 
-#include "PageManager.h"
-#include "Page.h"
+#include <PageManager.h>
+#include <Page.h>
 
 PageManager::PageManager(M5StickC &m5, uint16_t width, uint16_t height):
 _m5(m5),
@@ -14,7 +14,7 @@ _level(0) {
     memset(_callStack, 0, sizeof(uint8_t) * PAGE_MANAGER_CALL_STACK_SIZE);
 }
 
-void PageManager::init() {
+void PageManager::build() {
     uint16_t left, top;
     left = _width - _nextPageWidget.getWidth();
     top = _height -  _nextPageWidget.getHeight();

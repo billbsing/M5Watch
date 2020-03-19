@@ -1,5 +1,5 @@
+#include <TextWidget.h>
 #include "SettingsPage.h"
-#include "TextWidget.h"
 
 SettingsPage::SettingsPage(PageManager &manager):
 Page(manager) {

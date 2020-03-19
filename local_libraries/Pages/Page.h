@@ -5,8 +5,8 @@
 
 #include <Arduino.h>
 #include <M5StickC.h>
-#include "WidgetManager.h"
-#include "PageManager.h"
+#include <WidgetManager.h>
+#include <PageManager.h>
 
 class Page
 {
@@ -27,7 +27,7 @@ protected:
     void selectPage(String name) { _manager.selectPage(name); }
     void pushPage(String name) { _manager.pushPage(name); }
     void popPage() { _manager.popPage(); }
-    
+
 private:
     PageManager _manager;
     uint8_t _index;

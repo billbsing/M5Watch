@@ -1,5 +1,5 @@
+#include <TextWidget.h>
 #include "SetSleepTimePage.h"
-#include "TextWidget.h"
 
 SetSleepTimePage::SetSleepTimePage(PageManager &manager):
 Page(manager) {

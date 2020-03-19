@@ -4,7 +4,7 @@
 #define TEXT_PAGE_H
 
 
-#include "Page.h"
+#include <Page.h>
 
 class TextPage: public Page
 {

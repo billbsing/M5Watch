@@ -7,8 +7,8 @@
 #include <Arduino.h>
 #include <M5StickC.h>
 #include <EventQueue.h>
-#include "WidgetManager.h"
-#include "TextWidget.h"
+#include <WidgetManager.h>
+#include <TextWidget.h>
 
 #define PAGE_MANGER_PAGE_LIST_SIZE              10
 #define PAGE_MANAGER_CALL_STACK_SIZE            4
@@ -29,7 +29,7 @@ class PageManager
 
 public:
     PageManager(M5StickC &m5, uint16_t width, uint16_t height);
-    void init();
+    void build();
     void add(String name, Page *page, uint8_t level);
     void next();
     void draw();
