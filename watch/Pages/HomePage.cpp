@@ -1,8 +1,8 @@
 #include <TimeLib.h>
 #include "HomePage.h"
 
-HomePage::HomePage(String name, PageManager &manager):
-Page(name, manager),
+HomePage::HomePage(PageManager &manager):
+Page(manager),
 _clock(HOME_PAGE_CLOCK_RADIUS) {
 
 }
@@ -14,7 +14,7 @@ void HomePage::init() {
 void HomePage::draw(M5Display &lcd) {
     _clock.draw(lcd, 4, 2, hour(), minute());
     lcd.setCursor(80, 0);
-    M5.Lcd.setTextSize(2);
+    lcd.setTextSize(2);
     lcd.printf("%d:%02d", hour(), minute());
 }
 

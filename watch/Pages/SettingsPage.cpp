@@ -1,8 +1,8 @@
 #include "SettingsPage.h"
 #include "TextWidget.h"
 
-SettingsPage::SettingsPage(String name, PageManager &manager):
-Page(name, manager) {
+SettingsPage::SettingsPage(PageManager &manager):
+Page(manager) {
 }
 
 void SettingsPage::init() {
@@ -24,5 +24,9 @@ void SettingsPage::loadWidgets(WidgetManager *manager) {
 void SettingsPage::processEvent(uint16_t eventId) {
     if ( _menuPowerOff.isEventId(eventId)) {
         getM5().Axp.PowerOff();
+    }
+
+    if ( _menuSetSleep.isEventId(eventId)) {
+        pushPage("SetSleepTime");
     }
 }
