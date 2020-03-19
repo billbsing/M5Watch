@@ -19,7 +19,7 @@ void PageManager::init() {
     left = _width - _nextPageWidget.getWidth();
     top = _height -  _nextPageWidget.getHeight();
     _nextPageWidget = TextWidget(PAGE_MANAGER_NEXT_PAGE_EVENT_ID, left, top, 30, 12, 4, 2, "Next");
-    _backPageWidget = TextWidget(PAGE_MANAGER_NEXT_PAGE_EVENT_ID, left, top, 30, 12, 4, 2, "Back");
+    _backPageWidget = TextWidget(PAGE_MANAGER_BACK_PAGE_EVENT_ID, left, top, 30, 12, 4, 2, "Back");
     for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE; index ++) {
         if ( _pageList[index].page ) {
             _pageList[index].page->init();
@@ -123,6 +123,11 @@ void PageManager::processEvent(uint16_t eventId) {
         next();
         draw();
     }
+    if ( eventId ==  PAGE_MANAGER_BACK_PAGE_EVENT_ID) {
+        popPage();
+        draw();
+    }
+
 }
 
 void PageManager::selectPage(String name) {
