@@ -6,6 +6,7 @@
 #include <Arduino.h>
 #include <M5StickC.h>
 #include <EventQueue.h>
+#include <WidgetStyle.h>
 
 class Widget
 {
@@ -47,6 +48,7 @@ public:
 
     void raiseEvent(EventQueue &eventQueue);
 
+    WidgetStyle style;
 private:
     uint16_t _left;
     uint16_t _top;

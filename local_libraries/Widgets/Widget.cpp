@@ -48,7 +48,7 @@ void Widget::showFocus(M5Display &lcd) {
     if ( isFocus() ) {
         color = WHITE;
     }
-    lcd.drawRect(getLeft(), getTop(), getWidth(), getHeight(), WHITE);
+    lcd.drawRect(getLeft(), getTop(), getWidth(), getHeight(), color);
 }
 
 void Widget::raiseEvent(EventQueue &eventQueue) {

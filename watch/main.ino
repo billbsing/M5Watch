@@ -27,6 +27,7 @@ void setup() {
     M5.begin();
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);
+
     rtcTime.read(M5.Rtc);
     rtcTime.setLocalTime();
 
@@ -35,5 +36,5 @@ void setup() {
 
 void loop() {
     pageManager.loop();
-    delay(500);
+    M5.Axp.LightSleep(100);
 }
