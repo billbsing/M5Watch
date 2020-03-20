@@ -10,7 +10,7 @@ _pageCount(0),
 _stackCount(0),
 _pageIndex(0),
 _level(0),
-_buttonsEnabled({true, true}) {
+_buttonsEnabled({true, true, true}) {
     memset(_pageList, 0, sizeof(PageItem) * PAGE_MANGER_PAGE_LIST_SIZE);
     memset(_callStack, 0, sizeof(uint8_t) * PAGE_MANAGER_CALL_STACK_SIZE);
 }
@@ -219,6 +219,16 @@ void PageManager::loop() {
     }
     if ( _m5->BtnB.isReleased() ) {
         _buttonsEnabled.buttonB = true;
+    }
+
+    if ( _buttonsEnabled.buttonC ) {
+        if ( _m5->Axp.GetBtnPress() ) {
+            _buttonsEnabled.buttonC = false;
+            _m5->Axp.PowerOff();
+        }
+    }
+    if ( !_m5->Axp.GetBtnPress() ) {
+        _buttonsEnabled.buttonC = true;
     }
     eventId = _eventQueue.pop();
     if ( eventId ) {

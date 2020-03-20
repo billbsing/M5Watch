@@ -27,6 +27,7 @@ typedef struct {
 typedef struct {
     uint8_t buttonA : 1;
     uint8_t buttonB : 1;
+    uint8_t buttonC : 1;
 } ButtonsEnabled;
 
 class PageManager
