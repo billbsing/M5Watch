@@ -39,9 +39,17 @@ void WidgetManager::drawWidget(M5Display *lcd, Widget *widget) {
 
 
 void WidgetManager::draw(M5Display *lcd) {
-    for ( uint8_t index = 0; index < _count ; index ++) {
+    for ( uint8_t index = 0; index < _count && index < WIDGET_MANAGER_LIST_SIZE; index ++) {
         if ( _widgetList[index] ) {
             drawWidget(lcd, _widgetList[index]);
+        }
+    }
+}
+
+void WidgetManager::setFocus(bool value) {
+    for ( uint8_t index = 0; index < _count && index < WIDGET_MANAGER_LIST_SIZE ; index ++) {
+        if ( _widgetList[index] ) {
+            setFocus(index, value);
         }
     }
 }
@@ -54,7 +62,7 @@ void WidgetManager::setFocus(uint8_t index, bool value) {
 
 uint8_t WidgetManager::getFocusIndex() {
     uint8_t focusIndex = _count + 1;
-    for ( uint8_t index = 0; index < _count ; index ++) {
+    for ( uint8_t index = 0; index < _count && index < WIDGET_MANAGER_LIST_SIZE ; index ++) {
         if ( _widgetList[index] ) {
             if ( _widgetList[index]->isFocus()) {
                 focusIndex = index;

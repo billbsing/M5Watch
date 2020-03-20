@@ -12,7 +12,7 @@
 class SettingsPage: public Page
 {
 public:
-    SettingsPage(PageManager &manager);
+    SettingsPage(PageManager *manager);
 
     void init();
     void loadWidgets(WidgetManager *manager);

@@ -1,6 +1,6 @@
 #include "TextPage.h"
 
-TextPage::TextPage(PageManager &manager, String text):
+TextPage::TextPage(PageManager *manager, String text):
 Page(manager),
 _text(text) {
 

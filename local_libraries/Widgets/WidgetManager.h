@@ -19,6 +19,7 @@ public:
     void clear_and_delete();
     uint8_t add(Widget *widget);
     void draw(M5Display *lcd);
+    void setFocus(bool value);
     void setFocus(uint8_t index) { setFocus(index, true); }
     void setFocus(uint8_t index, bool value);
     void nextFocus(M5Display *lcd);

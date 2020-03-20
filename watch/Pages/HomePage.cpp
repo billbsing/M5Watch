@@ -1,7 +1,7 @@
 #include <TimeLib.h>
 #include "HomePage.h"
 
-HomePage::HomePage(PageManager &manager):
+HomePage::HomePage(PageManager *manager):
 Page(manager),
 _clock(HOME_PAGE_CLOCK_RADIUS) {
 

@@ -13,16 +13,21 @@
 #define PAGE_MANGER_PAGE_LIST_SIZE              10
 #define PAGE_MANAGER_CALL_STACK_SIZE            4
 
-#define PAGE_MANAGER_NEXT_PAGE_EVENT_ID         0x00001
-#define PAGE_MANAGER_BACK_PAGE_EVENT_ID         0x00002
+#define EVENT_NEXT_PAGE                      0x00001
+#define EVENT_BACK_PAGE                      0x00002
 
 class Page;
 
 typedef struct {
-    String name;
-    Page *page;
+    uint8_t pageId;
     uint8_t level;
+    Page *page;
 } PageItem;
+
+typedef struct {
+    uint8_t buttonA : 1;
+    uint8_t buttonB : 1;
+} ButtonsEnabled;
 
 class PageManager
 {
@@ -30,24 +35,24 @@ class PageManager
 public:
     PageManager(M5StickC *m5, uint16_t width, uint16_t height);
     void build();
-    void add(String name, Page *page, uint8_t level);
+    void add(uint8_t pageId, Page *page, uint8_t level);
     void next();
     void draw();
     void processEvent(uint16_t eventId);
     void loop();
 
     M5StickC* getM5() { return _m5; }
-    void selectPage(String name);
-    void pushPage(String name);
+    void selectPage(uint8_t pageId);
+    void pushPage(uint8_t pageId);
     void popPage();
 
-    void setPageIndex(uint8_t index) { _pageIndex = index; }
+    void setPageIndex(uint8_t index);
     uint8_t getPageIndex() const { return _pageIndex; }
     uint8_t getLevel() const { return _level; }
 
 protected:
     void loadWidgets();
-    uint8_t getIndexFromName(String name);
+    uint8_t getIndexFromPageId(uint8_t pageId);
     uint8_t getPageCountAtLevel(uint8_t level);
     uint8_t getPagePositionAtLevel(uint8_t position, uint8_t level);
     void pushCallStack(uint8_t index);
@@ -67,6 +72,7 @@ private:
     EventQueue _eventQueue;
     TextWidget _nextPageWidget;
     TextWidget _backPageWidget;
+    ButtonsEnabled _buttonsEnabled;
 
 };
 

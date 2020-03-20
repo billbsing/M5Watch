@@ -6,6 +6,7 @@
 #include "HomePage.h"
 #include "SettingsPage.h"
 #include "SetSleepTimePage.h"
+#include "PageId.h"
 
 #define SCREEN_WIDTH                160
 #define SCREEN_HEIGHT               80
@@ -14,14 +15,18 @@
 RTCTime rtcTime;
 
 PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT);
-HomePage homePage(pageManager);
-SettingsPage settingsPage(pageManager);
-SetSleepTimePage setSleepTime(pageManager);
+HomePage homePage(&pageManager);
+SettingsPage settingsPage(&pageManager);
+SetSleepTimePage setSleepTime(&pageManager);
 
 void setup() {
-    pageManager.add("Home", &homePage, 0);
-    pageManager.add("Settings", &settingsPage, 0);
-    pageManager.add("SetSleepTime", &setSleepTime, 1);
+    Serial.begin(15200);
+    while(!Serial) { }
+    Serial.println("Begin");
+
+    pageManager.add(PAGE_ID_HOME, &homePage, 0);
+    pageManager.add(PAGE_ID_SETTINGS, &settingsPage, 0);
+    pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTime, 1);
     pageManager.build();
 
     M5.begin();
@@ -36,5 +41,5 @@ void setup() {
 
 void loop() {
     pageManager.loop();
-    delay(500);
+    delay(100);
 }

@@ -9,7 +9,7 @@
 class TextPage: public Page
 {
 public:
-    TextPage(PageManager &manager, String text);
+    TextPage(PageManager *manager, String text);
 
     void init();
     void loadWidgets(WidgetManager *manager);

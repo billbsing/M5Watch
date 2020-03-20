@@ -11,7 +11,7 @@
 class SetSleepTimePage: public Page
 {
 public:
-    SetSleepTimePage(PageManager &manager);
+    SetSleepTimePage(PageManager *manager);
 
     void init();
     void loadWidgets(WidgetManager *manager);

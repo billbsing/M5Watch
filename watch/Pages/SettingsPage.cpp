@@ -1,11 +1,12 @@
 #include <TextWidget.h>
 #include "SettingsPage.h"
+#include "PageId.h"
 
 #define MENU_ITEM_WIDTH                 100
 #define MENU_ITEM_HEIGHT                15
 
 
-SettingsPage::SettingsPage(PageManager &manager):
+SettingsPage::SettingsPage(PageManager *manager):
 Page(manager) {
 }
 
@@ -33,6 +34,7 @@ void SettingsPage::processEvent(uint16_t eventId) {
     }
 
     if ( _menuSetSleep.isEventId(eventId)) {
-        pushPage("SetSleepTime");
+        Serial.println("push set sleep time page");
+        pushPage(PAGE_ID_SET_SLEEP);
     }
 }
