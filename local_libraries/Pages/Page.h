@@ -14,7 +14,7 @@ public:
     Page(PageManager &manager);
     virtual void init() = 0;
     virtual void loadWidgets(WidgetManager *manager) = 0;
-    virtual void draw(M5Display &lcd) = 0;
+    virtual void draw(M5Display *lcd) = 0;
     virtual void processEvent(uint16_t eventId) = 0;
 
     uint8_t getIndex() const { return _index; }
@@ -23,7 +23,7 @@ public:
 protected:
     PageManager &getManager();
     uint16_t getNextEventId();
-    M5StickC& getM5() { return _manager.getM5(); }
+    M5StickC* getM5() { return _manager.getM5(); }
     void selectPage(String name) { _manager.selectPage(name); }
     void pushPage(String name) { _manager.pushPage(name); }
     void popPage() { _manager.popPage(); }

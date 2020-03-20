@@ -13,7 +13,7 @@ public:
 
     void init();
     void loadWidgets(WidgetManager *manager);
-    void draw(M5Display &lcd);
+    void draw(M5Display *lcd);
     void processEvent(uint16_t eventId);
 
 private:

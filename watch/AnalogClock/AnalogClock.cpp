@@ -4,10 +4,10 @@ AnalogClock::AnalogClock(uint16_t radius):
 _radius(radius) {
 }
 
-void AnalogClock::draw(M5Display &lcd, uint16_t left, uint16_t top, uint8_t hour, uint8_t minute) {
+void AnalogClock::draw(M5Display *lcd, uint16_t left, uint16_t top, uint8_t hour, uint8_t minute) {
     uint16_t centreLeft = left + _radius;
     uint16_t centreTop = top + _radius;
-    lcd.drawCircle(left + _radius, top + _radius, _radius, RED);
+    lcd->drawCircle(left + _radius, top + _radius, _radius, RED);
     for ( int minute = 0; minute < 60 ; minute += 5) {
         int fromX = centreLeft + calcMinuteToX(minute, _radius - 1);
         int toX = centreLeft + calcMinuteToX(minute, _radius);
@@ -15,7 +15,7 @@ void AnalogClock::draw(M5Display &lcd, uint16_t left, uint16_t top, uint8_t hour
         int toY = centreTop + calcMinuteToY(minute, _radius);
 
         // M5.Lcd.drawLine(fromX, fromY, toX, toY, WHITE);
-        lcd.fillCircle(toX, toY, 1, WHITE);
+        lcd->fillCircle(toX, toY, 1, WHITE);
     }
     // int totalHourMinutes = (rtcTimeStruct.Hours * 60) + rtcTimeStruct.Minutes;
     //int hourInMinutes = map(totalHourMinutes, 0, 1440, 0 , 60);
@@ -24,7 +24,7 @@ void AnalogClock::draw(M5Display &lcd, uint16_t left, uint16_t top, uint8_t hour
     drawClockHand(lcd, centreLeft, centreTop, minute, _radius - 5, 4, 4, YELLOW);
 }
 
-void AnalogClock::drawClockHand(M5Display &lcd, uint16_t centreLeft , uint16_t centreTop, \
+void AnalogClock::drawClockHand(M5Display *lcd, uint16_t centreLeft , uint16_t centreTop, \
             uint16_t position, uint16_t radius, \
             uint16_t baseWidth, uint16_t baseLength, \
             uint16_t color) {
@@ -34,8 +34,8 @@ void AnalogClock::drawClockHand(M5Display &lcd, uint16_t centreLeft , uint16_t c
     uint16_t hourFromBottomY = centreTop + calcMinuteToY(30 + position + baseWidth, baseLength);
     uint16_t hourToX = centreLeft + calcMinuteToX(position, radius);
     uint16_t hourToY = centreTop + calcMinuteToY(position, radius);
-    lcd.fillTriangle(hourFromTopX, hourFromTopY, hourToX, hourToY, hourFromBottomX, hourFromBottomY, color);
-    lcd.drawLine(centreLeft, centreTop, hourToX, hourToY, color);
+    lcd->fillTriangle(hourFromTopX, hourFromTopY, hourToX, hourToY, hourFromBottomX, hourFromBottomY, color);
+    lcd->drawLine(centreLeft, centreTop, hourToX, hourToY, color);
 }
 
 float AnalogClock::calcMinuteToX(int minute, int radius) {

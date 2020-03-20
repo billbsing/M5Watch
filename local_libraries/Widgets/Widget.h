@@ -17,9 +17,9 @@ public:
     Widget();
     Widget(const Widget &widget);
 
-    virtual void draw(M5Display &lcd) = 0;
-    void showFocus(M5Display &lcd);
-    void setCursor(M5Display &lcd);
+    virtual void draw(M5Display *lcd) = 0;
+    void showFocus(M5Display *lcd);
+    void setCursor(M5Display *lcd);
 
     void setLeft(uint16_t value) { _left = value; }
     void setTop(uint16_t value) { _top = value; }
@@ -46,7 +46,7 @@ public:
     bool isEventId(uint16_t value) const { return _eventId == value; }
     uint16_t getEventId() const { return _eventId; }
 
-    void raiseEvent(EventQueue &eventQueue);
+    void raiseEvent(EventQueue *eventQueue);
 
     WidgetStyle style;
 private:

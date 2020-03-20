@@ -28,7 +28,7 @@ class PageManager
 {
 
 public:
-    PageManager(M5StickC &m5, uint16_t width, uint16_t height);
+    PageManager(M5StickC *m5, uint16_t width, uint16_t height);
     void build();
     void add(String name, Page *page, uint8_t level);
     void next();
@@ -36,7 +36,7 @@ public:
     void processEvent(uint16_t eventId);
     void loop();
 
-    M5StickC& getM5() { return _m5; }
+    M5StickC* getM5() { return _m5; }
     void selectPage(String name);
     void pushPage(String name);
     void popPage();
@@ -54,7 +54,7 @@ protected:
     uint8_t popCallStack();
 
 private:
-    M5StickC _m5;
+    M5StickC *_m5;
     PageItem _pageList[PAGE_MANGER_PAGE_LIST_SIZE];
     uint8_t _pageCount;
     uint8_t _callStack[PAGE_MANAGER_CALL_STACK_SIZE];

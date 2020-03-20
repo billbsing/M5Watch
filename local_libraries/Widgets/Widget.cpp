@@ -39,20 +39,20 @@ _eventId(widget.getEventId()) {
 }
 
 
-void Widget::setCursor(M5Display &lcd) {
-    lcd.setCursor(getLeft() + getLeftPadding(), getTop() + getTopPadding());
+void Widget::setCursor(M5Display *lcd) {
+    lcd->setCursor(getLeft() + getLeftPadding(), getTop() + getTopPadding());
 }
 
-void Widget::showFocus(M5Display &lcd) {
-    uint16_t color = BLACK;
+void Widget::showFocus(M5Display *lcd) {
+    uint16_t color = DARKGREY;
     if ( isFocus() ) {
         color = WHITE;
     }
-    lcd.drawRect(getLeft(), getTop(), getWidth(), getHeight(), color);
+    lcd->drawRect(getLeft(), getTop(), getWidth(), getHeight(), color);
 }
 
-void Widget::raiseEvent(EventQueue &eventQueue) {
+void Widget::raiseEvent(EventQueue *eventQueue) {
     if ( _eventId > 0) {
-        eventQueue.push(_eventId);
+        eventQueue->push(_eventId);
     }
 }

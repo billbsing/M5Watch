@@ -2,7 +2,7 @@
 #include <PageManager.h>
 #include <Page.h>
 
-PageManager::PageManager(M5StickC &m5, uint16_t width, uint16_t height):
+PageManager::PageManager(M5StickC *m5, uint16_t width, uint16_t height):
 _m5(m5),
 _width(width),
 _height(height),
@@ -16,8 +16,8 @@ _level(0) {
 
 void PageManager::build() {
     uint16_t left, top;
-    left = _width - _nextPageWidget.getWidth();
-    top = _height -  _nextPageWidget.getHeight();
+    left = _width - 30;
+    top = _height -  12;
     _nextPageWidget = TextWidget(PAGE_MANAGER_NEXT_PAGE_EVENT_ID, left, top, 30, 12, 4, 2, "Next");
     _backPageWidget = TextWidget(PAGE_MANAGER_BACK_PAGE_EVENT_ID, left, top, 30, 12, 4, 2, "Back");
     for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE; index ++) {
@@ -101,16 +101,16 @@ void PageManager::loadWidgets() {
 void PageManager::draw() {
     uint8_t pageCount = getPageCountAtLevel(_level);
     uint8_t pagePosition = getPagePositionAtLevel(_pageIndex, _level);
-    _m5.Lcd.fillScreen(BLACK);
+    _m5->Lcd.fillScreen(BLACK);
     if ( _pageList[_pageIndex].page) {
         loadWidgets();
-        _pageList[_pageIndex].page->draw(_m5.Lcd);
+        _pageList[_pageIndex].page->draw(&_m5->Lcd);
     }
-    _m5.Lcd.setCursor(_width - 80, _height - 10);
-    _m5.Lcd.setTextSize(1);
-    _m5.Lcd.printf("%d/%d", pagePosition, pageCount);
+    _m5->Lcd.setCursor(_width - 80, _height - 10);
+    _m5->Lcd.setTextSize(1);
+    _m5->Lcd.printf("%d/%d", pagePosition, pageCount);
 
-    _widgetManager.draw(_m5.Lcd);
+    _widgetManager.draw(&_m5->Lcd);
 }
 
 void PageManager::processEvent(uint16_t eventId) {
@@ -173,13 +173,13 @@ uint8_t PageManager::popCallStack() {
 
 void PageManager::loop() {
     uint16_t eventId;
-    _m5.BtnB.read();
-    if ( _m5.BtnB.isPressed() ) {
-        _widgetManager.nextFocus(m5.Lcd);
+    _m5->BtnB.read();
+    if ( _m5->BtnB.isPressed() ) {
+        _widgetManager.nextFocus(&_m5->Lcd);
     }
-    M5.BtnA.read();
-    if ( _m5.BtnA.isPressed() ) {
-        _widgetManager.raiseEvent(_eventQueue);
+    _m5->BtnA.read();
+    if ( _m5->BtnA.isPressed() ) {
+        _widgetManager.raiseEvent(&_eventQueue);
     }
     eventId = _eventQueue.pop();
     if ( eventId ) {

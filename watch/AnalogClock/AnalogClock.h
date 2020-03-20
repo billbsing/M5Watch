@@ -12,10 +12,10 @@ class AnalogClock
 
 public:
     AnalogClock(uint16_t radius);
-    void draw(M5Display &lcd, uint16_t left, uint16_t top, uint8_t hour, uint8_t minute);
+    void draw(M5Display *lcd, uint16_t left, uint16_t top, uint8_t hour, uint8_t minute);
 
 protected:
-    void drawClockHand(M5Display &lcd, uint16_t centreLeft , uint16_t centreTop, \
+    void drawClockHand(M5Display *lcd, uint16_t centreLeft , uint16_t centreTop, \
             uint16_t position, uint16_t radius, \
             uint16_t baseWidth, uint16_t baseLength, \
             uint16_t color);

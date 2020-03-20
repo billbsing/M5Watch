@@ -13,7 +13,7 @@
 
 RTCTime rtcTime;
 
-PageManager pageManager(M5, SCREEN_WIDTH, SCREEN_HEIGHT);
+PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT);
 HomePage homePage(pageManager);
 SettingsPage settingsPage(pageManager);
 SetSleepTimePage setSleepTime(pageManager);
@@ -36,5 +36,5 @@ void setup() {
 
 void loop() {
     pageManager.loop();
-    M5.Axp.LightSleep(100);
+    delay(500);
 }

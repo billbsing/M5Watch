@@ -29,7 +29,7 @@ uint8_t WidgetManager::add(Widget *widget) {
     return index;
 }
 
-void WidgetManager::drawWidget(M5Display &lcd, Widget *widget) {
+void WidgetManager::drawWidget(M5Display *lcd, Widget *widget) {
     if ( widget ) {
         widget->showFocus(lcd);
         widget->setCursor(lcd);
@@ -38,7 +38,7 @@ void WidgetManager::drawWidget(M5Display &lcd, Widget *widget) {
 }
 
 
-void WidgetManager::draw(M5Display &lcd) {
+void WidgetManager::draw(M5Display *lcd) {
     for ( uint8_t index = 0; index < _count ; index ++) {
         if ( _widgetList[index] ) {
             drawWidget(lcd, _widgetList[index]);
@@ -48,7 +48,7 @@ void WidgetManager::draw(M5Display &lcd) {
 
 void WidgetManager::setFocus(uint8_t index, bool value) {
     if ( _widgetList[index] ) {
-        _widgetList[index]->setFocus(true);
+        _widgetList[index]->setFocus(value);
     }
 }
 
@@ -65,7 +65,7 @@ uint8_t WidgetManager::getFocusIndex() {
     return focusIndex;
 }
 
-void WidgetManager::nextFocus(M5Display &lcd) {
+void WidgetManager::nextFocus(M5Display *lcd) {
     uint8_t index = getFocusIndex();
     uint8_t lastIndex = index;
     index ++;
@@ -80,7 +80,7 @@ void WidgetManager::nextFocus(M5Display &lcd) {
     }
 }
 
-void WidgetManager::raiseEvent(EventQueue &eventQueue) {
+void WidgetManager::raiseEvent(EventQueue *eventQueue) {
     uint8_t index = getFocusIndex();
     if ( index < _count ) {
         if ( _widgetList[index]) {
