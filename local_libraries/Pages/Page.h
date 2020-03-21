@@ -22,7 +22,7 @@ public:
 
 protected:
     PageManager *getManager();
-    uint16_t getNextEventId();
+    uint16_t getNextEventId() { return _manager->getNextEventId(); }
     M5StickC* getM5() { return _manager->getM5(); }
     void selectPage(uint8_t pageId) { _manager->selectPage(pageId); }
     void pushPage(uint8_t pageId) { _manager->pushPage(pageId); }
@@ -31,6 +31,5 @@ protected:
 private:
     PageManager *_manager;
     uint8_t _index;
-    uint8_t _eventIndex;
 };
 #endif          // PAGE_H

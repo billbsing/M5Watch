@@ -24,6 +24,7 @@ LIBS = \
 	$(ESP_LIBS)/FS						\
 	$(ESP_LIBS)/Wire					\
 	$(ESP_LIBS)/SPIFFS					\
+	$(ESP_LIBS)/Preferences				\
 	$(SHARE_LIBS)/M5StickC				\
 	$(SHARE_LIBS)/TimeLib				\
 	$(LOCAL_LIBS)/Events				\

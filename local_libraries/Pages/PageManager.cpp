@@ -9,8 +9,8 @@ _height(height),
 _pageCount(0),
 _stackCount(0),
 _pageIndex(0),
-_level(0),
-_buttonsEnabled({true, true, true}) {
+_pageGroup(0),
+_eventIndex(PAGE_MANAGER_START_EVENT_ID) {
     memset(_pageList, 0, sizeof(PageItem) * PAGE_MANGER_PAGE_LIST_SIZE);
     memset(_callStack, 0, sizeof(uint8_t) * PAGE_MANAGER_CALL_STACK_SIZE);
 }
@@ -19,8 +19,8 @@ void PageManager::build() {
     uint16_t left, top;
     left = _width - 30;
     top = _height -  12;
-    _nextPageWidget = TextWidget(EVENT_NEXT_PAGE, left, top, 30, 12, 4, 2, "Next");
-    _backPageWidget = TextWidget(EVENT_BACK_PAGE, left, top, 30, 12, 4, 2, "Back");
+    _nextPageWidget = TextWidget(getNextEventId(), left, top, 30, 12, 4, 2, "Next");
+    _backPageWidget = TextWidget(getNextEventId(), left, top, 30, 12, 4, 2, "Back");
     for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE; index ++) {
         if ( _pageList[index].page ) {
             _pageList[index].page->init();
@@ -28,15 +28,15 @@ void PageManager::build() {
     }
 }
 
-void PageManager::add(uint8_t pageId, Page *page, uint8_t level) {
+void PageManager::add(uint8_t pageId, Page *page, uint8_t pageGroup) {
     _pageList[_pageCount].pageId = pageId;
     _pageList[_pageCount].page = page;
-    _pageList[_pageCount].level = level;
+    _pageList[_pageCount].pageGroup = pageGroup;
     _pageCount ++;
     page->setIndex(_pageCount);
 }
 
-void PageManager::next() {
+void PageManager::nextPage() {
     uint8_t index = _pageIndex;
     uint8_t counter = _pageCount + 1;
     while (counter > 0) {
@@ -44,7 +44,7 @@ void PageManager::next() {
         if ( index >= _pageCount || index >=  PAGE_MANGER_PAGE_LIST_SIZE) {
             index = 0;
         }
-        if ( _pageList[index].level == _level) {
+        if ( _pageList[index].pageGroup == _pageGroup) {
             setPageIndex(index);
             break;
         }
@@ -55,23 +55,23 @@ void PageManager::next() {
 void PageManager::setPageIndex(uint8_t index) {
     _pageIndex = index;
     if ( _pageList[index].page ) {
-        _level = _pageList[index].level;
+        _pageGroup= _pageList[index].pageGroup;
     }
 }
 
-uint8_t PageManager::getPageCountAtLevel(uint8_t level) {
+uint8_t PageManager::getPageCountInGroup(uint8_t pageGroup) {
     uint8_t counter = 0;
     for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE && index < _pageCount; index ++) {
-        if ( _pageList[index].page && _pageList[index].level == level) {
+        if ( _pageList[index].page && _pageList[index].pageGroup == pageGroup) {
             counter ++;
         }
     }
     return counter;
 }
-uint8_t PageManager::getPagePositionAtLevel(uint8_t position, uint8_t level) {
+uint8_t PageManager::getPagePositionInGroup(uint8_t position, uint8_t pageGroup) {
     uint8_t pagePosition = 0;
     for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE && index < _pageCount; index ++) {
-        if ( _pageList[index].page && _pageList[index].level == level) {
+        if ( _pageList[index].page && _pageList[index].pageGroup == pageGroup) {
             pagePosition ++;
             if ( index == position ){
                 break;
@@ -98,8 +98,8 @@ void PageManager::loadWidgets() {
     _widgetManager.setFocus(false);
 
     bool isAddNext = false;
-    // if there are > 1 pages on this level then just add a 'next' button
-    if ( getPageCountAtLevel(_level) > 1 ) {
+    // if there are > 1 pages on this pageGroup then just add a 'next' button
+    if ( getPageCountInGroup(_pageGroup) > 1 ) {
         uint8_t index = _widgetManager.add(&_nextPageWidget);
         _widgetManager.setFocus(index);
         isAddNext = true;
@@ -117,8 +117,8 @@ void PageManager::loadWidgets() {
 }
 
 void PageManager::draw() {
-    uint8_t pageCount = getPageCountAtLevel(_level);
-    uint8_t pagePosition = getPagePositionAtLevel(_pageIndex, _level);
+    uint8_t pageCount = getPageCountInGroup(_pageGroup);
+    uint8_t pagePosition = getPagePositionInGroup(_pageIndex, _pageGroup);
     _m5->Lcd.fillScreen(BLACK);
     if ( _pageList[_pageIndex].page) {
         loadWidgets();
@@ -129,6 +129,11 @@ void PageManager::draw() {
     _m5->Lcd.printf("%d/%d", pagePosition, pageCount);
 
     _widgetManager.draw(&_m5->Lcd);
+}
+
+uint16_t PageManager::getNextEventId() {
+    _eventIndex ++;
+    return _eventIndex;
 }
 
 
@@ -177,6 +182,13 @@ uint8_t PageManager::popCallStack() {
     return index;
 }
 
+void PageManager::rasieEventOnFocus(EventQueue *eventQueue) {
+    _widgetManager.raiseEvent(eventQueue);
+}
+void PageManager::nextFocus() {
+    _widgetManager.nextFocus(&_m5->Lcd);
+}
+
 void PageManager::processEvent(uint16_t eventId) {
     Serial.print("eventId ");
     Serial.println(eventId);
@@ -185,53 +197,15 @@ void PageManager::processEvent(uint16_t eventId) {
             _pageList[index].page->processEvent(eventId);
         }
     }
-    switch(eventId) {
-        case EVENT_NEXT_PAGE:
-            next();
-            draw();
-            break;
-        case EVENT_BACK_PAGE:
-            Serial.println("Page back");
-            popPage();
-            draw();
-            break;
+    if ( _nextPageWidget.isEventId(eventId) ) {
+        nextPage();
+        draw();
+    }
+    if ( _backPageWidget.isEventId(eventId) ) {
+        popPage();
+        draw();
     }
 }
 
 void PageManager::loop() {
-    uint16_t eventId;
-    _m5->BtnB.read();
-    _m5->BtnA.read();
-    if ( _buttonsEnabled.buttonA ) {
-        if ( _m5->BtnA.isPressed() ) {
-            _buttonsEnabled.buttonA = false;
-            _widgetManager.raiseEvent(&_eventQueue);
-        }
-    }
-    if ( _m5->BtnA.isReleased() ) {
-        _buttonsEnabled.buttonA = true;
-    }
-    if ( _buttonsEnabled.buttonB ) {
-        if ( _m5->BtnB.isPressed() ) {
-            _buttonsEnabled.buttonB = false;
-            _widgetManager.nextFocus(&_m5->Lcd);
-        }
-    }
-    if ( _m5->BtnB.isReleased() ) {
-        _buttonsEnabled.buttonB = true;
-    }
-
-    if ( _buttonsEnabled.buttonC ) {
-        if ( _m5->Axp.GetBtnPress() ) {
-            _buttonsEnabled.buttonC = false;
-            _m5->Axp.PowerOff();
-        }
-    }
-    if ( !_m5->Axp.GetBtnPress() ) {
-        _buttonsEnabled.buttonC = true;
-    }
-    eventId = _eventQueue.pop();
-    if ( eventId ) {
-        processEvent(eventId);
-    }
 }
