@@ -13,9 +13,9 @@ void HomePage::init() {
 
 void HomePage::draw(M5Display *lcd) {
     _clock.draw(lcd, 4, 2, hour(), minute());
-    lcd->setCursor(80, 0);
+    lcd->setCursor(100, 0);
     lcd->setTextSize(2);
-    lcd->printf("%d:%02d", hour(), minute());
+    lcd->printf("%d:%02d", hour() % 12, minute());
 }
 
 void HomePage::loadWidgets(WidgetManager *manager) {

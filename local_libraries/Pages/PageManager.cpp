@@ -132,10 +132,9 @@ void PageManager::draw() {
 }
 
 uint16_t PageManager::getNextEventId() {
-    _eventIndex ++;
+    _eventIndex++;
     return _eventIndex;
 }
-
 
 void PageManager::selectPage(uint8_t pageId) {
     uint8_t index = getIndexFromPageId(pageId);
@@ -171,14 +170,10 @@ void PageManager::pushCallStack(uint8_t index) {
 
 uint8_t PageManager::popCallStack() {
     uint8_t index = _pageCount + 1;
-    Serial.print("pop stack ");
     if ( _stackCount > 0) {
         _stackCount --;
         index = _callStack[_stackCount];
-        Serial.print(_stackCount);
-        Serial.print(" ");
     }
-    Serial.println(index);
     return index;
 }
 
@@ -190,8 +185,6 @@ void PageManager::nextFocus() {
 }
 
 void PageManager::processEvent(uint16_t eventId) {
-    Serial.print("eventId ");
-    Serial.println(eventId);
     for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE && index < _pageCount; index ++) {
         if ( _pageList[index].page ) {
             _pageList[index].page->processEvent(eventId);
@@ -205,7 +198,4 @@ void PageManager::processEvent(uint16_t eventId) {
         popPage();
         draw();
     }
-}
-
-void PageManager::loop() {
 }

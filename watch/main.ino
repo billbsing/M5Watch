@@ -11,10 +11,11 @@
 
 #define SCREEN_WIDTH                160
 #define SCREEN_HEIGHT               80
-#define AUTO_POWER_OFF_MILLIS       ( 1000 * 5)
+#define AUTO_POWER_OFF_MILLIS       ( 1000 * 30 )
 
 #define EVENT_AUTO_POWER_OFF        0x0001
-#define EVENT_BUTTON_PRESSED        0x0002
+#define EVENT_NEXT_WIDGET_FOCUS     0x0002
+#define EVENT_CLICK_ON_FOCUS        0x0003
 
 typedef struct {
     uint8_t buttonA : 1;
@@ -24,7 +25,6 @@ typedef struct {
 
 
 RTCTime rtcTime;
-
 EventQueue eventQueue;
 PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT);
 HomePage homePage(&pageManager);
@@ -40,7 +40,7 @@ void processButtons() {
     if ( buttonsEnabled.buttonA ) {
         if ( M5.BtnA.isPressed() ) {
             buttonsEnabled.buttonA = false;
-            pageManager.rasieEventOnFocus(&eventQueue);
+            eventQueue.push(EVENT_CLICK_ON_FOCUS);
         }
     }
     if ( M5.BtnA.isReleased() ) {
@@ -49,7 +49,7 @@ void processButtons() {
     if ( buttonsEnabled.buttonB ) {
         if ( M5.BtnB.isPressed() ) {
             buttonsEnabled.buttonB = false;
-            pageManager.nextFocus();
+            eventQueue.push(EVENT_NEXT_WIDGET_FOCUS);
         }
     }
     if ( M5.BtnB.isReleased() ) {
@@ -59,7 +59,8 @@ void processButtons() {
     if ( buttonsEnabled.buttonC ) {
         if ( M5.Axp.GetBtnPress() ) {
             buttonsEnabled.buttonC = false;
-            M5.Axp.PowerOff();
+            eventQueue.remove(EVENT_AUTO_POWER_OFF);            
+            eventQueue.push(EVENT_AUTO_POWER_OFF);
         }
     }
     if ( ! M5.Axp.GetBtnPress() ) {
@@ -75,10 +76,15 @@ void processEvents() {
             case EVENT_AUTO_POWER_OFF:
                 M5.Axp.PowerOff();
             break;
-            case EVENT_BUTTON_PRESSED:
+            case EVENT_NEXT_WIDGET_FOCUS:
+                pageManager.nextFocus();
                 eventQueue.remove(EVENT_AUTO_POWER_OFF);
                 eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
             break;
+            case EVENT_CLICK_ON_FOCUS:
+                pageManager.rasieEventOnFocus(&eventQueue);
+                eventQueue.remove(EVENT_AUTO_POWER_OFF);
+                eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
             break;
         }
         pageManager.processEvent(eventId);
@@ -111,6 +117,7 @@ void setup() {
 }
 
 void loop() {
+    processButtons();
     processEvents();
     delay(100);
 }

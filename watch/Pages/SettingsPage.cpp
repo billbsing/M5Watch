@@ -34,7 +34,6 @@ void SettingsPage::processEvent(uint16_t eventId) {
     }
 
     if ( _menuSetSleep.isEventId(eventId)) {
-        Serial.println("push set sleep time page");
         pushPage(PAGE_ID_SET_SLEEP);
     }
 }

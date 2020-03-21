@@ -33,7 +33,6 @@ public:
     void nextPage();
     void draw();
     void processEvent(uint16_t eventId);
-    void loop();
 
     M5StickC* getM5() { return _m5; }
     void selectPage(uint8_t pageId);
@@ -69,7 +68,7 @@ private:
     WidgetManager _widgetManager;
     TextWidget _nextPageWidget;
     TextWidget _backPageWidget;
-    uint8_t _eventIndex;
+    uint16_t _eventIndex;
 
 };
 
