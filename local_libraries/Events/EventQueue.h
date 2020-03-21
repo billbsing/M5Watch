@@ -8,15 +8,18 @@
 
 typedef struct {
     uint16_t eventId;
-    unsigned long timeoutMillis;
+    uint32_t timeoutMillis;
 } EventItem;
 
 class EventQueue {
 
 public:
     EventQueue();
-    void push(uint16_t eventId);
-    void push(uint16_t eventId, unsigned long delayMillis);
+    void push(uint16_t eventId, uint32_t delayMillis, bool isReplace);
+    void push(uint16_t eventId, uint32_t delayMillis) { push(eventId, delayMillis, false); }
+    void push(uint16_t eventId, bool isReplace) { push(eventId, 0, isReplace); }
+    void push(uint16_t eventId) { push(eventId, 0, false); }
+
     uint16_t pop();
     void remove(uint16_t eventId);
 

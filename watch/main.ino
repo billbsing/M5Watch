@@ -16,6 +16,7 @@
 #define EVENT_AUTO_POWER_OFF        0x0001
 #define EVENT_NEXT_WIDGET_FOCUS     0x0002
 #define EVENT_CLICK_ON_FOCUS        0x0003
+#define EVENT_DISPLAY_OFF           0x0004
 
 typedef struct {
     uint8_t buttonA : 1;
@@ -32,7 +33,7 @@ SettingsPage settingsPage(&pageManager);
 SetSleepTimePage setSleepTime(&pageManager);
 ButtonsEnabled buttonsEnabled = {true, true, true};
 Preferences preferences;
-uint16_t autoPowerOffTimeout;
+uint32_t autoPowerOffTimeout;
 
 void processButtons() {
     M5.BtnB.read();
@@ -59,8 +60,7 @@ void processButtons() {
     if ( buttonsEnabled.buttonC ) {
         if ( M5.Axp.GetBtnPress() ) {
             buttonsEnabled.buttonC = false;
-            eventQueue.remove(EVENT_AUTO_POWER_OFF);            
-            eventQueue.push(EVENT_AUTO_POWER_OFF);
+            eventQueue.push(EVENT_AUTO_POWER_OFF, true);
         }
     }
     if ( ! M5.Axp.GetBtnPress() ) {
@@ -78,13 +78,14 @@ void processEvents() {
             break;
             case EVENT_NEXT_WIDGET_FOCUS:
                 pageManager.nextFocus();
-                eventQueue.remove(EVENT_AUTO_POWER_OFF);
-                eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
+                eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
             break;
             case EVENT_CLICK_ON_FOCUS:
                 pageManager.rasieEventOnFocus(&eventQueue);
-                eventQueue.remove(EVENT_AUTO_POWER_OFF);
-                eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
+                eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
+            break;
+            case EVENT_DISPLAY_OFF:
+                M5.Axp.SetLDO2(false);
             break;
         }
         pageManager.processEvent(eventId);
@@ -97,7 +98,7 @@ void setup() {
     Serial.println("Begin");
 
     preferences.begin("preferences", false);
-    autoPowerOffTimeout = preferences.getUShort("autoPowerOffTimeout", AUTO_POWER_OFF_MILLIS);
+    autoPowerOffTimeout = preferences.getULong("autoPowerOffTimeout", AUTO_POWER_OFF_MILLIS);
     eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
     preferences.end();
 
@@ -114,6 +115,7 @@ void setup() {
     rtcTime.setLocalTime();
 
     pageManager.draw();
+    // eventQueue.push(EVENT_DISPLAY_OFF, 2000);
 }
 
 void loop() {

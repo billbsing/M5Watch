@@ -6,13 +6,12 @@ _maxCount(0) {
     memset(_items, 0, sizeof(EventItem) *  EVENT_QUEUE_SIZE);
 }
 
-void EventQueue::push(uint16_t eventId) {
-    push(eventId, 0);
-}
-
-void EventQueue::push(uint16_t eventId, unsigned long delayMillis) {
+void EventQueue::push(uint16_t eventId, uint32_t delayMillis, bool isReplace) {
     uint8_t i;
     bool isEmptyFound = false;
+    if ( isReplace ) {
+        remove(eventId);
+    }
     for ( i = 0; i < EVENT_QUEUE_SIZE && i < _length; i ++) {
         if ( _items[i].eventId == 0 ) {
             _items[i].eventId = eventId;
