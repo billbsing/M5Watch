@@ -27,6 +27,7 @@ protected:
     void selectPage(uint8_t pageId) { _manager->selectPage(pageId); }
     void pushPage(uint8_t pageId) { _manager->pushPage(pageId); }
     void popPage() { _manager->popPage(); }
+    void drawPage() { _manager->drawPage(); }
 
 private:
     PageManager *_manager;

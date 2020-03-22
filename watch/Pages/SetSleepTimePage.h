@@ -20,6 +20,9 @@ public:
 
 private:
 
+    int8_t _value;
+    TextWidget _decrementWidget;
+    TextWidget _incrementWidget;
 };
 
 

@@ -120,14 +120,18 @@ void PageManager::draw() {
     uint8_t pageCount = getPageCountInGroup(_pageGroup);
     uint8_t pagePosition = getPagePositionInGroup(_pageIndex, _pageGroup);
     _m5->Lcd.fillScreen(BLACK);
+    drawPage();
+    _m5->Lcd.setCursor(_width - 80, _height - 10);
+    _m5->Lcd.setTextSize(1);
+    _m5->Lcd.printf("%d/%d", pagePosition, pageCount);
+}
+
+void PageManager::drawPage() {
     if ( _pageList[_pageIndex].page) {
         loadWidgets();
         _pageList[_pageIndex].page->draw(&_m5->Lcd);
     }
-    _m5->Lcd.setCursor(_width - 80, _height - 10);
     _m5->Lcd.setTextSize(1);
-    _m5->Lcd.printf("%d/%d", pagePosition, pageCount);
-
     _widgetManager.draw(&_m5->Lcd);
 }
 

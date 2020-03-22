@@ -32,6 +32,7 @@ public:
     void add(uint8_t pageId, Page *page, uint8_t pageGroup);
     void nextPage();
     void draw();
+    void drawPage();
     void processEvent(uint16_t eventId);
 
     M5StickC* getM5() { return _m5; }
