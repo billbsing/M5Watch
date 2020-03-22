@@ -1,8 +1,8 @@
 #include "DebugModule.h"
 
 
-DebugModule::DebugModule(uint8_t id, String name, uint16_t serialBaud):
-Module(id, name) {
+DebugModule::DebugModule(ModuleManager *manager, uint16_t serialBaud):
+Module(manager) {
     _isSerial = false;
     if ( serialBaud > 0) {
         Serial.begin(serialBaud);
@@ -16,8 +16,13 @@ Module(id, name) {
     }
 }
 
-void DebugModule::init(ModuleManager *manager) {
-    debugPrint("Debug started");
+DebugModule::DebugModule(ModuleManager *manager):
+DebugModule(manager, 115200) {
+
+}
+
+void DebugModule::init() {
+    // debugPrint("Debug started");
 }
 
 void DebugModule::processEvent(uint16_t eventId) {

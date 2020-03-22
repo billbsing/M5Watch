@@ -1,7 +1,8 @@
 #include <M5StickC.h>
 #include <PageManager.h>
 #include <Preferences.h>
-
+#include <ModuleManager.h>
+#include <DebugModule.h>
 #include "RTCTime.h"
 
 #include "HomePage.h"
@@ -15,6 +16,9 @@
 #define SCREEN_WIDTH                160
 #define SCREEN_HEIGHT               80
 
+
+#define MODULE_ID_DEBUG             0x01
+
 typedef struct {
     uint8_t buttonA : 1;
     uint8_t buttonB : 1;
@@ -22,12 +26,16 @@ typedef struct {
 } ButtonsEnabled;
 
 
-RTCTime rtcTime;
-EventQueue eventQueue;
 PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT);
 HomePage homePage(&pageManager);
 SettingsPage settingsPage(&pageManager);
 SetSleepTimePage setSleepTime(&pageManager);
+
+ModuleManager moduleManager;
+DebugModule debugModule(&moduleManager);
+
+RTCTime rtcTime;
+EventQueue eventQueue;
 ButtonsEnabled buttonsEnabled = {true, true, true};
 Settings settings("preferences");
 uint32_t autoPowerOffTimeout;
@@ -86,6 +94,7 @@ void processEvents() {
             break;
         }
         pageManager.processEvent(eventId);
+        moduleManager.processEvent(eventId);
     }
 }
 
@@ -103,6 +112,8 @@ void setup() {
     pageManager.add(PAGE_ID_SETTINGS, &settingsPage, 0);
     pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTime, 1);
     pageManager.build();
+
+    moduleManager.add(MODULE_ID_DEBUG, &debugModule);
 
     M5.begin();
     M5.Lcd.setRotation(1);

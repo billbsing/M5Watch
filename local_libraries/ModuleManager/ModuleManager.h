@@ -23,10 +23,10 @@ class ModuleManager
 {
 public:
     ModuleManager();
-    void addModule(Module *module);
+    void add(uint8_t moduleId, Module *module);
     void init();
     void raiseEvent(uint16_t eventId);
-    void raiseEvent(uint16_t eventId, unsigned long delayMillis);
+    void raiseEvent(uint16_t eventId, uint32_t delayMillis);
     void raiseGroupEvents(uint16_t groupId);
     void removeEvent(uint16_t eventId);
     void processEvent(uint16_t eventId);
@@ -36,8 +36,11 @@ public:
     size_t writeData(String filename);
 
     void loop();
-
+    
+    #ifdef IS_DEBUG_MODULE
     void debugPrint(String format, ... );
+    #endif
+
     uint8_t getModuleCount() { return _length; }
     void registerGroupEvent(uint16_t groupId, uint16_t eventId);
 

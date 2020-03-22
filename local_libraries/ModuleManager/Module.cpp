@@ -2,10 +2,8 @@
 #include "ModuleManager.h"
 
 
-Module::Module(uint8_t id, String name) :
-_id(id),
-_name(name),
-_manager(NULL) {
+Module::Module(ModuleManager *manager) :
+_manager(manager) {
 
 }
 
@@ -52,8 +50,8 @@ void Module::unmountDisk() {
 }
 */
 
+#ifdef IS_DEBUG_MODULE
 void Module::debugPrint(String format, ...) {
-    #ifdef IS_DEBUG_MODULE
     DebugModule *debug = (DebugModule *) getModule(DEBUG_MODULE_ID);
     if ( debug ) {
         va_list args;
@@ -61,11 +59,11 @@ void Module::debugPrint(String format, ...) {
         debug->print(_id, format, args);
         va_end (args);
     }
-    #endif
 }
+#endif
 
+#ifdef IS_LOG_MODULE
 void Module::logPrint(String format, ...) {
-    #ifdef IS_LOG_MODULE
     LogModule *log = (LogModule *) getModule(LOG_MODULE_ID);
     if ( log ) {
         va_list args;
@@ -73,5 +71,5 @@ void Module::logPrint(String format, ...) {
         log->print(format, args);
         va_end (args);
     }
-    #endif
 }
+#endif

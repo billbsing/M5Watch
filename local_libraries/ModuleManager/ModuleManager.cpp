@@ -15,17 +15,16 @@ ModuleManager::ModuleManager() : _length(0) {
     memset(_items, 0, sizeof(ModuleItem) * MODULES_MAX_SIZE);
 }
 
-void ModuleManager::addModule(Module *module) {
-    module->setParent(this);
+void ModuleManager::add(uint8_t moduleId, Module *module) {
     if ( _length < MODULES_MAX_SIZE ) {
-        _items[_length].id = module->getId();
+        _items[_length].id = moduleId;
         _items[_length].module = module;
         _length++ ;
     }
 }
 
+#ifdef IS_DEBUG_MODULE
 void ModuleManager::debugPrint(String format, ... ) {
-    #ifdef IS_DEBUG_MODULE
     DebugModule *debug = (DebugModule *) getModule(DEBUG_MODULE_ID);
     if ( debug) {
         va_list args;
@@ -33,20 +32,20 @@ void ModuleManager::debugPrint(String format, ... ) {
         debug->print(0, format, args);
         va_end (args);
     }
-    #endif
 }
+#endif
 
 void ModuleManager::init() {
 
     uint8_t i;
     for ( i = 0; i < _length; i ++) {
         if ( _items[i].id && _items[i].module ) {
-            _items[i].module->init(this);
+            _items[i].module->init();
         }
     }
 
     // call all of start module start events
-    debugPrint("starting modules...");
+//    debugPrint("starting modules...");
     raiseGroupEvents(EVENT_GROUP_START);
 }
 
@@ -60,7 +59,7 @@ void ModuleManager::raiseEvent(uint16_t eventId) {
 
 void ModuleManager::raiseGroupEvents(uint16_t groupId) {
 
-    debugPrint("Group Event: %04X", groupId);
+    // debugPrint("Group Event: %04X", groupId);
     uint16_t eventItems[EVENT_QUEUE_SIZE];
     uint8_t length = _eventGroup.readList(groupId, eventItems, EVENT_QUEUE_SIZE);
     unsigned long delayMillis = 0;
@@ -72,7 +71,7 @@ void ModuleManager::raiseGroupEvents(uint16_t groupId) {
     }
 }
 
-void ModuleManager::raiseEvent(uint16_t eventId, unsigned long delayMillis) {
+void ModuleManager::raiseEvent(uint16_t eventId, uint32_t delayMillis) {
     _eventQueue.push(eventId, delayMillis);
 }
 
@@ -108,25 +107,6 @@ Module *ModuleManager::getModuleAtIndex(uint8_t index) {
     return NULL;
 }
 
-void ModuleManager::loop() {
-    uint8_t i;
-    for ( i = 0; i < _length; i ++) {
-        if ( _items[i].id && _items[i].module ) {
-            _items[i].module->loop();
-        }
-    }
-    uint16_t eventId = _eventQueue.pop();
-    if ( eventId != 0) {
-        processEvent(eventId);
-/*
-        // only show events that are less than the log limit
-        if ( !isIgnoreDebug(IgnoreDebugEventIdList, eventId) ) {
-            debugPrint("Event: %04X", eventId);
-        }
-*/
-    }
-}
-
 bool ModuleManager::isIgnoreDebug(uint16_t *eventList, uint16_t eventId) {
     uint8_t i = 0;
     while ( eventList[i] != NULL) {
@@ -136,4 +116,13 @@ bool ModuleManager::isIgnoreDebug(uint16_t *eventList, uint16_t eventId) {
         i++;
     }
     return false;
+}
+
+void ModuleManager::loop() {
+    uint8_t i;
+    for ( i = 0; i < _length; i ++) {
+        if ( _items[i].id && _items[i].module ) {
+            _items[i].module->loop();
+        }
+    }
 }

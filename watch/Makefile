@@ -30,6 +30,8 @@ LIBS = \
 	$(LOCAL_LIBS)/Events				\
 	$(LOCAL_LIBS)/Pages					\
 	$(LOCAL_LIBS)/Widgets				\
+	$(LOCAL_LIBS)/ModuleManager			\
+	$(LOCAL_LIBS)/modules				\
 	$(LOCAL_LIBS)/Persistent
 
 

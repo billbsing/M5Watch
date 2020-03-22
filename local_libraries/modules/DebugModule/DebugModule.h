@@ -1,8 +1,8 @@
 #ifndef DEBUG_MODULE_H
 #define DEBUG_MODULE_H
 
-#include "ModuleManager.h"
-#include "Module.h"
+#include <ModuleManager.h>
+#include <Module.h>
 
 #define DEBUG_LOG_ITEM_SIZE        80
 
@@ -15,8 +15,9 @@ typedef struct {
 class DebugModule : public Module {
 
 public:
-    DebugModule(uint8_t id, String name, uint16_t serialBaud);
-    void init(ModuleManager *manager);
+    DebugModule(ModuleManager *manager, uint16_t serialBaud);
+    DebugModule(ModuleManager *manager);
+    void init();
     void processEvent(uint16_t eventId);
     void loop() {};
     void print(uint8_t moduleId, String format, ... );
