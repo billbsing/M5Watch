@@ -7,16 +7,13 @@
 #include "HomePage.h"
 #include "SettingsPage.h"
 #include "SetSleepTimePage.h"
+#include "Settings.h"
+
 #include "PageId.h"
+#include "EventId.h"
 
 #define SCREEN_WIDTH                160
 #define SCREEN_HEIGHT               80
-#define AUTO_POWER_OFF_MILLIS       ( 1000 * 30 )
-
-#define EVENT_AUTO_POWER_OFF        0x0001
-#define EVENT_NEXT_WIDGET_FOCUS     0x0002
-#define EVENT_CLICK_ON_FOCUS        0x0003
-#define EVENT_DISPLAY_OFF           0x0004
 
 typedef struct {
     uint8_t buttonA : 1;
@@ -32,7 +29,7 @@ HomePage homePage(&pageManager);
 SettingsPage settingsPage(&pageManager);
 SetSleepTimePage setSleepTime(&pageManager);
 ButtonsEnabled buttonsEnabled = {true, true, true};
-Preferences preferences;
+Settings settings("preferences");
 uint32_t autoPowerOffTimeout;
 
 void processButtons() {
@@ -97,10 +94,10 @@ void setup() {
     while(!Serial) { }
     Serial.println("Begin");
 
-    preferences.begin("preferences", false);
-    autoPowerOffTimeout = preferences.getULong("autoPowerOffTimeout", AUTO_POWER_OFF_MILLIS);
+    settings.begin(true);
+    autoPowerOffTimeout = settings.getAutoPowerOffTimeout();
+    settings.end();
     eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
-    preferences.end();
 
     pageManager.add(PAGE_ID_HOME, &homePage, 0);
     pageManager.add(PAGE_ID_SETTINGS, &settingsPage, 0);
