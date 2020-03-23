@@ -46,7 +46,7 @@ void WidgetManager::draw(M5Display *lcd) {
     }
 }
 
-void WidgetManager::setFocus(bool value) {
+void WidgetManager::setFocusAll(bool value) {
     for ( uint8_t index = 0; index < _count && index < WIDGET_MANAGER_LIST_SIZE ; index ++) {
         if ( _widgetList[index] ) {
             setFocus(index, value);

@@ -30,12 +30,14 @@ public:
     PageManager(M5StickC *m5, uint16_t width, uint16_t height);
     void build();
     void add(uint8_t pageId, Page *page, uint8_t pageGroup);
-    void nextPage();
+
     void draw();
+    void loadPage();
     void drawPage();
     void processEvent(uint16_t eventId);
 
     M5StickC* getM5() { return _m5; }
+    void nextPage();
     void selectPage(uint8_t pageId);
     void pushPage(uint8_t pageId);
     void popPage();

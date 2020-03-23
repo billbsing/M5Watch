@@ -36,22 +36,6 @@ void PageManager::add(uint8_t pageId, Page *page, uint8_t pageGroup) {
     page->setIndex(_pageCount);
 }
 
-void PageManager::nextPage() {
-    uint8_t index = _pageIndex;
-    uint8_t counter = _pageCount + 1;
-    while (counter > 0) {
-        index ++;
-        if ( index >= _pageCount || index >=  PAGE_MANGER_PAGE_LIST_SIZE) {
-            index = 0;
-        }
-        if ( _pageList[index].pageGroup == _pageGroup) {
-            setPageIndex(index);
-            break;
-        }
-        counter --;
-    }
-}
-
 void PageManager::setPageIndex(uint8_t index) {
     _pageIndex = index;
     if ( _pageList[index].page ) {
@@ -95,13 +79,13 @@ uint8_t PageManager::getIndexFromPageId(uint8_t pageId) {
 void PageManager::loadWidgets() {
     _widgetManager.clear();
     _pageList[_pageIndex].page->loadWidgets(&_widgetManager);
-    _widgetManager.setFocus(false);
+//    _widgetManager.setFocus(false);
 
     bool isAddNext = false;
     // if there are > 1 pages on this pageGroup then just add a 'next' button
     if ( getPageCountInGroup(_pageGroup) > 1 ) {
         uint8_t index = _widgetManager.add(&_nextPageWidget);
-        _widgetManager.setFocus(index);
+//        _widgetManager.setFocus(index);
         isAddNext = true;
     }
     if ( _stackCount > 0 ) {
@@ -111,26 +95,36 @@ void PageManager::loadWidgets() {
         }
         uint8_t index = _widgetManager.add(&_backPageWidget);
         if ( !isAddNext ) {
-            _widgetManager.setFocus(index);
+//            _widgetManager.setFocus(index);
         }
+    }
+    if ( _widgetManager.getFocusIndex() > _widgetManager.getCount() ) {
+        _widgetManager.setFocus((uint8_t) _widgetManager.getCount() - 1);
     }
 }
 
 void PageManager::draw() {
-    uint8_t pageCount = getPageCountInGroup(_pageGroup);
-    uint8_t pagePosition = getPagePositionInGroup(_pageIndex, _pageGroup);
-    _m5->Lcd.fillScreen(BLACK);
+    loadPage();
     drawPage();
-    _m5->Lcd.setCursor(_width - 80, _height - 10);
-    _m5->Lcd.setTextSize(1);
-    _m5->Lcd.printf("%d/%d", pagePosition, pageCount);
 }
 
-void PageManager::drawPage() {
+void PageManager::loadPage() {
     if ( _pageList[_pageIndex].page) {
         loadWidgets();
         _pageList[_pageIndex].page->draw(&_m5->Lcd);
     }
+}
+
+void PageManager::drawPage() {
+    uint8_t pageCount = getPageCountInGroup(_pageGroup);
+    uint8_t pagePosition = getPagePositionInGroup(_pageIndex, _pageGroup);
+    _m5->Lcd.fillScreen(BLACK);
+    if ( _pageList[_pageIndex].page) {
+        _pageList[_pageIndex].page->draw(&_m5->Lcd);
+    }
+    _m5->Lcd.setCursor(_width - 80, _height - 10);
+    _m5->Lcd.setTextSize(1);
+    _m5->Lcd.printf("%d/%d", pagePosition, pageCount);
     _m5->Lcd.setTextSize(1);
     _widgetManager.draw(&_m5->Lcd);
 }
@@ -140,12 +134,29 @@ uint16_t PageManager::getNextEventId() {
     return _eventIndex;
 }
 
+void PageManager::nextPage() {
+    uint8_t index = _pageIndex;
+    uint8_t counter = _pageCount + 1;
+    while (counter > 0) {
+        index ++;
+        if ( index >= _pageCount || index >=  PAGE_MANGER_PAGE_LIST_SIZE) {
+            index = 0;
+        }
+        if ( _pageList[index].pageGroup == _pageGroup) {
+            setPageIndex(index);
+            break;
+        }
+        counter --;
+    }
+    draw();
+}
+
 void PageManager::selectPage(uint8_t pageId) {
     uint8_t index = getIndexFromPageId(pageId);
     if ( index < _pageCount ) {
         setPageIndex(index);
-        draw();
     }
+    draw();
 }
 
 void PageManager::pushPage(uint8_t pageId) {
@@ -153,16 +164,16 @@ void PageManager::pushPage(uint8_t pageId) {
     if ( index < _pageCount && index != _pageIndex ) {
         pushCallStack(_pageIndex);
         setPageIndex(index);
-        draw();
     }
+    draw();
 }
 
 void PageManager::popPage() {
     uint8_t index = popCallStack();
     if ( index < _pageCount ) {
         setPageIndex(index);
-        draw();
     }
+    draw();
 }
 
 void PageManager::pushCallStack(uint8_t index) {
