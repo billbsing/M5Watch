@@ -18,8 +18,9 @@
 #define SCREEN_WIDTH                160
 #define SCREEN_HEIGHT               80
 
-
-#define MODULE_ID_DEBUG             0x01
+#define NTP_GMT_OFFSET_SECONDS      (8 * SECS_PER_HOUR)
+#define NTP_DAYLIGHT_SAVING_OFFSET  0
+#define NTP_SERVER                  "sg.pool.ntp.org"
 
 typedef struct {
     uint8_t buttonA : 1;
@@ -34,7 +35,7 @@ SettingsPage settingsPage(&pageManager);
 SetSleepTimePage setSleepTimePage(&pageManager);
 SyncTimePage syncTimePage(&pageManager);
 
-RTCTime rtcTime;
+RTCTime rtcTime(&M5.Rtc);
 EventQueue eventQueue;
 ButtonsEnabled buttonsEnabled = {true, true, true};
 Settings settings("preferences");
@@ -95,6 +96,11 @@ void processEvents() {
             case EVENT_DISPLAY_OFF:
                 M5.Axp.SetLDO2(false);
             break;
+            case EVENT_RTC_SYNC_TIME:
+                configTime(NTP_GMT_OFFSET_SECONDS, NTP_DAYLIGHT_SAVING_OFFSET, NTP_SERVER);
+                rtcTime.syncTimeToLocal();
+                eventQueue.push(EVENT_RTC_SYNC_TIME_DONE);
+            break;
         }
         pageManager.processEvent(eventId);
         wifiManager.processEvent(eventId);
@@ -120,7 +126,7 @@ void setup() {
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);
 
-    rtcTime.read(M5.Rtc);
+    rtcTime.read();
     rtcTime.setLocalTime();
 
     pageManager.draw();

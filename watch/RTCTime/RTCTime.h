@@ -9,14 +9,16 @@
 class RTCTime
 {
 public:
-    RTCTime();
-    void read(RTC &rtc);
+    RTCTime(RTC *rtc);
+    void read();
     time_t setLocalTime();
+    bool syncTimeToLocal();
 
     RTC_TimeTypeDef &getTime() { return _rtcTime; }
     RTC_DateTypeDef &getDate() { return _rtcDate; }
 
 private:
+    RTC *_rtc;
     RTC_TimeTypeDef _rtcTime;
     RTC_DateTypeDef _rtcDate;
 

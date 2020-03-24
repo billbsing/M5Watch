@@ -3,12 +3,11 @@
 
 SyncTimePage::SyncTimePage(PageManager *manager):
 Page(manager),
-_wifiStatus("connecting") {
+_wifiStatus("Connecting") {
 
 }
 
 void SyncTimePage::init() {
-    eventQueue.push(EVENT_WIFI_CONNECT);
 }
 
 void SyncTimePage::draw(M5Display *lcd) {
@@ -23,16 +22,24 @@ void SyncTimePage::draw(M5Display *lcd) {
 }
 
 void SyncTimePage::loadWidgets(WidgetManager *manager) {
-
+    eventQueue.push(EVENT_WIFI_CONNECT, (uint32_t) 2 * 1000);
 }
 
 void SyncTimePage::processEvent(uint16_t eventId) {
-    if ( eventId == EVENT_WIFI_CONNECTED) {
-        _wifiStatus = "connected";
-        drawPage();
-    }
-    if ( eventId == EVENT_WIFI_DISCONNECTED) {
-        _wifiStatus = "disconnected";
-        drawPage();
+    switch(eventId) {
+        case EVENT_WIFI_CONNECTED:
+            _wifiStatus = "Connected";
+            drawPage();
+            eventQueue.push(EVENT_RTC_SYNC_TIME, (uint32_t) 2 * 1000);
+        break;
+        case EVENT_WIFI_DISCONNECTED:
+            _wifiStatus = "Disconnected";
+            drawPage();
+        break;
+        case EVENT_RTC_SYNC_TIME_DONE:
+            _wifiStatus = "Sync completed";
+            drawPage();
+            eventQueue.push(EVENT_WIFI_DISCONNECT, (uint32_t) 2 * 1000);
+        break;
     }
 }

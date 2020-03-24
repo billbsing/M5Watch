@@ -9,14 +9,14 @@ class WiFiManager
 {
 
 public:
-    WiFiManager() {;}
+    WiFiManager();
 
     bool isConnected();
     void processEvent(uint16_t eventId);
     void loop();
 
 private:
-    bool _isConnected;
+    bool _isConnectedState;
 };
 
 #endif                  // WIFI_MANAGER_H
