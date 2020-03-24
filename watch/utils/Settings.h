@@ -23,7 +23,7 @@ public:
     void blockOpen(bool isReadOnly);
     void blockClose();
     uint32_t getAutoPowerOffTimeout();
-
+    void setAutoPowerOffTimeout(uint32_t value);
 private:
     bool _isOpen;
     bool _isBlockOpen;

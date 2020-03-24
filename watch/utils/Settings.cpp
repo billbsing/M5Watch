@@ -50,3 +50,8 @@ uint32_t Settings::getAutoPowerOffTimeout() {
     blockClose();
     return value;
 }
+void Settings::setAutoPowerOffTimeout(uint32_t value) {
+    blockOpen(false);
+    _preferences.putULong("autoPowerOffTimeout", value);
+    blockClose();
+}

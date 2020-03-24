@@ -21,6 +21,7 @@ public:
 
 private:
     TextWidget _menuSetSleep;
+    TextWidget _menuSyncTime;
     TextWidget _menuPowerOff;
 };
 

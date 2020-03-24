@@ -1,14 +1,16 @@
 #include <M5StickC.h>
 #include <PageManager.h>
 #include <Preferences.h>
-#include <ModuleManager.h>
-#include <DebugModule.h>
 #include "RTCTime.h"
 
 #include "HomePage.h"
 #include "SettingsPage.h"
 #include "SetSleepTimePage.h"
+#include "SyncTimePage.h"
+
 #include "Settings.h"
+#include "SerialDebug.h"
+#include "WiFiManager.h"
 
 #include "PageId.h"
 #include "EventId.h"
@@ -29,15 +31,16 @@ typedef struct {
 PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT);
 HomePage homePage(&pageManager);
 SettingsPage settingsPage(&pageManager);
-SetSleepTimePage setSleepTime(&pageManager);
-
-ModuleManager moduleManager;
-DebugModule debugModule(&moduleManager);
+SetSleepTimePage setSleepTimePage(&pageManager);
+SyncTimePage syncTimePage(&pageManager);
 
 RTCTime rtcTime;
 EventQueue eventQueue;
 ButtonsEnabled buttonsEnabled = {true, true, true};
 Settings settings("preferences");
+SerialDebug debug;
+WiFiManager wifiManager;
+
 uint32_t autoPowerOffTimeout;
 
 void processButtons() {
@@ -94,14 +97,13 @@ void processEvents() {
             break;
         }
         pageManager.processEvent(eventId);
-        moduleManager.processEvent(eventId);
+        wifiManager.processEvent(eventId);
     }
 }
 
 void setup() {
-    Serial.begin(15200);
-    while(!Serial) { }
-    Serial.println("Begin");
+    debug.begin(15200);
+    debug.print("setup");
 
     settings.begin(true);
     autoPowerOffTimeout = settings.getAutoPowerOffTimeout();
@@ -110,10 +112,9 @@ void setup() {
 
     pageManager.add(PAGE_ID_HOME, &homePage, 0);
     pageManager.add(PAGE_ID_SETTINGS, &settingsPage, 0);
-    pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTime, 1);
+    pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTimePage, 1);
+    pageManager.add(PAGE_ID_SYNC_TIME, &syncTimePage, 2);
     pageManager.build();
-
-    moduleManager.add(MODULE_ID_DEBUG, &debugModule);
 
     M5.begin();
     M5.Lcd.setRotation(1);
@@ -129,5 +130,6 @@ void setup() {
 void loop() {
     processButtons();
     processEvents();
+    wifiManager.loop();
     delay(100);
 }

@@ -1,5 +1,6 @@
 #include <TextWidget.h>
 #include "SetSleepTimePage.h"
+#include "M5Watch.h"
 
 #define SET_SLEEP_TIME_PAGE_WIDGET_WIDTH            10
 #define SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT           12
@@ -18,7 +19,7 @@ void SetSleepTimePage::init() {
     y += SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT + SET_SLEEP_TIME_PAGE_WIDGET_PADDING;
     _incrementWidget = TextWidget(getNextEventId(), x, y, SET_SLEEP_TIME_PAGE_WIDGET_WIDTH, \
                             SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT, 2, 2, "v");
-
+    _value = settings.getAutoPowerOffTimeout();
 }
 
 void SetSleepTimePage::draw(M5Display *lcd) {
@@ -43,11 +44,13 @@ void SetSleepTimePage::processEvent(uint16_t eventId) {
         if ( _value > 0) {
             _value --;
             drawPage();
+            settings.setAutoPowerOffTimeout(_value);
         }
     }
 
     if ( _incrementWidget.isEventId(eventId)) {
         _value ++;
         drawPage();
+        settings.setAutoPowerOffTimeout(_value);
     }
 }
