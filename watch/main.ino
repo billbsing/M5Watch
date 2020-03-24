@@ -130,7 +130,9 @@ void setup() {
     rtcTime.setLocalTime();
 
     pageManager.draw();
-    // eventQueue.push(EVENT_DISPLAY_OFF, 2000);
+
+    // make sure we disconect wifi
+    eventQueue.push(EVENT_WIFI_DISCONNECT);
 }
 
 void loop() {

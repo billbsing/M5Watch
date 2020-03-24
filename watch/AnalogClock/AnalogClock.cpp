@@ -8,14 +8,15 @@ void AnalogClock::draw(M5Display *lcd, uint16_t left, uint16_t top, uint8_t hour
     uint16_t centreLeft = left + _radius;
     uint16_t centreTop = top + _radius;
     lcd->drawCircle(left + _radius, top + _radius, _radius, RED);
+    lcd->drawCircle(left + _radius, top + _radius, _radius - 1, RED);
     for ( int minute = 0; minute < 60 ; minute += 5) {
-        int fromX = centreLeft + calcMinuteToX(minute, _radius - 1);
-        int toX = centreLeft + calcMinuteToX(minute, _radius);
-        int fromY = centreTop + calcMinuteToY(minute, _radius - 1);
-        int toY = centreTop + calcMinuteToY(minute, _radius);
+        int fromX = centreLeft + calcMinuteToX(minute, _radius - 4);
+        int toX = centreLeft + calcMinuteToX(minute, _radius - 4);
+        int fromY = centreTop + calcMinuteToY(minute, _radius - 4);
+        int toY = centreTop + calcMinuteToY(minute, _radius - 4);
 
         // M5.Lcd.drawLine(fromX, fromY, toX, toY, WHITE);
-        lcd->fillCircle(toX, toY, 1, WHITE);
+        lcd->fillCircle(toX, toY, 2, DARKGREY);
     }
     // int totalHourMinutes = (rtcTimeStruct.Hours * 60) + rtcTimeStruct.Minutes;
     //int hourInMinutes = map(totalHourMinutes, 0, 1440, 0 , 60);
