@@ -16,9 +16,13 @@ public:
     HomePage(PageManager *manager);
 
     void init();
+    void begin();
     void loadWidgets(WidgetManager *manager);
     void draw(M5Display *lcd);
     void processEvent(uint16_t eventId);
+
+protected:
+    void drawPowerStatus(M5Display *lcd);
 
 private:
     String _text;

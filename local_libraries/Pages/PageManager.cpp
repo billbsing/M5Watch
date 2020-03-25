@@ -111,6 +111,7 @@ void PageManager::draw() {
 void PageManager::loadPage() {
     if ( _pageList[_pageIndex].page) {
         loadWidgets();
+        _pageList[_pageIndex].page->begin();
         _pageList[_pageIndex].page->draw(&_m5->Lcd);
     }
 }

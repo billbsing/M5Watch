@@ -23,17 +23,14 @@ void SettingsPage::init() {
     y += MENU_ITEM_HEIGHT + MENU_ITEM_PADDING;
     _menuPowerOff = TextWidget(getNextEventId(), x, y, \
                     MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Power Off");
-                    
+
     y = 20;
     x = 85;
     _menuWifiSettings = TextWidget(getNextEventId(), x, y, \
                     MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Wifi");
 }
 
-void SettingsPage::draw(M5Display *lcd) {
-    lcd->setCursor(4, 0);
-    lcd->setTextSize(2);
-    lcd->print("Settings");
+void SettingsPage::begin() {
 }
 
 void SettingsPage::loadWidgets(WidgetManager *manager) {
@@ -41,6 +38,12 @@ void SettingsPage::loadWidgets(WidgetManager *manager) {
     manager->add(&_menuSyncTime);
     manager->add(&_menuPowerOff);
     manager->add(&_menuWifiSettings);
+}
+
+void SettingsPage::draw(M5Display *lcd) {
+    lcd->setCursor(4, 0);
+    lcd->setTextSize(2);
+    lcd->print("Settings");
 }
 
 void SettingsPage::processEvent(uint16_t eventId) {
@@ -53,5 +56,4 @@ void SettingsPage::processEvent(uint16_t eventId) {
     if ( _menuPowerOff.isEventId(eventId)) {
         getM5()->Axp.PowerOff();
     }
-
 }

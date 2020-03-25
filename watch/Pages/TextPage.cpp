@@ -3,12 +3,15 @@
 TextPage::TextPage(PageManager *manager, String text):
 Page(manager),
 _text(text) {
-
 }
 
-
 void TextPage::init() {
+}
 
+void TextPage::begin() {
+}
+
+void TextPage::loadWidgets(WidgetManager *manager) {
 }
 
 void TextPage::draw(M5Display *lcd) {
@@ -17,10 +20,5 @@ void TextPage::draw(M5Display *lcd) {
     lcd->print(_text);
 }
 
-void TextPage::loadWidgets(WidgetManager *manager) {
-
-}
-
 void TextPage::processEvent(uint16_t eventId) {
-
 }

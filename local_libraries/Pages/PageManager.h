@@ -37,6 +37,7 @@ public:
     void processEvent(uint16_t eventId);
 
     M5StickC* getM5() { return _m5; }
+    M5Display* getLcd() { return &_m5->Lcd; }
     void nextPage();
     void selectPage(uint8_t pageId);
     void pushPage(uint8_t pageId);

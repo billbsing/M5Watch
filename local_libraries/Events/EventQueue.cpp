@@ -6,7 +6,20 @@ _maxCount(0) {
     memset(_items, 0, sizeof(EventItem) *  EVENT_QUEUE_SIZE);
 }
 
-void EventQueue::push(uint16_t eventId, uint32_t delayMillis, bool isReplace) {
+void EventQueue::pushDelay(uint16_t eventId, uint32_t delayMillis, bool isReplace) {
+     pushEventId(eventId, delayMillis, isReplace);
+ }
+void EventQueue::pushDelay(uint16_t eventId, uint32_t delayMillis) {
+    pushEventId(eventId, delayMillis, false);
+}
+void EventQueue::push(uint16_t eventId, bool isReplace) {
+    pushEventId(eventId, 0, isReplace);
+}
+void EventQueue::push(uint16_t eventId) {
+    pushEventId(eventId, 0, false);
+}
+
+void EventQueue::pushEventId(uint16_t eventId, uint32_t delayMillis, bool isReplace) {
     uint8_t i;
     bool isEmptyFound = false;
     if ( isReplace ) {

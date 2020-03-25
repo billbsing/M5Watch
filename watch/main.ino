@@ -2,6 +2,7 @@
 #include <PageManager.h>
 #include <Preferences.h>
 #include "RTCTime.h"
+#include "PowerStatus.h"
 
 #include "HomePage.h"
 #include "SettingsPage.h"
@@ -41,6 +42,7 @@ ButtonsEnabled buttonsEnabled = {true, true, true};
 Settings settings("preferences");
 SerialDebug debug;
 WiFiManager wifiManager;
+PowerStatus powerStatus(&M5.axp);
 
 uint32_t autoPowerOffTimeout;
 
@@ -87,11 +89,11 @@ void processEvents() {
             break;
             case EVENT_NEXT_WIDGET_FOCUS:
                 pageManager.nextFocus();
-                eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
+                eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
             break;
             case EVENT_CLICK_ON_FOCUS:
                 pageManager.rasieEventOnFocus(&eventQueue);
-                eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
+                eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
             break;
             case EVENT_DISPLAY_OFF:
                 M5.Axp.SetLDO2(false);
@@ -114,7 +116,7 @@ void setup() {
     settings.begin(true);
     autoPowerOffTimeout = settings.getAutoPowerOffTimeout();
     settings.end();
-    eventQueue.push(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
+    eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
 
     pageManager.add(PAGE_ID_HOME, &homePage, 0);
     pageManager.add(PAGE_ID_SETTINGS, &settingsPage, 0);

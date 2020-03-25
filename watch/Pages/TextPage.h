@@ -12,6 +12,7 @@ public:
     TextPage(PageManager *manager, String text);
 
     void init();
+    void begin();
     void loadWidgets(WidgetManager *manager);
     void draw(M5Display *lcd);
     void processEvent(uint16_t eventId);
