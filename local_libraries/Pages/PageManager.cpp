@@ -7,6 +7,7 @@ _m5(m5),
 _width(width),
 _height(height),
 _pageCount(0),
+_lastPageIndex(PAGE_MANGER_PAGE_LIST_SIZE + 1),
 _stackCount(0),
 _pageIndex(0),
 _pageGroup(0),
@@ -37,8 +38,9 @@ void PageManager::add(uint8_t pageId, Page *page, uint8_t pageGroup) {
 }
 
 void PageManager::setPageIndex(uint8_t index) {
-    _pageIndex = index;
     if ( _pageList[index].page ) {
+        _lastPageIndex = _pageIndex;
+        _pageIndex = index;
         _pageGroup= _pageList[index].pageGroup;
     }
 }
@@ -103,7 +105,12 @@ void PageManager::loadWidgets() {
     }
 }
 
-void PageManager::draw() {
+void PageManager::refresh() {
+    if ( _lastPageIndex < _pageCount ) {
+        if ( _pageList[_lastPageIndex].page ) {
+            _pageList[_lastPageIndex].page->end();
+        }
+    }
     loadPage();
     drawPage();
 }
@@ -149,7 +156,7 @@ void PageManager::nextPage() {
         }
         counter --;
     }
-    draw();
+    refresh();
 }
 
 void PageManager::selectPage(uint8_t pageId) {
@@ -157,7 +164,7 @@ void PageManager::selectPage(uint8_t pageId) {
     if ( index < _pageCount ) {
         setPageIndex(index);
     }
-    draw();
+    refresh();
 }
 
 void PageManager::pushPage(uint8_t pageId) {
@@ -166,7 +173,7 @@ void PageManager::pushPage(uint8_t pageId) {
         pushCallStack(_pageIndex);
         setPageIndex(index);
     }
-    draw();
+    refresh();
 }
 
 void PageManager::popPage() {
@@ -174,7 +181,7 @@ void PageManager::popPage() {
     if ( index < _pageCount ) {
         setPageIndex(index);
     }
-    draw();
+    refresh();
 }
 
 void PageManager::pushCallStack(uint8_t index) {
@@ -208,10 +215,10 @@ void PageManager::processEvent(uint16_t eventId) {
     }
     if ( _nextPageWidget.isEventId(eventId) ) {
         nextPage();
-        draw();
+        refresh();
     }
     if ( _backPageWidget.isEventId(eventId) ) {
         popPage();
-        draw();
+        refresh();
     }
 }

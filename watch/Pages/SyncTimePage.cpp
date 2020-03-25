@@ -12,6 +12,9 @@ void SyncTimePage::init() {
 void SyncTimePage::begin() {
 }
 
+void SyncTimePage::end() {
+}
+
 void SyncTimePage::loadWidgets(WidgetManager *manager) {
     eventQueue.pushDelay(EVENT_WIFI_CONNECT, 2 * 1000);
 }

@@ -11,9 +11,15 @@ void HomePage::init() {
 }
 
 void HomePage::drawPowerStatus(M5Display *lcd) {
-    lcd->setCursor(80, 30);
+    lcd->setCursor(140, 55);
     lcd->setTextSize(1);
-    lcd->print(powerStatus.getStatus());
+    powerStatus.read();
+    if ( powerStatus.isCharging() ) {
+        lcd->printf("%d ", powerStatus.getInputPowerStatus());
+    }
+    else {
+        lcd->printf("%d%%", int(powerStatus.getBatteryPercent()));
+    }
 }
 
 void HomePage::draw(M5Display *lcd) {
@@ -26,6 +32,10 @@ void HomePage::draw(M5Display *lcd) {
 
 void HomePage::begin() {
     eventQueue.pushDelay(EVENT_READ_POWER_STATUS, 1000, true);
+}
+
+void HomePage::end() {
+    eventQueue.remove(EVENT_READ_POWER_STATUS);
 }
 
 void HomePage::loadWidgets(WidgetManager *manager) {

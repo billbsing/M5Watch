@@ -11,6 +11,9 @@ void TextPage::init() {
 void TextPage::begin() {
 }
 
+void TextPage::end() {
+}
+
 void TextPage::loadWidgets(WidgetManager *manager) {
 }
 

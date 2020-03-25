@@ -33,6 +33,9 @@ void SettingsPage::init() {
 void SettingsPage::begin() {
 }
 
+void SettingsPage::end() {
+}
+
 void SettingsPage::loadWidgets(WidgetManager *manager) {
     manager->add(&_menuSetSleep);
     manager->add(&_menuSyncTime);

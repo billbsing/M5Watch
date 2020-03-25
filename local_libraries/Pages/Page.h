@@ -14,6 +14,7 @@ public:
     Page(PageManager *manager);
     virtual void init() = 0;
     virtual void begin() = 0;
+    virtual void end() = 0;
     virtual void loadWidgets(WidgetManager *manager) = 0;
     virtual void draw(M5Display *lcd) = 0;
     virtual void processEvent(uint16_t eventId) = 0;

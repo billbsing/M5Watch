@@ -131,7 +131,7 @@ void setup() {
     rtcTime.read();
     rtcTime.setLocalTime();
 
-    pageManager.draw();
+    pageManager.refresh();
 
     // make sure we disconect wifi
     eventQueue.push(EVENT_WIFI_DISCONNECT);

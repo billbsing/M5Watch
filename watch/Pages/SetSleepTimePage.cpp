@@ -37,6 +37,9 @@ void SetSleepTimePage::draw(M5Display *lcd) {
 void SetSleepTimePage::begin() {
 }
 
+void SetSleepTimePage::end() {
+}
+
 void SetSleepTimePage::loadWidgets(WidgetManager *manager) {
     manager->add(&_decrementWidget);
     manager->add(&_incrementWidget);

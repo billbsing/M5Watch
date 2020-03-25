@@ -15,7 +15,8 @@ public:
     SettingsPage(PageManager *manager);
 
     void init();
-    void begin();    
+    void begin();
+    void end();        
     void loadWidgets(WidgetManager *manager);
     void draw(M5Display *lcd);
     void processEvent(uint16_t eventId);

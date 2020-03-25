@@ -31,7 +31,7 @@ public:
     void build();
     void add(uint8_t pageId, Page *page, uint8_t pageGroup);
 
-    void draw();
+    void refresh();
     void loadPage();
     void drawPage();
     void processEvent(uint16_t eventId);
@@ -66,6 +66,7 @@ private:
     uint8_t _callStack[PAGE_MANAGER_CALL_STACK_SIZE];
     uint8_t _stackCount;
     uint8_t _pageIndex;
+    uint8_t _lastPageIndex;
     uint8_t _pageGroup;
     uint16_t _width;
     uint16_t _height;
