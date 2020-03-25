@@ -1,3 +1,4 @@
 buildEnvironment
 private.h
 libraries
+M5Stack_MicroPython
