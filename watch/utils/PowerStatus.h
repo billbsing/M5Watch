@@ -13,7 +13,7 @@
 class PowerStatus
 {
 public:
-    PowerStatus(AXP192 *axp);
+    PowerStatus();
 
     void read();
     String getStatus();
@@ -24,7 +24,6 @@ public:
     bool isCharging() { return _inputPowerStatus > 1; }
 
 private:
-    AXP192 *_axp;
     uint8_t _chargeStatus;
     uint8_t _inputPowerStatus;
     float _batteryVoltage;

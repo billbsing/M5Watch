@@ -15,7 +15,7 @@ void HomePage::drawPowerStatus(M5Display *lcd) {
     lcd->setTextSize(1);
     powerStatus.read();
     if ( powerStatus.isCharging() ) {
-        lcd->printf("%d ", powerStatus.getInputPowerStatus());
+        lcd->printf("%d", powerStatus.getInputPowerStatus());
     }
     else {
         lcd->printf("%d%%", int(powerStatus.getBatteryPercent()));
@@ -45,7 +45,7 @@ void HomePage::processEvent(uint16_t eventId) {
     switch(eventId) {
         case EVENT_READ_POWER_STATUS:
             drawPowerStatus(getLcd());
-            eventQueue.pushDelay(EVENT_READ_POWER_STATUS, 500, true);
+            eventQueue.pushDelay(EVENT_READ_POWER_STATUS, 1000, true);
         break;
     }
 }

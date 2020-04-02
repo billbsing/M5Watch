@@ -1,13 +1,12 @@
 #include "RTCTime.h"
 
 
-RTCTime::RTCTime(RTC *rtc):
-_rtc(rtc) {
+RTCTime::RTCTime() {
 }
 
 void RTCTime::read() {
-    _rtc->GetTime(&_rtcTime);
-    _rtc->GetData(&_rtcDate);
+    M5.Rtc.GetTime(&_rtcTime);
+    M5.Rtc.GetData(&_rtcDate);
 }
 
 time_t RTCTime::setLocalTime() {
@@ -25,12 +24,12 @@ bool RTCTime::syncTimeToLocal() {
         _rtcTime.Hours   = timeinfo.tm_hour;
         _rtcTime.Minutes = timeinfo.tm_min;
         _rtcTime.Seconds = timeinfo.tm_sec;
-        _rtc->SetTime(&_rtcTime);
+        M5.Rtc.SetTime(&_rtcTime);
         _rtcDate.WeekDay = timeinfo.tm_wday;
         _rtcDate.Month = timeinfo.tm_mon;
         _rtcDate.Date = timeinfo.tm_mday;
         _rtcDate.Year = timeinfo.tm_year;
-        _rtc->SetData(&_rtcDate);
+        M5.Rtc.SetData(&_rtcDate);
         result = true;
     }
 }

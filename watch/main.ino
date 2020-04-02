@@ -3,11 +3,13 @@
 #include <Preferences.h>
 #include "RTCTime.h"
 #include "PowerStatus.h"
+#include "DataRecorder.h"
 
 #include "HomePage.h"
 #include "SettingsPage.h"
 #include "SetSleepTimePage.h"
 #include "SyncTimePage.h"
+#include "DataPage.h"
 
 #include "Settings.h"
 #include "SerialDebug.h"
@@ -35,16 +37,19 @@ HomePage homePage(&pageManager);
 SettingsPage settingsPage(&pageManager);
 SetSleepTimePage setSleepTimePage(&pageManager);
 SyncTimePage syncTimePage(&pageManager);
+DataPage dataPage(&pageManager);
 
-RTCTime rtcTime(&M5.Rtc);
+RTCTime rtcTime;
 EventQueue eventQueue;
 ButtonsEnabled buttonsEnabled = {true, true, true};
 Settings settings("preferences");
 SerialDebug debug;
 WiFiManager wifiManager;
-PowerStatus powerStatus(&M5.axp);
+PowerStatus powerStatus;
+DataRecorder dataRecorder;
 
 uint32_t autoPowerOffTimeout;
+
 
 void processButtons() {
     M5.BtnB.read();
@@ -122,12 +127,14 @@ void setup() {
     pageManager.add(PAGE_ID_SETTINGS, &settingsPage, 0);
     pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTimePage, 1);
     pageManager.add(PAGE_ID_SYNC_TIME, &syncTimePage, 2);
+    pageManager.add(PAGE_ID_DATA_PAGE, &dataPage, 0);
     pageManager.build();
 
     M5.begin();
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);
 
+    M5.MPU6886.Init();
     rtcTime.read();
     rtcTime.setLocalTime();
 
@@ -141,5 +148,6 @@ void loop() {
     processButtons();
     processEvents();
     wifiManager.loop();
-    delay(100);
+    dataRecorder.loop();
+    delay(10);
 }
