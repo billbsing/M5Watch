@@ -21,8 +21,10 @@ public:
     void processEvent(uint16_t eventId);
 
 private:
-    uint16_t avgCounter;
-    float avgGyroX, avgGyroY, avgGyroZ;
+
+    TextWidget _menuStart;
+    TextWidget _menuStop;
+    TextWidget _menuUpload;
 
 };
 

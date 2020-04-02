@@ -14,7 +14,7 @@
 #define EVENT_RTC_SYNC_TIME                         0x0009
 #define EVENT_RTC_SYNC_TIME_DONE                    0x000A
 #define EVENT_READ_POWER_STATUS                     0x000B
-#define EVENT_DATA_ON_CHANGE                        0x000B
+#define EVENT_DATA_ON_CHANGE                        0x000C
 
 
 

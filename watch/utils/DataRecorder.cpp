@@ -39,7 +39,6 @@ void DataRecorder::loop() {
         _gyro.x = _avgGyro.x / _avgCounter;
         _gyro.y = _avgGyro.y / _avgCounter;
         _gyro.z = _avgGyro.z / _avgCounter;
-        eventQueue.push(EVENT_DATA_ON_CHANGE);
 
         _avgAccel.x = 0;
         _avgAccel.y = 0;
@@ -49,5 +48,8 @@ void DataRecorder::loop() {
         _avgGyro.y = 0;
         _avgGyro.z = 0;
         _avgCounter = 0;
+
+        eventQueue.push(EVENT_DATA_ON_CHANGE);
+
     }
 }

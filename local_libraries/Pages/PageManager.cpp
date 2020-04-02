@@ -39,7 +39,6 @@ void PageManager::add(uint8_t pageId, Page *page, uint8_t pageGroup) {
 
 void PageManager::setPageIndex(uint8_t index) {
     if ( _pageList[index].page ) {
-        _lastPageIndex = _pageIndex;
         _pageIndex = index;
         _pageGroup= _pageList[index].pageGroup;
     }
@@ -106,18 +105,19 @@ void PageManager::loadWidgets() {
 }
 
 void PageManager::refresh() {
-    if ( _lastPageIndex < _pageCount ) {
-        if ( _pageList[_lastPageIndex].page ) {
-            _pageList[_lastPageIndex].page->end();
-        }
-    }
     loadPage();
     drawPage();
 }
 
 void PageManager::loadPage() {
+    if ( _lastPageIndex < _pageCount ) {
+        if ( _pageList[_lastPageIndex].page ) {
+            _pageList[_lastPageIndex].page->end();
+        }
+    }
     if ( _pageList[_pageIndex].page) {
         loadWidgets();
+        _lastPageIndex = _pageIndex;
         _pageList[_pageIndex].page->begin();
         _pageList[_pageIndex].page->draw(&_m5->Lcd);
     }
@@ -215,10 +215,8 @@ void PageManager::processEvent(uint16_t eventId) {
     }
     if ( _nextPageWidget.isEventId(eventId) ) {
         nextPage();
-        refresh();
     }
     if ( _backPageWidget.isEventId(eventId) ) {
         popPage();
-        refresh();
     }
 }
