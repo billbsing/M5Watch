@@ -8,21 +8,22 @@
 #define DATA_RECORDER_H
 
 #include <M5StickC.h>
+#include "DataStore.h"
 
-typedef struct {
-    float x;
-    float y;
-    float z;
-} DataItem;
+typedef enum {
+    dataIdle = 0,
+    dataRecord,
+    dataUpload
+} DataStatus;
 
 class DataRecorder
 {
 public:
-    DataRecorder();
+    DataRecorder(String filename);
 
     DataItem &getGyro() { return _gyro; }
     DataItem &getAccel() { return _accel; }
-
+    DataStatus getStatus() { return _status; }
     void loop();
 
 private:
@@ -33,6 +34,10 @@ private:
     DataItem _accel;
 
     uint16_t _avgCounter;
+    DataStatus _status;
+    String _filename;
+
+    DataStore _dataStore;
 
 };
 

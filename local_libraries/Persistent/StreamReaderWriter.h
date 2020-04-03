@@ -17,6 +17,7 @@ public:
     unsigned int readInt();
     String readString(int maxLength = 0);
     double readDouble();
+    float readFloat();
     unsigned long readLong();
 
 protected:
@@ -40,6 +41,7 @@ public:
     size_t writeLong(unsigned long value);
     size_t writeString(String value);
     size_t writeDouble(double value);
+    size_t writeFloat(float value);
 
     size_t write(uint8_t value)  { return writeByte(value); }
     size_t write(char value)  { return writeChar(value); }
@@ -49,6 +51,7 @@ public:
     size_t write(unsigned long value) { return writeLong(value); }
     size_t write(String value) { return writeString(value); }
     size_t write(double value) { return writeDouble(value); }
+    size_t write(float value) { return writeFloat(value); }
 
 protected:
     Stream *_stream;

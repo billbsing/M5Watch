@@ -65,10 +65,35 @@ void DataPage::draw(M5Display *lcd) {
     lcd->setCursor(120, y);
     lcd->printf("%+0.2f", dataRecorder.getAccel().z);
 
+    y = 30;
+    lcd->setCursor(4, y);
+    switch(dataRecorder.getStatus()) {
+        case dataIdle:
+            lcd->print("Idle");
+        break;
+        case dataRecord:
+            lcd->print("Record");
+        break;
+        case dataUpload:
+            lcd->print("Upload");
+        break;
+    }
 }
 
 void DataPage::processEvent(uint16_t eventId) {
-    if ( eventId == EVENT_DATA_ON_CHANGE){
-        drawPage();
+    switch(eventId) {
+        case EVENT_DATA_ON_CHANGE:
+            drawPage();
+        break;
     }
+    if ( _menuStart.isEventId(eventId)) {
+        eventQueue.push(EVENT_DATA_START);
+    }
+    if ( _menuStop.isEventId(eventId)) {
+        eventQueue.push(EVENT_DATA_STOP);
+    }
+    if ( _menuUpload.isEventId(eventId)) {
+        eventQueue.push(EVENT_DATA_UPLOAD);
+    }
+
 }

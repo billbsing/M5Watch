@@ -2,7 +2,7 @@
 #include <PageManager.h>
 #include <Page.h>
 
-PageManager::PageManager(M5StickC *m5, uint16_t width, uint16_t height):
+PageManager::PageManager(M5StickC *m5, uint16_t width, uint16_t height, uint16_t startEventId):
 _m5(m5),
 _width(width),
 _height(height),
@@ -11,7 +11,7 @@ _lastPageIndex(PAGE_MANGER_PAGE_LIST_SIZE + 1),
 _stackCount(0),
 _pageIndex(0),
 _pageGroup(0),
-_eventIndex(PAGE_MANAGER_START_EVENT_ID) {
+_eventIndex(startEventId) {
     memset(_pageList, 0, sizeof(PageItem) * PAGE_MANGER_PAGE_LIST_SIZE);
     memset(_callStack, 0, sizeof(uint8_t) * PAGE_MANAGER_CALL_STACK_SIZE);
 }

@@ -84,6 +84,15 @@ double StreamReader::readDouble() {
     return value;
 }
 
+float StreamReader::readFloat() {
+    double value;
+    if ( !_stream) {
+        return 0;
+    }
+    _stream->readBytes((uint8_t *) &value, sizeof(float));
+    return value;
+}
+
 unsigned long StreamReader::readLong() {
     unsigned long value;
     if ( !_stream) {
@@ -147,6 +156,14 @@ size_t StreamWriter::writeDouble(double value) {
     }
     return _stream->write((uint8_t *)&value, sizeof(double));
 }
+
+size_t StreamWriter::writeFloat(float value) {
+    if ( !_stream) {
+        return 0;
+    }
+    return _stream->write((uint8_t *)&value, sizeof(float));
+}
+
 size_t StreamWriter::writeLong(unsigned long value) {
     if ( !_stream) {
         return 0;

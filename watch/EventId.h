@@ -11,11 +11,24 @@
 #define EVENT_WIFI_DISCONNECT                       0x0006
 #define EVENT_WIFI_CONNECTED                        0x0007
 #define EVENT_WIFI_DISCONNECTED                     0x0008
-#define EVENT_RTC_SYNC_TIME                         0x0009
-#define EVENT_RTC_SYNC_TIME_DONE                    0x000A
-#define EVENT_READ_POWER_STATUS                     0x000B
-#define EVENT_DATA_ON_CHANGE                        0x000C
 
+
+// RTCTime
+#define EVENT_RTC_SYNC_TIME                         0x0010
+#define EVENT_RTC_SYNC_TIME_DONE                    0x0011
+
+// Power Status
+#define EVENT_READ_POWER_STATUS                     0x0020
+
+// DataRecorder
+#define EVENT_DATA_ON_CHANGE                        0x0030
+#define EVENT_DATA_START                            0x0031
+#define EVENT_DATA_STOP                             0x0032
+#define EVENT_DATA_UPLOAD                           0x0033
+
+
+// Page Event Id from here onwards
+#define EVENT_PAGE_START_ID                         0x8000
 
 
 #endif          // EVENT_IDS_h

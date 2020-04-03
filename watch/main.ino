@@ -24,6 +24,7 @@
 #define NTP_GMT_OFFSET_SECONDS      (8 * SECS_PER_HOUR)
 #define NTP_DAYLIGHT_SAVING_OFFSET  0
 #define NTP_SERVER                  "sg.pool.ntp.org"
+#define DATA_RECORDER_FILENAME      "data.dat"
 
 typedef struct {
     uint8_t buttonA : 1;
@@ -32,7 +33,7 @@ typedef struct {
 } ButtonsEnabled;
 
 
-PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT);
+PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT, EVENT_PAGE_START_ID);
 HomePage homePage(&pageManager);
 SettingsPage settingsPage(&pageManager);
 SetSleepTimePage setSleepTimePage(&pageManager);
@@ -46,7 +47,7 @@ Settings settings("preferences");
 SerialDebug debug;
 WiFiManager wifiManager;
 PowerStatus powerStatus;
-DataRecorder dataRecorder;
+DataRecorder dataRecorder(DATA_RECORDER_FILENAME);
 
 uint32_t autoPowerOffTimeout;
 

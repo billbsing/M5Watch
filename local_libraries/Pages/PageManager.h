@@ -12,7 +12,6 @@
 
 #define PAGE_MANGER_PAGE_LIST_SIZE              10
 #define PAGE_MANAGER_CALL_STACK_SIZE            4
-#define PAGE_MANAGER_START_EVENT_ID             0x0800
 
 class Page;
 
@@ -27,7 +26,7 @@ class PageManager
 {
 
 public:
-    PageManager(M5StickC *m5, uint16_t width, uint16_t height);
+    PageManager(M5StickC *m5, uint16_t width, uint16_t height,  uint16_t startEventId);
     void build();
     void add(uint8_t pageId, Page *page, uint8_t pageGroup);
 
