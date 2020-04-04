@@ -20,6 +20,10 @@ $ ./getBuidEnvironment.sh
 ```bash
 $ ./getLibraries.sh
 ```
++   Add your `watch/private.h` file with you WiFI connection details.
+```bash
+$ vi watch/private.h
+```
 +   Build the project
 ```bash
 $ make
