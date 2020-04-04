@@ -29,6 +29,20 @@ $ make
 $ make upload
 ```
 
+### WiFi Connection
+
+This project uses the file `watch/private.h` file. This include file
+contains the SSID and password of your WiFi network.
+
+For example `watch/private.h`:
+
+```c
+// Private WiFi details
+
+#define WIFI_SSID                           "MY-WIFI-SSID"
+#define WIFI_PASSWORD                       "MY-WIFI-PASSWORD"
+
+```
 ### Libraries
 
 This project use the following libraries:
