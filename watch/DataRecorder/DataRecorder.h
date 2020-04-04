@@ -26,9 +26,8 @@ public:
     SensorValue &getGyro() { return _gyro; }
     SensorValue &getAccel() { return _accel; }
     DataStatus getStatus() { return _status; }
-    size_t getStoreSize() { return _storeSize; }
-    size_t getStoreCount() { return _storeSize / _dataStore.getRecordSize(); }
-
+    uint16_t getStoreCount() { return _dataStore.getCount(); }
+    
     void loop();
     void processEvent(uint16_t eventId);
 
@@ -45,7 +44,6 @@ private:
     uint16_t _avgCounter;
     DataStatus _status;
     String _filename;
-    size_t _storeSize;
 
     DataStore _dataStore;
 

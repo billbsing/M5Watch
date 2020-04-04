@@ -24,13 +24,17 @@ public:
     void clear();
     void add(SensorValue &accel, SensorValue &gyro);
     bool isBufferFull();
-    size_t saveBuffer(String filename);
-    uint8_t getRecordSize() { return DATA_STORE_STREAM_SIZE; }
+    void saveBuffer(String filename);
+    size_t getSize() { return _size; }
+    void setSize(size_t value) { _size = value;}
+
+    size_t getCount() { return _size / DATA_STORE_STREAM_SIZE; }
 
 private:
     uint16_t _dataIndex;
     DataStoreItem _buffer[DATA_STORE_BUFFER_SIZE];
     uint8_t _bufferIndex;
+    size_t _size;
 };
 
 

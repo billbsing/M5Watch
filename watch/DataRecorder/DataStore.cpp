@@ -6,6 +6,7 @@
 
 #include <TimeLib.h>
 #include <SPIFFS.h>
+#include "M5Watch.h"
 #include "DataStore.h"
 #include "DataStoreItem.h"
 
@@ -30,25 +31,29 @@ void DataStore::add(SensorValue &accel, SensorValue &gyro) {
     item->setTimeStamp(now());
     _dataIndex ++;
     _bufferIndex ++;
+    _size += DATA_STORE_STREAM_SIZE;
+
     if ( _bufferIndex >= DATA_STORE_BUFFER_SIZE) {
         _bufferIndex = 0;
     }
 }
 
 bool DataStore::isBufferFull() {
-    return _bufferIndex == DATA_STORE_BUFFER_SIZE - 2;
+    return _bufferIndex >= DATA_STORE_BUFFER_SIZE - 2;
 }
 
-size_t DataStore::saveBuffer(String filename) {
-    size_t size = 0;
-    File file = SPIFFS.open(filename.c_str(), FILE_APPEND);
-    if ( file ) {
-        size = file.size();
-        for ( uint8_t index = 0; index < _bufferIndex; index ++) {
-            size += _buffer[index].writeToStream(&file);
+void DataStore::saveBuffer(String filename) {
+    _size = 0;
+    if (SPIFFS.begin()) {
+        File file = SPIFFS.open(filename.c_str(), FILE_APPEND);
+        if (file) {
+            _size = file.size();
+            for ( uint8_t index = 0; index < _bufferIndex; index ++) {
+                _size += _buffer[index].writeToStream(&file);
+            }
+            file.close();
         }
-        file.close();
+        clear();
+        SPIFFS.end();
     }
-    clear();
-    return size;
 }

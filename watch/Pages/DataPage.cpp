@@ -78,7 +78,7 @@ void DataPage::draw(M5Display *lcd) {
             lcd->print("Upload");
         break;
     }
-    lcd->setCursor(40, y);
+    lcd->setCursor(50, y);
     lcd->printf("Count: %ld", dataRecorder.getStoreCount());
 }
 

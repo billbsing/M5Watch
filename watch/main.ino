@@ -24,7 +24,7 @@
 #define NTP_GMT_OFFSET_SECONDS      (8 * SECS_PER_HOUR)
 #define NTP_DAYLIGHT_SAVING_OFFSET  0
 #define NTP_SERVER                  "sg.pool.ntp.org"
-#define DATA_RECORDER_FILENAME      "data.dat"
+#define DATA_RECORDER_FILENAME      "/data.dat"
 
 typedef struct {
     uint8_t buttonA : 1;
@@ -89,7 +89,7 @@ void processEvents() {
     uint16_t eventId;
     eventId = eventQueue.pop();
     if ( eventId ) {
-        debug.print("Event: %04X", eventId);        
+        debug.print("Event: %04X", eventId);
         switch( eventId ) {
             case EVENT_AUTO_POWER_OFF:
                 M5.Axp.PowerOff();
@@ -132,7 +132,11 @@ void setup() {
     pageManager.add(PAGE_ID_SYNC_TIME, &syncTimePage, 2);
     pageManager.add(PAGE_ID_DATA_PAGE, &dataPage, 0);
     pageManager.build();
-
+/*
+    SPIFFS.begin(true);
+    SPIFFS.format();
+    SPIFFS.end();
+*/
     M5.begin();
     M5.Lcd.setRotation(1);
     M5.Lcd.fillScreen(BLACK);
