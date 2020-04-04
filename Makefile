@@ -3,15 +3,15 @@
 
 UNAME := $(shell uname)
 
-ENV_DIR = $(THIS_DIR)../buildEnvironment
+ENV_DIR = $(THIS_DIR)/buildEnvironment
 # ENV_DIR = $(HOME)/Apps/ESP8266Development/buildEnvironment
-ENV_DIR = ../buildEnvironment
+ENV_DIR = buildEnvironment
 ESP_ROOT = $(ENV_DIR)/esp32Arduino
 ESP_LIBS = $(ESP_ROOT)/libraries
-SHARE_LIBS = ../libraries
-LOCAL_LIBS = ../local_libraries
+SHARE_LIBS = libraries
+LOCAL_LIBS = local_libraries
 
-SKETCH = main.ino
+SKETCH = watch/main.ino
 # VERBOSE = 0
 SINGLE_THREAD = 1
 
