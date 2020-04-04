@@ -22,9 +22,9 @@ public:
 
 private:
 
-    TextWidget _menuStart;
-    TextWidget _menuStop;
+    TextWidget _menuStartStop;
     TextWidget _menuUpload;
+    TextWidget _menuDelete;
 
 };
 

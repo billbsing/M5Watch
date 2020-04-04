@@ -8,6 +8,7 @@
 #include "DataRecorder.h"
 
 
+
 DataRecorder::DataRecorder(String filename):
 _avgCounter(0),
 _status(dataIdle),
@@ -29,7 +30,14 @@ void DataRecorder::processEvent(uint16_t eventId) {
             _status = dataUpload;
             eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
-        case EVENT_DATA_RESET:
+        case EVENT_DATA_DELETE:
+            if (SPIFFS.begin()) {
+                if (SPIFFS.exists(_filename)) {
+                    SPIFFS.remove(_filename);
+                    _storeSize = 0;
+                }
+                SPIFFS.end();
+            }
         break;
     }
 }
@@ -52,6 +60,12 @@ void DataRecorder::record() {
         _avgGyro = 0.0f;
         _avgCounter = 0;
         _dataStore.add(_accel, _gyro);
+        if ( _dataStore.isBufferFull()) {
+            if (SPIFFS.begin()) {
+                _storeSize = _dataStore.saveBuffer(_filename);
+                SPIFFS.end();
+            }
+        }
         eventQueue.push(EVENT_DATA_ON_CHANGE);
     }
 }

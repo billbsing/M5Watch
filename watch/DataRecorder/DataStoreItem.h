@@ -32,6 +32,7 @@ class DataStoreItem: public PersistentFile
 public:
     DataStoreItem();
 
+    void clear();
     void setAccel(SensorValue &sensorValue);
     void setGyro(SensorValue &sensorValue);
     void setIndex(uint16_t value) { _index = value; }

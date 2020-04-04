@@ -27,7 +27,7 @@
 #define EVENT_DATA_START                            0x0041
 #define EVENT_DATA_STOP                             0x0042
 #define EVENT_DATA_UPLOAD                           0x0043
-#define EVENT_DATA_RESET                            0x0044
+#define EVENT_DATA_DELETE                           0x0044
 
 
 // Page Event Id from here onwards

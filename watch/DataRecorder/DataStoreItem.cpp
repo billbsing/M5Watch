@@ -10,6 +10,14 @@ DataStoreItem::DataStoreItem() {
 
 }
 
+void DataStoreItem::clear() {
+    _state.value = 0;
+    _timeStamp = 0;
+    _index = 0;
+    _accel = 0.0f;
+    _gyro = 0.0f;
+}
+
 void DataStoreItem::setAccel(SensorValue &sensorValue) {
     _accel = sensorValue;
 }

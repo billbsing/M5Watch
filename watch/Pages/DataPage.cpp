@@ -14,16 +14,16 @@ Page(manager) {
 void DataPage::init() {
     uint16_t y = 52;
     uint16_t x = 4;
-    _menuStart = TextWidget(getNextEventId(), x, y, \
+    _menuStartStop = TextWidget(getNextEventId(), x, y, \
                     MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Start");
-
-    x += MENU_ITEM_WIDTH + MENU_ITEM_PADDING;
-    _menuStop = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Stop");
 
     x += MENU_ITEM_WIDTH + MENU_ITEM_PADDING;
     _menuUpload = TextWidget(getNextEventId(), x, y, \
                     MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Upload");
+
+    x += MENU_ITEM_WIDTH + MENU_ITEM_PADDING;
+    _menuDelete = TextWidget(getNextEventId(), x, y, \
+                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Delete");
 }
 
 void DataPage::begin() {
@@ -33,9 +33,9 @@ void DataPage::end() {
 }
 
 void DataPage::loadWidgets(WidgetManager *manager) {
-    manager->add(&_menuStart);
-    manager->add(&_menuStop);
+    manager->add(&_menuStartStop);
     manager->add(&_menuUpload);
+    manager->add(&_menuDelete);
 }
 
 void DataPage::draw(M5Display *lcd) {
@@ -78,6 +78,8 @@ void DataPage::draw(M5Display *lcd) {
             lcd->print("Upload");
         break;
     }
+    lcd->setCursor(40, y);
+    lcd->printf("Count: %ld", dataRecorder.getStoreCount());
 }
 
 void DataPage::processEvent(uint16_t eventId) {
@@ -86,14 +88,21 @@ void DataPage::processEvent(uint16_t eventId) {
             drawPage();
         break;
     }
-    if ( _menuStart.isEventId(eventId)) {
-        eventQueue.push(EVENT_DATA_START);
-    }
-    if ( _menuStop.isEventId(eventId)) {
-        eventQueue.push(EVENT_DATA_STOP);
+    if ( _menuStartStop.isEventId(eventId)) {
+        if ( dataRecorder.getStatus() == dataIdle ) {
+            eventQueue.push(EVENT_DATA_START);
+            _menuStartStop.setText("Stop");
+        }
+        if ( dataRecorder.getStatus() == dataRecord ) {
+            eventQueue.push(EVENT_DATA_STOP);
+            _menuStartStop.setText("Start");
+        }
     }
     if ( _menuUpload.isEventId(eventId)) {
         eventQueue.push(EVENT_DATA_UPLOAD);
+    }
+    if ( _menuDelete.isEventId(eventId)) {
+        eventQueue.push(EVENT_DATA_DELETE);
     }
 
 }
