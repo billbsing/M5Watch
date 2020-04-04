@@ -113,11 +113,13 @@ void PageManager::loadPage() {
     if ( _lastPageIndex < _pageCount ) {
         if ( _pageList[_lastPageIndex].page ) {
             _pageList[_lastPageIndex].page->end();
+            _pageList[_lastPageIndex].page->setVisible(false);
         }
     }
     if ( _pageList[_pageIndex].page) {
         loadWidgets();
         _lastPageIndex = _pageIndex;
+        _pageList[_pageIndex].page->setVisible(true);
         _pageList[_pageIndex].page->begin();
         _pageList[_pageIndex].page->draw(&_m5->Lcd);
     }

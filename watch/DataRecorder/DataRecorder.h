@@ -29,6 +29,9 @@ public:
     void loop();
     void processEvent(uint16_t eventId);
 
+protected:
+    void record();
+    
 private:
     SensorValue _avgGyro;
     SensorValue _avgAccel;

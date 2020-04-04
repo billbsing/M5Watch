@@ -19,21 +19,24 @@ void DataRecorder::processEvent(uint16_t eventId) {
     switch(eventId) {
         case EVENT_DATA_START:
             _status = dataRecord;
+            eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
         case EVENT_DATA_STOP:
             _status = dataIdle;
+            eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
         case EVENT_DATA_UPLOAD:
             _status = dataUpload;
+            eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
         case EVENT_DATA_RESET:
         break;
     }
 }
 
-void DataRecorder::loop() {
-    SensorValue gyro;
+void DataRecorder::record() {
     SensorValue accel;
+    SensorValue gyro;
 
     M5.Mpu6886.getAccelData(accel.getXPtr(), accel.getYPtr(), accel.getZPtr());
     _avgAccel += accel;
@@ -45,13 +48,18 @@ void DataRecorder::loop() {
     if ( _avgCounter == 100 ) {
         _accel = _avgAccel / _avgCounter;
         _gyro = _avgGyro / _avgCounter;
-
-        _avgAccel = 0;
-        _avgGyro = 0;
+        _avgAccel = 0.0f;
+        _avgGyro = 0.0f;
         _avgCounter = 0;
-        if ( _status == dataRecord ) {
-            _dataStore.add(_accel, _gyro);
-        }
+        _dataStore.add(_accel, _gyro);
         eventQueue.push(EVENT_DATA_ON_CHANGE);
+    }
+}
+
+void DataRecorder::loop() {
+    switch (_status) {
+        case dataRecord:
+            record();
+        break;
     }
 }

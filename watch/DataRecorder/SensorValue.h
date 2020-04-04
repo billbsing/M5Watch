@@ -24,16 +24,18 @@ public:
     void setX(float value) { _x = value; }
 
     float getY() const { return _y; }
-    float *getYPtr() { return &_x; }
+    float *getYPtr() { return &_y; }
     void setY(float value) { _y = value; }
 
     float getZ() const { return _z; }
-    float *getZPtr() { return &_x; }
+    float *getZPtr() { return &_z; }
     void setZ(float value) { _z = value; }
 
-    SensorValue &operator + (const SensorValue &sensorValue);
-    SensorValue &operator / (const uint16_t value);
+    SensorValue operator + (const SensorValue &sensorValue) const;
+    SensorValue operator / (const uint16_t value) const;
     void operator += (const SensorValue &sensorValue);
+
+    SensorValue &operator = (const SensorValue &sensorValue);
     void operator = (const float value);
 
 private:

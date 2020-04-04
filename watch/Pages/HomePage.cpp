@@ -44,7 +44,6 @@ void HomePage::loadWidgets(WidgetManager *manager) {
 void HomePage::processEvent(uint16_t eventId) {
     switch(eventId) {
         case EVENT_READ_POWER_STATUS:
-            debug.print("%04X", eventId);
             drawPowerStatus(getLcd());
             eventQueue.pushDelay(EVENT_READ_POWER_STATUS, 1000, true);
         break;

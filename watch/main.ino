@@ -89,6 +89,7 @@ void processEvents() {
     uint16_t eventId;
     eventId = eventQueue.pop();
     if ( eventId ) {
+        debug.print("Event: %04X", eventId);        
         switch( eventId ) {
             case EVENT_AUTO_POWER_OFF:
                 M5.Axp.PowerOff();

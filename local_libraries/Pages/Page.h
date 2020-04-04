@@ -21,6 +21,8 @@ public:
 
     uint8_t getIndex() const { return _index; }
     void setIndex(uint8_t value) { _index = value; }
+    bool isVisible() { return _isVisible; }
+    void setVisible(bool value) { _isVisible = value; }
 
 protected:
     PageManager *getManager();
@@ -30,10 +32,11 @@ protected:
     void selectPage(uint8_t pageId) { _manager->selectPage(pageId); }
     void pushPage(uint8_t pageId) { _manager->pushPage(pageId); }
     void popPage() { _manager->popPage(); }
-    void drawPage() { _manager->drawPage(); }
+    void drawPage();
 
 private:
     PageManager *_manager;
     uint8_t _index;
+    bool _isVisible;
 };
 #endif          // PAGE_H

@@ -3,7 +3,7 @@
     SensorValue
 
 */
-
+#include "M5Watch.h"
 #include "SensorValue.h"
 
 SensorValue::SensorValue():
@@ -16,7 +16,9 @@ SensorValue::SensorValue(const SensorValue &sensorValue) {
     _x = sensorValue.getX();
     _y = sensorValue.getY();
     _z = sensorValue.getZ();
+    debug.print("Copy constructor %f,%f,%f", _x, _y, _z);
 }
+
 void SensorValue::clear() {
     _x = 0;
     _y = 0;
@@ -39,29 +41,43 @@ size_t SensorValue::writeToStream(Stream *stream) {
     return size;
 }
 
-SensorValue &SensorValue::operator + (const SensorValue &sensorValue) {
-    SensorValue value;
-    value.setX(_x + sensorValue.getX());
-    value.setY(_y + sensorValue.getY());
-    value.setZ(_z + sensorValue.getZ());
-    return value;
+SensorValue SensorValue::operator + (const SensorValue &sensorValue) const {
+    SensorValue newValue;
+    newValue.setX(_x + sensorValue.getX());
+    newValue.setY(_y + sensorValue.getY());
+    newValue.setZ(_z + sensorValue.getZ());
+    return newValue;
 }
 
-SensorValue &SensorValue::operator / (const uint16_t value) {
-    SensorValue sensorValue;
-    sensorValue.setX( _x / value );
-    sensorValue.setY( _y / value );
-    sensorValue.setZ( _z / value );
-    return sensorValue;
+SensorValue SensorValue::operator / (const uint16_t value) const {
+    SensorValue newValue;
+    float divisor = value;
+    if ( fabs(divisor) > 0.0f ) {
+        newValue.setX( _x / divisor );
+        newValue.setY( _y / divisor );
+        newValue.setZ( _z / divisor );
+    }
+    return newValue;
 }
 
-void SensorValue::operator += (const SensorValue &sensorValue){
+void SensorValue::operator += (const SensorValue &sensorValue) {
     _x += sensorValue.getX();
-    _y = sensorValue.getY();
-    _x = sensorValue.getZ();
+    _y += sensorValue.getY();
+    _z += sensorValue.getZ();
 }
 
-void SensorValue::operator = (const float value){
+SensorValue &SensorValue::operator = (const SensorValue &sensorValue) {
+    if ( this == &sensorValue ) {
+        return *this;
+    }
+    _x = sensorValue.getX();
+    _y = sensorValue.getY();
+    _z = sensorValue.getZ();
+    return *this;
+}
+
+
+void SensorValue::operator = (const float value) {
     _x = value;
     _y = value;
     _x = value;
