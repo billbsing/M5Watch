@@ -9,22 +9,21 @@
 #include "DataStoreItem.h"
 
 
-DataStore::DataStore() {
-
+DataStore::DataStore():
+_dataIndex(0),
+_bufferIndex(0) {
+    // memset(&_buffer, 0, sizeof(DataStoreItem) * DATA_STORE_BUFFER_SIZE);
 }
 
-void DataStore::addItem(DataItem &accel, DataItem &gyro) {
-    DataStoreItem item;
-    item.setAccel(accel);
-    item.setGyro(gyro);
-    item.setMillis(millis());
-    item.setTime(now());
-}
-
-// PersistentFile
-void DataStore::readFromStream(Stream *stream) {
-
-}
-size_t DataStore::writeToStream(Stream *stream) {
-
+void DataStore::add(SensorValue &accel, SensorValue &gyro) {
+    DataStoreItem *item = &_buffer[_bufferIndex];
+    item->setAccel(accel);
+    item->setGyro(gyro);
+    item->setIndex(_dataIndex);
+    item->setTimeStamp(now());
+    _dataIndex ++;
+    _bufferIndex ++;
+    if ( _bufferIndex >= DATA_STORE_BUFFER_SIZE) {
+        _bufferIndex = 0;
+    }
 }

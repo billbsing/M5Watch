@@ -49,21 +49,21 @@ void DataPage::draw(M5Display *lcd) {
     lcd->setCursor(4, y);
     lcd->print("Gyro:");
     lcd->setCursor(45, y);
-    lcd->printf("%+0.2f", dataRecorder.getGyro().x);
+    lcd->printf("%+0.2f", dataRecorder.getGyro().getX());
     lcd->setCursor(80, y);
-    lcd->printf("%+0.2f", dataRecorder.getGyro().y);
+    lcd->printf("%+0.2f", dataRecorder.getGyro().getY());
     lcd->setCursor(120, y);
-    lcd->printf("%+0.2f", dataRecorder.getGyro().z);
+    lcd->printf("%+0.2f", dataRecorder.getGyro().getZ());
 
     y = 20;
     lcd->setCursor(4, y);
     lcd->print("Accel:");
     lcd->setCursor(45, y);
-    lcd->printf("%+0.2f", dataRecorder.getAccel().x);
+    lcd->printf("%+0.2f", dataRecorder.getAccel().getX());
     lcd->setCursor(80, y);
-    lcd->printf("%+0.2f", dataRecorder.getAccel().y);
+    lcd->printf("%+0.2f", dataRecorder.getAccel().getY());
     lcd->setCursor(120, y);
-    lcd->printf("%+0.2f", dataRecorder.getAccel().z);
+    lcd->printf("%+0.2f", dataRecorder.getAccel().getZ());
 
     y = 30;
     lcd->setCursor(4, y);

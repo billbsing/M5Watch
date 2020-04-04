@@ -7,7 +7,7 @@
 #ifndef DATA_RECORDER_H
 #define DATA_RECORDER_H
 
-#include <M5StickC.h>
+#include "SensorValue.h"
 #include "DataStore.h"
 
 typedef enum {
@@ -16,22 +16,25 @@ typedef enum {
     dataUpload
 } DataStatus;
 
+class DataStore;
+
 class DataRecorder
 {
 public:
     DataRecorder(String filename);
 
-    DataItem &getGyro() { return _gyro; }
-    DataItem &getAccel() { return _accel; }
+    SensorValue &getGyro() { return _gyro; }
+    SensorValue &getAccel() { return _accel; }
     DataStatus getStatus() { return _status; }
     void loop();
+    void prcoessEvent(uint16_t eventId);
 
 private:
-    DataItem _avgGyro;
-    DataItem _avgAccel;
+    SensorValue _avgGyro;
+    SensorValue _avgAccel;
 
-    DataItem _gyro;
-    DataItem _accel;
+    SensorValue _gyro;
+    SensorValue _accel;
 
     uint16_t _avgCounter;
     DataStatus _status;

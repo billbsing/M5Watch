@@ -9,26 +9,24 @@
 #ifndef DATA_STORE_H
 #define DATA_STORE_H
 
-#include <PersistentFile.h>
+#include "SensorValue.h"
+#include "DataStoreItem.h"
 
-typedef struct {
-    float x;
-    float y;
-    float z;
-} DataItem;
 
-class DataStore: public PersistentFile
+#define DATA_STORE_BUFFER_SIZE                  65
+
+
+class DataStore
 {
 public:
     DataStore();
 
-    void addItem(DataItem &accel, DataItem &gyro);
-    // PersistentFile
-    void readFromStream(Stream *stream);
-    size_t writeToStream(Stream *stream);
+    void add(SensorValue &accel, SensorValue &gyro);
 
 private:
-
+    uint16_t _dataIndex;
+    DataStoreItem _buffer[DATA_STORE_BUFFER_SIZE];
+    uint8_t _bufferIndex;
 };
 
 
