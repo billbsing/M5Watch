@@ -24,7 +24,7 @@ void DataRecorder::processEvent(uint16_t eventId) {
         break;
         case EVENT_DATA_STOP:
             _status = dataIdle;
-             _dataStore.saveBuffer(_filename);
+            eventQueue.push(EVENT_DATA_SAVE);
             eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
         case EVENT_DATA_UPLOAD:
@@ -40,6 +40,10 @@ void DataRecorder::processEvent(uint16_t eventId) {
                 }
                 SPIFFS.end();
             }
+        break;
+        case EVENT_DATA_SAVE:
+            _dataStore.saveBuffer(_filename);
+            eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
     }
 }
@@ -63,7 +67,7 @@ void DataRecorder::record() {
         _avgCounter = 0;
         _dataStore.add(_accel, _gyro);
         if ( _dataStore.isBufferFull()) {
-            _dataStore.saveBuffer(_filename);
+            eventQueue.push(EVENT_DATA_SAVE);
         }
         eventQueue.push(EVENT_DATA_ON_CHANGE);
     }
