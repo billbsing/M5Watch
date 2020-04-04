@@ -112,6 +112,7 @@ void processEvents() {
         }
         pageManager.processEvent(eventId);
         wifiManager.processEvent(eventId);
+        dataRecorder.processEvent(eventId);
     }
 }
 

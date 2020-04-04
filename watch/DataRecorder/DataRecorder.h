@@ -27,7 +27,7 @@ public:
     SensorValue &getAccel() { return _accel; }
     DataStatus getStatus() { return _status; }
     void loop();
-    void prcoessEvent(uint16_t eventId);
+    void processEvent(uint16_t eventId);
 
 private:
     SensorValue _avgGyro;

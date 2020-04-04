@@ -15,20 +15,20 @@ _filename(filename) {
 
 }
 
-void DataRecorder::prcoessEvent(uint16_t eventId) {
-        switch(eventId) {
-            case EVENT_DATA_START:
-                _status = dataRecord;
-            break;
-            case EVENT_DATA_STOP:
-                _status = dataIdle;
-            break;
-            case EVENT_DATA_UPLOAD:
-                _status = dataUpload;
-            break;
-            case EVENT_DATA_RESET:
-            break;
-        }
+void DataRecorder::processEvent(uint16_t eventId) {
+    switch(eventId) {
+        case EVENT_DATA_START:
+            _status = dataRecord;
+        break;
+        case EVENT_DATA_STOP:
+            _status = dataIdle;
+        break;
+        case EVENT_DATA_UPLOAD:
+            _status = dataUpload;
+        break;
+        case EVENT_DATA_RESET:
+        break;
+    }
 }
 
 void DataRecorder::loop() {
