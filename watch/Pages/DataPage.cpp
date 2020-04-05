@@ -27,6 +27,7 @@ void DataPage::init() {
 }
 
 void DataPage::begin() {
+    eventQueue.push(EVENT_DATA_INIT);
 }
 
 void DataPage::end() {
@@ -40,29 +41,28 @@ void DataPage::loadWidgets(WidgetManager *manager) {
 
 void DataPage::draw(M5Display *lcd) {
     uint16_t y;
-    lcd->setCursor(4, 0);
-    lcd->setTextSize(0);
-    lcd->print("Data Recorder");
+    drawHeader(lcd, "Data Recorder");
+
     lcd->setTextSize(1);
 
-    y = 10;
+    y = 12;
     lcd->setCursor(4, y);
     lcd->print("Gyro:");
-    lcd->setCursor(45, y);
+    lcd->setCursor(42, y);
     lcd->printf("%+0.2f", dataRecorder.getGyro().getX());
-    lcd->setCursor(80, y);
+    lcd->setCursor(82, y);
     lcd->printf("%+0.2f", dataRecorder.getGyro().getY());
-    lcd->setCursor(120, y);
+    lcd->setCursor(124, y);
     lcd->printf("%+0.2f", dataRecorder.getGyro().getZ());
 
     y = 20;
     lcd->setCursor(4, y);
     lcd->print("Accel:");
-    lcd->setCursor(45, y);
+    lcd->setCursor(42, y);
     lcd->printf("%+0.2f", dataRecorder.getAccel().getX());
-    lcd->setCursor(80, y);
+    lcd->setCursor(82, y);
     lcd->printf("%+0.2f", dataRecorder.getAccel().getY());
-    lcd->setCursor(120, y);
+    lcd->setCursor(124, y);
     lcd->printf("%+0.2f", dataRecorder.getAccel().getZ());
 
     y = 30;

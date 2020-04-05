@@ -18,6 +18,12 @@ _filename(filename) {
 
 void DataRecorder::processEvent(uint16_t eventId) {
     switch(eventId) {
+        case EVENT_DATA_INIT:
+            if ( _status == dataIdle) {
+                _dataStore.readSize(_filename);
+            }
+            eventQueue.push(EVENT_DATA_ON_CHANGE);
+        break;
         case EVENT_DATA_START:
             _status = dataRecord;
             eventQueue.push(EVENT_DATA_ON_CHANGE);

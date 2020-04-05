@@ -33,6 +33,8 @@ protected:
     void pushPage(uint8_t pageId) { _manager->pushPage(pageId); }
     void popPage() { _manager->popPage(); }
     void drawPage();
+    void drawHeader(M5Display *lcd, String title);
+
 
 private:
     PageManager *_manager;

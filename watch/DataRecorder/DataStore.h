@@ -22,6 +22,7 @@ public:
     DataStore();
 
     void clear();
+    void readSize(String filename);
     void add(SensorValue &accel, SensorValue &gyro);
     bool isBufferFull();
     void saveBuffer(String filename);

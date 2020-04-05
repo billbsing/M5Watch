@@ -17,12 +17,24 @@ _bufferIndex(0) {
     // memset(&_buffer, 0, sizeof(DataStoreItem) * DATA_STORE_BUFFER_SIZE);
 }
 
+void DataStore::readSize(String filename) {
+    _size = 0;
+    if (SPIFFS.begin()) {
+        File file = SPIFFS.open(filename.c_str(), FILE_READ);
+        if (file) {
+            _size = file.size();
+        }
+        SPIFFS.end();
+    }
+}
+
 void DataStore::clear() {
     for ( uint8_t index = 0; index < DATA_STORE_BUFFER_SIZE; index ++) {
         _buffer[index].clear();
     }
     _bufferIndex = 0;
 }
+
 void DataStore::add(SensorValue &accel, SensorValue &gyro) {
     DataStoreItem *item = &_buffer[_bufferIndex];
     item->setAccel(accel);

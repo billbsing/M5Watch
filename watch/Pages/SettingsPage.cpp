@@ -44,9 +44,7 @@ void SettingsPage::loadWidgets(WidgetManager *manager) {
 }
 
 void SettingsPage::draw(M5Display *lcd) {
-    lcd->setCursor(4, 0);
-    lcd->setTextSize(2);
-    lcd->print("Settings");
+    drawHeader(lcd, "Settings");
 }
 
 void SettingsPage::processEvent(uint16_t eventId) {

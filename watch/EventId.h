@@ -24,11 +24,12 @@
 
 // DataRecorder
 #define EVENT_DATA_ON_CHANGE                        0x0040
-#define EVENT_DATA_START                            0x0041
-#define EVENT_DATA_STOP                             0x0042
-#define EVENT_DATA_UPLOAD                           0x0043
-#define EVENT_DATA_DELETE                           0x0044
-#define EVENT_DATA_SAVE                             0x0045
+#define EVENT_DATA_INIT                             0x0041
+#define EVENT_DATA_START                            0x0042
+#define EVENT_DATA_STOP                             0x0043
+#define EVENT_DATA_UPLOAD                           0x0044
+#define EVENT_DATA_DELETE                           0x0045
+#define EVENT_DATA_SAVE                             0x0046
 
 // Page Event Id from here onwards
 #define EVENT_PAGE_START_ID                         0x8000

@@ -96,11 +96,11 @@ void processEvents() {
             break;
             case EVENT_NEXT_WIDGET_FOCUS:
                 pageManager.nextFocus();
-                eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
+//                eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
             break;
             case EVENT_CLICK_ON_FOCUS:
                 pageManager.rasieEventOnFocus(&eventQueue);
-                eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
+//                eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout, true);
             break;
             case EVENT_DISPLAY_OFF:
                 M5.Axp.SetLDO2(false);
@@ -124,7 +124,7 @@ void setup() {
     settings.begin(true);
     autoPowerOffTimeout = settings.getAutoPowerOffTimeout();
     settings.end();
-    eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
+//    eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
 
     pageManager.add(PAGE_ID_HOME, &homePage, 0);
     pageManager.add(PAGE_ID_SETTINGS, &settingsPage, 0);
