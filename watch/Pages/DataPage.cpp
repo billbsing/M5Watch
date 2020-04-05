@@ -15,15 +15,15 @@ void DataPage::init() {
     uint16_t y = 52;
     uint16_t x = 4;
     _menuStartStop = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Start");
+                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Start");
 
     x += MENU_ITEM_WIDTH + MENU_ITEM_PADDING;
     _menuUpload = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Upload");
+                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Upload");
 
     x += MENU_ITEM_WIDTH + MENU_ITEM_PADDING;
     _menuDelete = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Delete");
+                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Delete");
 }
 
 void DataPage::begin() {

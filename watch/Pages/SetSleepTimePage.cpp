@@ -14,11 +14,13 @@ _value(0) {
 void SetSleepTimePage::init() {
     uint16_t x = 100;
     uint16_t y = 25;
-    _decrementWidget = TextWidget(getNextEventId(), x, y, SET_SLEEP_TIME_PAGE_WIDGET_WIDTH, \
-                            SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT, 2, 2, "^");
+    _decrementWidget = TextWidget(getNextEventId(), x, y, \
+                            SET_SLEEP_TIME_PAGE_WIDGET_WIDTH, \
+                            SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT, "^");
     y += SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT + SET_SLEEP_TIME_PAGE_WIDGET_PADDING;
-    _incrementWidget = TextWidget(getNextEventId(), x, y, SET_SLEEP_TIME_PAGE_WIDGET_WIDTH, \
-                            SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT, 2, 2, "v");
+    _incrementWidget = TextWidget(getNextEventId(), x, y, \
+                            SET_SLEEP_TIME_PAGE_WIDGET_WIDTH, \
+                            SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT, "v");
     _value = settings.getAutoPowerOffTimeout();
 }
 

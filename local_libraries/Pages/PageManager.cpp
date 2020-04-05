@@ -20,8 +20,8 @@ void PageManager::build() {
     uint16_t left, top;
     left = _width - 30;
     top = _height -  12;
-    _nextPageWidget = TextWidget(getNextEventId(), left, top, 30, 12, 4, 2, "Next");
-    _backPageWidget = TextWidget(getNextEventId(), left, top, 30, 12, 4, 2, "Back");
+    _nextPageWidget = TextWidget(getNextEventId(), left, top, 30, 12, "Next");
+    _backPageWidget = TextWidget(getNextEventId(), left, top, 30, 12, "Back");
     for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE; index ++) {
         if ( _pageList[index].page ) {
             _pageList[index].page->init();

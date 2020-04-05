@@ -11,23 +11,24 @@ Page(manager) {
 }
 
 void SettingsPage::init() {
-    uint16_t y = 20;
+    uint16_t y = 12;
     uint16_t x = 4;
     _menuSetSleep = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Sleep Time");
+                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Sleep Time");
 
     y += MENU_ITEM_HEIGHT + MENU_ITEM_PADDING;
     _menuSyncTime = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Sync Time");
+                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Sync Time");
 
     y += MENU_ITEM_HEIGHT + MENU_ITEM_PADDING;
     _menuPowerOff = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Power Off");
+                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Power Off");
 
-    y = 20;
-    x = 85;
+//    y = 14;
+//    x = 85;
+    y += MENU_ITEM_HEIGHT + MENU_ITEM_PADDING;
     _menuWifiSettings = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, 4, 2, "Wifi");
+                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Wifi");
 }
 
 void SettingsPage::begin() {
