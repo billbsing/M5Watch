@@ -18,7 +18,6 @@
 
 #include "PageId.h"
 #include "EventId.h"
-#include "Styles.h"
 
 #define SCREEN_WIDTH                160
 #define SCREEN_HEIGHT               80

@@ -8,7 +8,6 @@
 #include <EventQueue.h>
 #include <WidgetStyle.h>
 #include <StyleSheet.h>
-#include "Styles.h"
 
 
 class Widget

@@ -57,8 +57,10 @@ public:
 
     uint16_t getWidth() const { return _width; }
     uint16_t getHeight() const { return _height; }
+    uint16_t getPageFooterHeight() const;
 
-    StyleSheet *getStyleSheet() { return _styleSheet; }
+    StyleSheet *getStyleSheet() const { return _styleSheet; }
+
 protected:
     void loadWidgets();
     uint8_t getIndexFromPageId(uint8_t pageId);

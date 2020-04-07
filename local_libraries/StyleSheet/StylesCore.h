@@ -5,8 +5,8 @@
 */
 
 
-#ifndef STYLES_H
-#define STYLES_H
+#ifndef STYLES_CORE_H
+#define STYLES_CORE_H
 
 #define STYLE_SCREEN_COLOR                                  0x0001
 
@@ -26,4 +26,4 @@
 
 
 
-#endif          // STYLES_H
+#endif          // STYLES_CORE_H

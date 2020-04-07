@@ -9,6 +9,7 @@
 #define STYLE_SHEET_H
 
 #include <arduino.h>
+#include <StylesCore.h>
 
 #define STYLE_END           {0x0000, 0x0000}
 

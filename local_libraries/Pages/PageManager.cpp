@@ -137,13 +137,17 @@ void PageManager::drawPage() {
     if ( _pageList[_pageIndex].page) {
         _pageList[_pageIndex].page->draw(&_m5->Lcd);
     }
-    _m5->Lcd.setCursor(_width - 80, _height - styleSheet.getValue(STYLE_PAGE_FOOTER_HEIGHT, 10));
+    _m5->Lcd.setCursor(_width - 80, _height - getPageFooterHeight());
     _m5->Lcd.setTextSize(styleSheet.getValue(STYLE_PAGE_FOOTER_FONT_SIZE, 1));
     _m5->Lcd.printf("%d/%d", pagePosition, pageCount);
     _m5->Lcd.setTextSize(styleSheet.getValue(STYLE_PAGE_DEFAULT_FONT_SIZE, 1));
     _widgetManager.draw(&_m5->Lcd);
 }
 
+uint16_t PageManager::getPageFooterHeight() const {
+    StyleSheet styleSheet(getStyleSheet());
+    return styleSheet.getValue(STYLE_PAGE_FOOTER_HEIGHT, 10);
+}
 uint16_t PageManager::getNextEventId() {
     _eventIndex++;
     return _eventIndex;
