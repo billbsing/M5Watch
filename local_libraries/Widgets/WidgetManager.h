@@ -13,7 +13,8 @@
 class WidgetManager
 {
 public:
-    WidgetManager();
+    WidgetManager(StyleSheet *styleSheet);
+    WidgetManager(): WidgetManager(NULL) {}
 
     void clear();
     void clear_and_delete();
@@ -33,6 +34,6 @@ protected:
 private:
     Widget *_widgetList[WIDGET_MANAGER_LIST_SIZE];
     uint8_t _count;
+    StyleSheet *_styleSheet;
 };
-
 #endif              // WIDGET_MANAGER_H

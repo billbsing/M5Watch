@@ -13,6 +13,8 @@
 #define PAGE_MANGER_PAGE_LIST_SIZE              10
 #define PAGE_MANAGER_CALL_STACK_SIZE            4
 
+#define PAGE_MANAGER_DEFAULT_SCREEN_COLOR       BLACK
+
 class Page;
 
 typedef struct {
@@ -26,7 +28,10 @@ class PageManager
 {
 
 public:
-    PageManager(M5StickC *m5, uint16_t width, uint16_t height,  uint16_t startEventId);
+    PageManager(M5StickC *m5, uint16_t width, uint16_t height,  uint16_t startEventId, StyleSheet *styleSheet);
+    PageManager(M5StickC *m5, uint16_t width, uint16_t height,  uint16_t startEventId):
+        PageManager(m5, width, height, startEventId, NULL) {}
+
     void build();
     void add(uint8_t pageId, Page *page, uint8_t pageGroup);
 
@@ -53,6 +58,7 @@ public:
     uint16_t getWidth() const { return _width; }
     uint16_t getHeight() const { return _height; }
 
+    StyleSheet *getStyleSheet() { return _styleSheet; }
 protected:
     void loadWidgets();
     uint8_t getIndexFromPageId(uint8_t pageId);
@@ -76,6 +82,7 @@ private:
     TextWidget _nextPageWidget;
     TextWidget _backPageWidget;
     uint16_t _eventIndex;
+    StyleSheet *_styleSheet;
 
 };
 

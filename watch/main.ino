@@ -1,6 +1,7 @@
 #include <M5StickC.h>
 #include <PageManager.h>
 #include <Preferences.h>
+
 #include "RTCTime.h"
 #include "PowerStatus.h"
 #include "DataRecorder.h"
@@ -17,6 +18,7 @@
 
 #include "PageId.h"
 #include "EventId.h"
+#include "Styles.h"
 
 #define SCREEN_WIDTH                160
 #define SCREEN_HEIGHT               80
@@ -32,8 +34,15 @@ typedef struct {
     uint8_t buttonC : 1;
 } ButtonsEnabled;
 
+StyleItem styles[] = {
+    {STYLE_SCREEN_COLOR, BLACK},
+    {STYLE_WIDGET_FOCUS_BORDER_COLOR, WHITE},
+    {STYLE_WIDGET_BORDER_COLOR, RED},
+    STYLE_END
+};
+StyleSheet styleSheet(styles);
 
-PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT, EVENT_PAGE_START_ID);
+PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT, EVENT_PAGE_START_ID, &styleSheet);
 HomePage homePage(&pageManager);
 SettingsPage settingsPage(&pageManager);
 SetSleepTimePage setSleepTimePage(&pageManager);

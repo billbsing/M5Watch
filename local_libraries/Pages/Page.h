@@ -8,6 +8,7 @@
 #include <WidgetManager.h>
 #include <PageManager.h>
 
+
 class Page
 {
 public:

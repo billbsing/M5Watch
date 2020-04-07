@@ -30,6 +30,7 @@ LIBS = \
 	$(LOCAL_LIBS)/Events				\
 	$(LOCAL_LIBS)/Pages					\
 	$(LOCAL_LIBS)/Widgets				\
+	$(LOCAL_LIBS)/StyleSheet			\
 	$(LOCAL_LIBS)/Persistent
 
 

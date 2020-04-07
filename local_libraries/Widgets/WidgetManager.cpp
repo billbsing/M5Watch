@@ -2,8 +2,9 @@
 
 
 
-WidgetManager::WidgetManager():
-_count(0) {
+WidgetManager::WidgetManager(StyleSheet *styleSheet):
+_count(0),
+_styleSheet(styleSheet) {
     clear();
 }
 
@@ -23,6 +24,7 @@ void WidgetManager::clear_and_delete() {
 uint8_t WidgetManager::add(Widget *widget) {
     uint8_t index = _count;
     if (_count < WIDGET_MANAGER_LIST_SIZE) {
+        widget->setStyleSheet(_styleSheet);
         _widgetList[_count] = widget;
         _count ++;
     }

@@ -2,7 +2,8 @@
 #include <PageManager.h>
 #include <Page.h>
 
-PageManager::PageManager(M5StickC *m5, uint16_t width, uint16_t height, uint16_t startEventId):
+PageManager::PageManager(M5StickC *m5, uint16_t width, uint16_t height, \
+        uint16_t startEventId, StyleSheet *styleSheet):
 _m5(m5),
 _width(width),
 _height(height),
@@ -11,7 +12,8 @@ _lastPageIndex(PAGE_MANGER_PAGE_LIST_SIZE + 1),
 _stackCount(0),
 _pageIndex(0),
 _pageGroup(0),
-_eventIndex(startEventId) {
+_eventIndex(startEventId),
+_styleSheet(styleSheet) {
     memset(_pageList, 0, sizeof(PageItem) * PAGE_MANGER_PAGE_LIST_SIZE);
     memset(_callStack, 0, sizeof(uint8_t) * PAGE_MANAGER_CALL_STACK_SIZE);
 }
@@ -126,16 +128,18 @@ void PageManager::loadPage() {
 }
 
 void PageManager::drawPage() {
+    StyleSheet styleSheet(getStyleSheet());
+
     uint8_t pageCount = getPageCountInGroup(_pageGroup);
     uint8_t pagePosition = getPagePositionInGroup(_pageIndex, _pageGroup);
-    _m5->Lcd.fillScreen(BLACK);
+    _m5->Lcd.fillScreen(styleSheet.getValue(STYLE_SCREEN_COLOR, PAGE_MANAGER_DEFAULT_SCREEN_COLOR));
     if ( _pageList[_pageIndex].page) {
         _pageList[_pageIndex].page->draw(&_m5->Lcd);
     }
-    _m5->Lcd.setCursor(_width - 80, _height - 10);
-    _m5->Lcd.setTextSize(1);
+    _m5->Lcd.setCursor(_width - 80, _height - styleSheet.getValue(STYLE_PAGE_FOOTER_HEIGHT, 10));
+    _m5->Lcd.setTextSize(styleSheet.getValue(STYLE_PAGE_FOOTER_FONT_SIZE, 1));
     _m5->Lcd.printf("%d/%d", pagePosition, pageCount);
-    _m5->Lcd.setTextSize(1);
+    _m5->Lcd.setTextSize(styleSheet.getValue(STYLE_PAGE_DEFAULT_FONT_SIZE, 1));
     _widgetManager.draw(&_m5->Lcd);
 }
 

@@ -7,6 +7,12 @@
 #include <M5StickC.h>
 #include <EventQueue.h>
 #include <WidgetStyle.h>
+#include <StyleSheet.h>
+#include "Styles.h"
+
+
+#define WIDGET_DEFAULT_FOCUS_BORDER_COLOR          WHITE
+#define WIDGET_DEFAULT_BORDER_COLOR                DARKGREY
 
 class Widget
 {
@@ -47,7 +53,8 @@ public:
 
     void raiseEvent(EventQueue *eventQueue);
 
-    WidgetStyle style;
+    void setStyleSheet(StyleSheet *value) { _styleSheet = value; }
+    StyleSheet *getStyleSheet() const { return _styleSheet; }
 private:
     uint16_t _left;
     uint16_t _top;
@@ -57,6 +64,7 @@ private:
     uint8_t _topPadding;
     bool _isFocus;
     uint16_t _eventId;
+    StyleSheet *_styleSheet;
 
 };
 

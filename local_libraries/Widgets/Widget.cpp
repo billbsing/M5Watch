@@ -1,5 +1,6 @@
 #include <Widget.h>
 
+
 Widget::Widget(uint16_t eventId, uint16_t left, uint16_t top, uint16_t width, uint16_t height):
 _eventId(eventId),
 _left(left),
@@ -29,19 +30,21 @@ _height(widget.getHeight()),
 _leftPadding(widget.getLeftPadding()),
 _topPadding(widget.getTopPadding()),
 _isFocus(widget.isFocus()),
-_eventId(widget.getEventId()) {
+_eventId(widget.getEventId()),
+_styleSheet(widget.getStyleSheet()) {
 
 }
-
 
 void Widget::setCursor(M5Display *lcd) {
     lcd->setCursor(getLeft() + getLeftPadding(), getTop() + getTopPadding());
 }
 
 void Widget::showFocus(M5Display *lcd) {
-    uint16_t color = DARKGREY;
+    StyleSheet styleSheet(getStyleSheet());
+
+    uint16_t color = styleSheet.getValue(STYLE_WIDGET_FOCUS_BORDER_COLOR, WIDGET_DEFAULT_BORDER_COLOR);
     if ( isFocus() ) {
-        color = WHITE;
+        color = styleSheet.getValue(STYLE_WIDGET_BORDER_COLOR, WIDGET_DEFAULT_FOCUS_BORDER_COLOR);
     }
     lcd->drawRect(getLeft(), getTop(), getWidth(), getHeight(), color);
 }
