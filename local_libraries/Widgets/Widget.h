@@ -11,9 +11,6 @@
 #include "Styles.h"
 
 
-#define WIDGET_DEFAULT_FOCUS_BORDER_COLOR          WHITE
-#define WIDGET_DEFAULT_BORDER_COLOR                DARKGREY
-
 class Widget
 {
 public:

@@ -44,8 +44,7 @@ void DataPage::draw(M5Display *lcd) {
     drawHeader(lcd, "Data Recorder");
 
     lcd->setTextSize(1);
-
-    y = 12;
+    y = getHeaderHeight() + 2;
     lcd->setCursor(4, y);
     lcd->print("Gyro:");
     lcd->setCursor(42, y);

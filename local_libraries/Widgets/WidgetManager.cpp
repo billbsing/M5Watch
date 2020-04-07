@@ -1,7 +1,6 @@
 #include <WidgetManager.h>
 
 
-
 WidgetManager::WidgetManager(StyleSheet *styleSheet):
 _count(0),
 _styleSheet(styleSheet) {

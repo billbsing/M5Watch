@@ -1,3 +1,4 @@
+#include "M5Watch.h"
 #include <Widget.h>
 
 
@@ -42,9 +43,9 @@ void Widget::setCursor(M5Display *lcd) {
 void Widget::showFocus(M5Display *lcd) {
     StyleSheet styleSheet(getStyleSheet());
 
-    uint16_t color = styleSheet.getValue(STYLE_WIDGET_FOCUS_BORDER_COLOR, WIDGET_DEFAULT_BORDER_COLOR);
+    uint16_t color = styleSheet.getValue(STYLE_WIDGET_FOCUS_BORDER_COLOR, DARKGREY);
     if ( isFocus() ) {
-        color = styleSheet.getValue(STYLE_WIDGET_BORDER_COLOR, WIDGET_DEFAULT_FOCUS_BORDER_COLOR);
+        color = styleSheet.getValue(STYLE_WIDGET_BORDER_COLOR, WHITE);
     }
     lcd->drawRect(getLeft(), getTop(), getWidth(), getHeight(), color);
 }

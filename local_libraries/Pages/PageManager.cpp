@@ -13,7 +13,8 @@ _stackCount(0),
 _pageIndex(0),
 _pageGroup(0),
 _eventIndex(startEventId),
-_styleSheet(styleSheet) {
+_styleSheet(styleSheet),
+_widgetManager(styleSheet) {
     memset(_pageList, 0, sizeof(PageItem) * PAGE_MANGER_PAGE_LIST_SIZE);
     memset(_callStack, 0, sizeof(uint8_t) * PAGE_MANAGER_CALL_STACK_SIZE);
 }

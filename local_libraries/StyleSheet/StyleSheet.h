@@ -21,6 +21,7 @@ class StyleSheet
 {
 public:
     StyleSheet(StyleItem *styleItems);
+    StyleSheet(): StyleSheet((StyleItem *) NULL) {}
     StyleSheet(StyleSheet *styleSheet);
 
     StyleItem *getItems() const { return _styleItems; }

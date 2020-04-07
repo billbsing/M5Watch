@@ -17,7 +17,7 @@ void Page::drawPage() {
 void Page::drawHeader(M5Display *lcd, String title) {
     StyleSheet styleSheet(_manager->getStyleSheet());
 
-    uint16_t haaderHeight = styleSheet.getValue(STYLE_PAGE_HEADER_HEIGHT, 10);
+    uint16_t haaderHeight = getHeaderHeight();
     uint16_t textWidth = lcd->textWidth(title);
     lcd->fillRect(0, 0, \
             _manager->getWidth(), 10, \
@@ -30,4 +30,9 @@ void Page::drawHeader(M5Display *lcd, String title) {
     lcd->setTextColor(styleSheet.getValue(STYLE_PAGE_DEFAULT_TEXT_COLOR, WHITE));
     lcd->setTextSize(styleSheet.getValue(STYLE_PAGE_DEFAULT_FONT_SIZE, 1));
 
+}
+
+uint16_t Page::getHeaderHeight() const {
+    StyleSheet styleSheet(_manager->getStyleSheet());
+    return styleSheet.getValue(STYLE_PAGE_HEADER_HEIGHT, 10);
 }

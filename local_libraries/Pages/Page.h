@@ -24,6 +24,7 @@ public:
     void setIndex(uint8_t value) { _index = value; }
     bool isVisible() { return _isVisible; }
     void setVisible(bool value) { _isVisible = value; }
+    uint16_t getHeaderHeight() const;
 
 protected:
     PageManager *getManager();
