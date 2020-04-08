@@ -11,6 +11,7 @@
 #include "SetSleepTimePage.h"
 #include "SyncTimePage.h"
 #include "DataPage.h"
+#include "WiFiPage.h"
 
 #include "Settings.h"
 #include "SerialDebug.h"
@@ -47,6 +48,7 @@ SettingsPage settingsPage(&pageManager);
 SetSleepTimePage setSleepTimePage(&pageManager);
 SyncTimePage syncTimePage(&pageManager);
 DataPage dataPage(&pageManager);
+WiFiPage wifiPage(&pageManager);
 
 RTCTime rtcTime;
 EventQueue eventQueue;
@@ -139,6 +141,7 @@ void setup() {
     pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTimePage, 1);
     pageManager.add(PAGE_ID_SYNC_TIME, &syncTimePage, 2);
     pageManager.add(PAGE_ID_DATA_PAGE, &dataPage, 0);
+    pageManager.add(PAGE_ID_WIFI_PAGE, &wifiPage, 0);
     pageManager.build();
 /*
     SPIFFS.begin(true);

@@ -12,7 +12,7 @@ PageId's
 #define PAGE_ID_SET_SLEEP               0x03
 #define PAGE_ID_SYNC_TIME               0x04
 #define PAGE_ID_DATA_PAGE               0x05
-
+#define PAGE_ID_WIFI_PAGE               0x06
 
 
 #endif              // PAGE_ID_H

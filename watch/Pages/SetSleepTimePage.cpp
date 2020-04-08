@@ -25,9 +25,7 @@ void SetSleepTimePage::init() {
 }
 
 void SetSleepTimePage::draw(M5Display *lcd) {
-    lcd->setCursor(4, 0);
-    lcd->setTextSize(2);
-    lcd->print("Sleep Time");
+    drawHeader(lcd, "Sleep Time");
     lcd->setTextSize(1);
     lcd->setCursor(4, 35);
     lcd->print("Seconds:");

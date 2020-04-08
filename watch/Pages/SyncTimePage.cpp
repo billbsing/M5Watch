@@ -20,9 +20,8 @@ void SyncTimePage::loadWidgets(WidgetManager *manager) {
 }
 
 void SyncTimePage::draw(M5Display *lcd) {
-    lcd->setCursor(4, 10);
-    lcd->setTextSize(2);
-    lcd->print("Sync Time");
+    drawHeader(lcd, "Sync Time");
+
     lcd->setTextSize(1);
     lcd->setCursor(4, 30);
     lcd->print("Wifi:");
