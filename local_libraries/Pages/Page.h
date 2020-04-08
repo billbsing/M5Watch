@@ -37,9 +37,9 @@ protected:
     void drawPage();
     void drawHeader(M5Display *lcd, String title);
 
+    PageManager *_manager;
 
 private:
-    PageManager *_manager;
     uint8_t _index;
     bool _isVisible;
 };

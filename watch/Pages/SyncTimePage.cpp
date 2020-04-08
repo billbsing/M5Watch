@@ -43,6 +43,7 @@ void SyncTimePage::processEvent(uint16_t eventId) {
         case EVENT_RTC_SYNC_TIME_DONE:
             _wifiStatus = "Sync completed";
             drawPage();
+            debug.print("sync done");
             eventQueue.pushDelay(EVENT_WIFI_DISCONNECT, 2 * 1000);
         break;
     }

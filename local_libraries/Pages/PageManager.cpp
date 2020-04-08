@@ -220,7 +220,7 @@ void PageManager::nextFocus() {
 
 void PageManager::processEvent(uint16_t eventId) {
     for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE && index < _pageCount; index ++) {
-        if ( _pageList[index].page ) {
+        if ( _pageList[index].page && _pageList[index].page->isVisible() ) {
             _pageList[index].page->processEvent(eventId);
         }
     }

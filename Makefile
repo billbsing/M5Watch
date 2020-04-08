@@ -72,7 +72,7 @@ ifeq ($(UNAME), Linux)
 endif
 ifeq ($(UNAME), Darwin)
 #	UPLOAD_PORT=/dev/cu.usbserial-1410
-	UPLOAD_PORT=$(shell ls -1 /dev/tty.usbserial-*)
+	UPLOAD_PORT=$(shell ls -1 /dev/tty.usbserial-* | head -1)
 #	UPLOAD_PORT=/dev/tty.usbserial
 #	UPLOAD_PORT=/dev/tty.SLAB_USBtoUART
 

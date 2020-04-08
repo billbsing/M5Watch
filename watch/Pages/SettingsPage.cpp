@@ -58,4 +58,8 @@ void SettingsPage::processEvent(uint16_t eventId) {
     if ( _menuPowerOff.isEventId(eventId)) {
         getM5()->Axp.PowerOff();
     }
+    if ( _menuWifiSettings.isEventId(eventId)) {
+        pushPage(PAGE_ID_WIFI_PAGE);
+    }
+
 }

@@ -15,10 +15,12 @@ bool WiFiManager::isConnected() {
 void WiFiManager::processEvent(uint16_t eventId) {
     switch(eventId) {
         case EVENT_WIFI_CONNECT:
+            debug.print("WiFi: connect requested");
             WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
         break;
         case EVENT_WIFI_DISCONNECT:
-            WiFi.disconnect(true);
+            debug.print("WiFi: disconnect requested");
+            WiFi.disconnect();
         break;
     }
 }

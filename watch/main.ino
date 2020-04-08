@@ -141,7 +141,7 @@ void setup() {
     pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTimePage, 1);
     pageManager.add(PAGE_ID_SYNC_TIME, &syncTimePage, 2);
     pageManager.add(PAGE_ID_DATA_PAGE, &dataPage, 0);
-    pageManager.add(PAGE_ID_WIFI_PAGE, &wifiPage, 0);
+    pageManager.add(PAGE_ID_WIFI_PAGE, &wifiPage, 3);
     pageManager.build();
 /*
     SPIFFS.begin(true);
