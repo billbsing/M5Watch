@@ -12,7 +12,7 @@
 class Page
 {
 public:
-    Page(PageManager *manager);
+    Page();
     virtual void init() = 0;
     virtual void begin() = 0;
     virtual void end() = 0;
@@ -26,9 +26,10 @@ public:
     void setVisible(bool value) { _isVisible = value; }
     uint16_t getHeaderHeight() const;
 
+    void setManager(PageManager *value) { _manager = value; }
+    PageManager *getManager() const { return _manager; }
+
 protected:
-    PageManager *getManager();
-    uint16_t getNextEventId() { return _manager->getNextEventId(); }
     M5StickC* getM5() { return _manager->getM5(); }
     M5Display* getLcd() { return _manager->getLcd(); }
     void selectPage(uint8_t pageId) { _manager->selectPage(pageId); }
@@ -37,9 +38,9 @@ protected:
     void drawPage();
     void drawHeader(M5Display *lcd, String title);
 
-    PageManager *_manager;
 
 private:
+    PageManager *_manager;
     uint8_t _index;
     bool _isVisible;
 };

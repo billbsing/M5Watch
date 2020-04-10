@@ -6,21 +6,23 @@
 #define SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT           12
 #define SET_SLEEP_TIME_PAGE_WIDGET_PADDING          2
 
-SetSleepTimePage::SetSleepTimePage(PageManager *manager):
-Page(manager),
+SetSleepTimePage::SetSleepTimePage():
 _value(0) {
 }
 
 void SetSleepTimePage::init() {
     uint16_t x = 100;
     uint16_t y = 25;
-    _decrementWidget = TextWidget(getNextEventId(), x, y, \
-                            SET_SLEEP_TIME_PAGE_WIDGET_WIDTH, \
-                            SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT, "^");
+    _decrementWidget.setPosition(x, y);
+    _decrementWidget.setSize(SET_SLEEP_TIME_PAGE_WIDGET_WIDTH, SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT);
+    _decrementWidget.setText("^");
+
     y += SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT + SET_SLEEP_TIME_PAGE_WIDGET_PADDING;
-    _incrementWidget = TextWidget(getNextEventId(), x, y, \
-                            SET_SLEEP_TIME_PAGE_WIDGET_WIDTH, \
-                            SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT, "v");
+
+    _incrementWidget.setPosition(x, y);
+    _incrementWidget.setSize(SET_SLEEP_TIME_PAGE_WIDGET_WIDTH, SET_SLEEP_TIME_PAGE_WIDGET_HEIGHT);
+    _incrementWidget.setText("v");
+
     _value = settings.getAutoPowerOffTimeout();
 }
 

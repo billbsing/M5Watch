@@ -12,24 +12,25 @@ _lastPageIndex(PAGE_MANGER_PAGE_LIST_SIZE + 1),
 _stackCount(0),
 _pageIndex(0),
 _pageGroup(0),
-_eventIndex(startEventId),
+// _eventIndex(startEventId),
+_startEventId(startEventId),
 _styleSheet(styleSheet),
 _widgetManager(styleSheet) {
     memset(_pageList, 0, sizeof(PageItem) * PAGE_MANGER_PAGE_LIST_SIZE);
     memset(_callStack, 0, sizeof(uint8_t) * PAGE_MANAGER_CALL_STACK_SIZE);
 }
 
-void PageManager::build() {
+void PageManager::init() {
     uint16_t left, top;
     left = _width - 30;
     top = _height -  12;
-    _nextPageWidget = TextWidget(getNextEventId(), left, top, 30, 12, "Next");
-    _backPageWidget = TextWidget(getNextEventId(), left, top, 30, 12, "Back");
-    for ( uint8_t index = 0; index < PAGE_MANGER_PAGE_LIST_SIZE; index ++) {
-        if ( _pageList[index].page ) {
-            _pageList[index].page->init();
-        }
-    }
+    _nextPageWidget.setPosition(left, top);
+    _nextPageWidget.setSize(30, 12);
+    _nextPageWidget.setText("Next");
+
+    _backPageWidget.setPosition(left, top);
+    _backPageWidget.setSize(30, 12);
+    _backPageWidget.setText("Back");
 }
 
 void PageManager::add(uint8_t pageId, Page *page, uint8_t pageGroup) {
@@ -37,7 +38,9 @@ void PageManager::add(uint8_t pageId, Page *page, uint8_t pageGroup) {
     _pageList[_pageCount].page = page;
     _pageList[_pageCount].pageGroup = pageGroup;
     _pageCount ++;
+    page->setManager(this);
     page->setIndex(_pageCount);
+    page->init();
 }
 
 void PageManager::setPageIndex(uint8_t index) {
@@ -82,6 +85,7 @@ uint8_t PageManager::getIndexFromPageId(uint8_t pageId) {
 
 void PageManager::loadWidgets() {
     _widgetManager.clear();
+    _widgetManager.setNextEventId(_startEventId);
     _pageList[_pageIndex].page->loadWidgets(&_widgetManager);
 //    _widgetManager.setFocus(false);
 
@@ -148,10 +152,16 @@ uint16_t PageManager::getPageFooterHeight() const {
     StyleSheet styleSheet(getStyleSheet());
     return styleSheet.getValue(STYLE_PAGE_FOOTER_HEIGHT, 10);
 }
-uint16_t PageManager::getNextEventId() {
-    _eventIndex++;
-    return _eventIndex;
+
+/*
+void PageManager::resetEventId() {
+    _nextEventId = _startEventId;
 }
+uint16_t PageManager::getNextEventId() {
+    _nextEventId++;
+    return _nextEventId;
+}
+*/
 
 void PageManager::nextPage() {
     uint8_t index = _pageIndex;

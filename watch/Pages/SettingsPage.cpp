@@ -6,29 +6,33 @@
 #define MENU_ITEM_HEIGHT                12
 #define MENU_ITEM_PADDING               2
 
-SettingsPage::SettingsPage(PageManager *manager):
-Page(manager) {
+SettingsPage::SettingsPage() {
+
 }
 
 void SettingsPage::init() {
     uint16_t y = 12;
     uint16_t x = 4;
-    _menuSetSleep = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Sleep Time");
+    _menuSetSleep.setPosition(x, y);
+    _menuSetSleep.setSize(MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT);
+    _menuSetSleep.setText("Sleep Time");
 
     y += MENU_ITEM_HEIGHT + MENU_ITEM_PADDING;
-    _menuSyncTime = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Sync Time");
+    _menuSyncTime.setPosition(x, y);
+    _menuSyncTime.setSize(MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT);
+    _menuSyncTime.setText("Sync Time");
 
     y += MENU_ITEM_HEIGHT + MENU_ITEM_PADDING;
-    _menuPowerOff = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Power Off");
+    _menuPowerOff.setPosition(x, y);
+    _menuPowerOff.setSize(MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT);
+    _menuPowerOff.setText("Power Off");
 
 //    y = 14;
 //    x = 85;
     y += MENU_ITEM_HEIGHT + MENU_ITEM_PADDING;
-    _menuWifiSettings = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Wifi");
+    _menuWifiSettings.setPosition(x, y);
+    _menuWifiSettings.setSize(MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT);
+    _menuWifiSettings.setText("Wifi");
 }
 
 void SettingsPage::begin() {

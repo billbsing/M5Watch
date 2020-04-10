@@ -43,12 +43,12 @@ StyleItem styles[] = {
 StyleSheet styleSheet(styles);
 
 PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT, EVENT_PAGE_START_ID, &styleSheet);
-HomePage homePage(&pageManager);
-SettingsPage settingsPage(&pageManager);
-SetSleepTimePage setSleepTimePage(&pageManager);
-SyncTimePage syncTimePage(&pageManager);
-DataPage dataPage(&pageManager);
-WiFiPage wifiPage(&pageManager);
+HomePage homePage;
+SettingsPage settingsPage;
+SetSleepTimePage setSleepTimePage;
+SyncTimePage syncTimePage;
+DataPage dataPage;
+WiFiPage wifiPage;
 
 RTCTime rtcTime;
 EventQueue eventQueue;
@@ -136,13 +136,14 @@ void setup() {
     settings.end();
 //    eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
 
-    pageManager.add(PAGE_ID_HOME, &homePage, 0);
-    pageManager.add(PAGE_ID_SETTINGS, &settingsPage, 0);
-    pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTimePage, 1);
-    pageManager.add(PAGE_ID_SYNC_TIME, &syncTimePage, 2);
-    pageManager.add(PAGE_ID_DATA_PAGE, &dataPage, 0);
-    pageManager.add(PAGE_ID_WIFI_PAGE, &wifiPage, 3);
-    pageManager.build();
+    pageManager.init();
+    pageManager.add(PAGE_ID_HOME, &homePage, PAGE_GROUP_BASE_ID);
+    pageManager.add(PAGE_ID_SETTINGS, &settingsPage, PAGE_GROUP_BASE_ID);
+    pageManager.add(PAGE_ID_DATA_PAGE, &dataPage, PAGE_GROUP_BASE_ID);
+
+    pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTimePage, PAGE_GROUP_SET_SLEEP_ID);
+    pageManager.add(PAGE_ID_SYNC_TIME, &syncTimePage, PAGE_GROUP_SYNC_TIME_ID);
+    pageManager.add(PAGE_ID_WIFI_PAGE, &wifiPage, PAGE_GROUP_WIFI_ID);
 /*
     SPIFFS.begin(true);
     SPIFFS.format();

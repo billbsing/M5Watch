@@ -1,8 +1,7 @@
 #include "SyncTimePage.h"
 #include "M5Watch.h"
 
-SyncTimePage::SyncTimePage(PageManager *manager):
-Page(manager),
+SyncTimePage::SyncTimePage():
 _wifiStatus("Connecting") {
 }
 

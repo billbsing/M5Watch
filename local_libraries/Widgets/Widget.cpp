@@ -1,24 +1,15 @@
 #include <Widget.h>
 
 
-Widget::Widget(uint16_t eventId, uint16_t left, uint16_t top, uint16_t width, uint16_t height):
-_eventId(eventId),
-_left(left),
-_top(top),
-_width(width),
-_height(height),
+Widget::Widget():
+_eventId(0),
+_left(0),
+_top(0),
+_width(0),
+_height(0),
 _leftPadding(0),
 _topPadding(0),
 _isFocus(false) {
-}
-
-Widget::Widget(uint16_t eventId, uint16_t width, uint16_t height):
-Widget(eventId, 0, 0, width, height) {
-
-}
-
-Widget::Widget():
-Widget(0, 0, 0, 0, 0) {
 
 }
 

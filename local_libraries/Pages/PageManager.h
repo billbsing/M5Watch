@@ -32,7 +32,7 @@ public:
     PageManager(M5StickC *m5, uint16_t width, uint16_t height,  uint16_t startEventId):
         PageManager(m5, width, height, startEventId, NULL) {}
 
-    void build();
+    void init();
     void add(uint8_t pageId, Page *page, uint8_t pageGroup);
 
     void refresh();
@@ -50,7 +50,6 @@ public:
     void setPageIndex(uint8_t index);
     uint8_t getPageIndex() const { return _pageIndex; }
     uint8_t getpageGroup() const { return _pageGroup; }
-    uint16_t getNextEventId();
 
     void rasieEventOnFocus(EventQueue *eventQueue);
     void nextFocus();
@@ -68,6 +67,10 @@ protected:
     uint8_t getPagePositionInGroup(uint8_t position, uint8_t pageGroup);
     void pushCallStack(uint8_t index);
     uint8_t popCallStack();
+/*
+    uint16_t getNextEventId();
+    void resetEventId();
+*/
 
 private:
     M5StickC *_m5;
@@ -83,7 +86,8 @@ private:
     WidgetManager _widgetManager;
     TextWidget _nextPageWidget;
     TextWidget _backPageWidget;
-    uint16_t _eventIndex;
+    uint16_t _nextEventId;
+    uint16_t _startEventId;
     StyleSheet *_styleSheet;
 
 };

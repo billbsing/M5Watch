@@ -7,23 +7,26 @@
 #define MENU_ITEM_PADDING               5
 
 
-DataPage::DataPage(PageManager *manager):
-Page(manager) {
+DataPage::DataPage() {
+
 }
 
 void DataPage::init() {
     uint16_t y = 52;
     uint16_t x = 4;
-    _menuStartStop = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Start");
+    _menuStartStop.setPosition(x, y);
+    _menuStartStop.setSize(MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT);
+    _menuStartStop.setText("Start");
 
     x += MENU_ITEM_WIDTH + MENU_ITEM_PADDING;
-    _menuUpload = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Upload");
+    _menuUpload.setPosition(x, y);
+    _menuUpload.setSize(MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT);
+    _menuUpload.setText("Upload");
 
     x += MENU_ITEM_WIDTH + MENU_ITEM_PADDING;
-    _menuDelete = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Delete");
+    _menuDelete.setPosition(x, y);
+    _menuDelete.setSize(MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT);
+    _menuDelete.setText("Delete");
 }
 
 void DataPage::begin() {

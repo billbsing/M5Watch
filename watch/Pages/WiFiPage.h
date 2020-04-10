@@ -10,7 +10,7 @@
 class WiFiPage: public Page
 {
 public:
-    WiFiPage(PageManager *manager);
+    WiFiPage();
 
     void init();
     void begin();

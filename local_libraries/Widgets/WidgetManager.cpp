@@ -24,6 +24,8 @@ uint8_t WidgetManager::add(Widget *widget) {
     uint8_t index = _count;
     if (_count < WIDGET_MANAGER_LIST_SIZE) {
         widget->setStyleSheet(_styleSheet);
+        widget->setEventId(_nextEventId);
+        _nextEventId ++;
         _widgetList[_count] = widget;
         _count ++;
     }

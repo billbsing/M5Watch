@@ -10,11 +10,11 @@
 class SyncTimePage: public Page
 {
 public:
-    SyncTimePage(PageManager *manager);
+    SyncTimePage();
 
     void init();
     void begin();
-    void end();        
+    void end();
     void loadWidgets(WidgetManager *manager);
     void draw(M5Display *lcd);
     void processEvent(uint16_t eventId);

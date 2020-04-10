@@ -11,7 +11,7 @@
 class DataPage: public Page
 {
 public:
-    DataPage(PageManager *manager);
+    DataPage();
 
     void init();
     void begin();

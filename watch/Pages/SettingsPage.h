@@ -12,7 +12,7 @@
 class SettingsPage: public Page
 {
 public:
-    SettingsPage(PageManager *manager);
+    SettingsPage();
 
     void init();
     void begin();

@@ -13,7 +13,7 @@
 class HomePage: public Page
 {
 public:
-    HomePage(PageManager *manager);
+    HomePage();
 
     void init();
     void begin();

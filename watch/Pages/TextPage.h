@@ -9,14 +9,17 @@
 class TextPage: public Page
 {
 public:
-    TextPage(PageManager *manager, String text);
+    TextPage();
 
     void init();
     void begin();
-    void end();    
+    void end();
     void loadWidgets(WidgetManager *manager);
     void draw(M5Display *lcd);
     void processEvent(uint16_t eventId);
+
+    void setText(String value) { _text = value; }
+    String getText() const { return _text; }
 
 private:
     String _text;

@@ -27,6 +27,7 @@ public:
     void raiseEvent(EventQueue *eventQueue);
     uint8_t getCount() const { return _count; }
     uint8_t getFocusIndex();
+    uint16_t setNextEventId(uint16_t value) { _nextEventId = value; }
 
 protected:
     void drawWidget(M5Display *lcd, Widget *widget);
@@ -35,5 +36,6 @@ private:
     Widget *_widgetList[WIDGET_MANAGER_LIST_SIZE];
     uint8_t _count;
     StyleSheet *_styleSheet;
+    uint16_t _nextEventId;
 };
 #endif              // WIDGET_MANAGER_H

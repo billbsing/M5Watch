@@ -7,18 +7,19 @@
 #define MENU_ITEM_PADDING               2
 
 
-WiFiPage::WiFiPage(PageManager *manager):
-Page(manager),
+WiFiPage::WiFiPage():
 _wifiStatus("Connecting") {
+
 }
 
 
 void WiFiPage::init() {
 
-    uint16_t y = _manager->getHeight() - 22;
+    uint16_t y = getManager()->getHeight() - 22;
     uint16_t x = 4;
-    _menuControl = TextWidget(getNextEventId(), x, y, \
-                    MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT, "Connect");
+    _menuControl.setPosition(x, y);
+    _menuControl.setSize(MENU_ITEM_WIDTH, MENU_ITEM_HEIGHT);
+    _menuControl.setText("Connect");
 
 }
 

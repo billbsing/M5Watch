@@ -13,8 +13,6 @@
 class Widget
 {
 public:
-    Widget(uint16_t eventId, uint16_t left, uint16_t top, uint16_t width, uint16_t height);
-    Widget(uint16_t eventId, uint16_t width, uint16_t height);
     Widget();
     Widget(const Widget &widget);
 
