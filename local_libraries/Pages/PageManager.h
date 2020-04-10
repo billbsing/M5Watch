@@ -67,10 +67,6 @@ protected:
     uint8_t getPagePositionInGroup(uint8_t position, uint8_t pageGroup);
     void pushCallStack(uint8_t index);
     uint8_t popCallStack();
-/*
-    uint16_t getNextEventId();
-    void resetEventId();
-*/
 
 private:
     M5StickC *_m5;

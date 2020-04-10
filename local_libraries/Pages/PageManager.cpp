@@ -12,7 +12,6 @@ _lastPageIndex(PAGE_MANGER_PAGE_LIST_SIZE + 1),
 _stackCount(0),
 _pageIndex(0),
 _pageGroup(0),
-// _eventIndex(startEventId),
 _startEventId(startEventId),
 _styleSheet(styleSheet),
 _widgetManager(styleSheet) {
@@ -152,16 +151,6 @@ uint16_t PageManager::getPageFooterHeight() const {
     StyleSheet styleSheet(getStyleSheet());
     return styleSheet.getValue(STYLE_PAGE_FOOTER_HEIGHT, 10);
 }
-
-/*
-void PageManager::resetEventId() {
-    _nextEventId = _startEventId;
-}
-uint16_t PageManager::getNextEventId() {
-    _nextEventId++;
-    return _nextEventId;
-}
-*/
 
 void PageManager::nextPage() {
     uint8_t index = _pageIndex;
