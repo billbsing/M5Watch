@@ -9,10 +9,12 @@
 
 
 
-DataRecorder::DataRecorder(String filename):
+DataRecorder::DataRecorder(String filename, IPAddress uploadServer, uint16_t uploadPort):
 _avgCounter(0),
 _status(dataIdle),
-_filename(filename) {
+_dataStore(filename),
+_uploadServer(uploadServer),
+_uploadPort(uploadPort) {
 
 }
 
@@ -20,7 +22,7 @@ void DataRecorder::processEvent(uint16_t eventId) {
     switch(eventId) {
         case EVENT_DATA_INIT:
             if ( _status == dataIdle) {
-                _dataStore.readSize(_filename);
+                _dataStore.readHeader();
             }
             eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
@@ -35,20 +37,33 @@ void DataRecorder::processEvent(uint16_t eventId) {
         break;
         case EVENT_DATA_UPLOAD:
             _status = dataUpload;
+            // save any left over buffer to file
+            if ( _dataStore.getBufferCount() > 0) {
+                eventQueue.push(EVENT_DATA_SAVE);
+                eventQueue.pushDelay(EVENT_DATA_UPLOAD_ITEM, 500);
+            }
+            else {
+                eventQueue.push(EVENT_DATA_UPLOAD_ITEM);
+            }
             eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
         case EVENT_DATA_DELETE:
-            if (SPIFFS.begin()) {
-                if (SPIFFS.exists(_filename)) {
-                    SPIFFS.remove(_filename);
-                    _dataStore.setSize(0);
-                    eventQueue.push(EVENT_DATA_ON_CHANGE);
-                }
-                SPIFFS.end();
-            }
+            _dataStore.deleteFile();
+            eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
         case EVENT_DATA_SAVE:
-            _dataStore.saveBuffer(_filename);
+            _dataStore.saveBufferToFile();
+            eventQueue.push(EVENT_DATA_ON_CHANGE);
+        break;
+        case EVENT_DATA_UPLOAD_ITEM:
+            // send an item to the server
+            if ( _dataStore.getHeader().getWaitForUploadCount() > 0) {
+                _dataStore.uploadItem(_uploadServer, _uploadPort);
+                eventQueue.pushDelay(EVENT_DATA_UPLOAD_ITEM, 100);
+            }
+            else {
+                _status = dataIdle;
+            }
             eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
     }

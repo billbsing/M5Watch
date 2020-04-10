@@ -69,6 +69,13 @@ void DataPage::draw(M5Display *lcd) {
 
     y = 30;
     lcd->setCursor(4, y);
+    DataStoreHeader header = dataRecorder.getStoreHeader();
+    lcd->printf("Count:%ld", header.getStoreCount());
+    lcd->setCursor(60, y);
+    lcd->printf("Upload:%ld", header.getUploadCount());
+
+    y = 40;
+    lcd->setCursor(4, y);
     switch(dataRecorder.getStatus()) {
         case dataIdle:
             lcd->print("Idle");
@@ -80,8 +87,7 @@ void DataPage::draw(M5Display *lcd) {
             lcd->print("Upload");
         break;
     }
-    lcd->setCursor(50, y);
-    lcd->printf("Count: %ld", dataRecorder.getStoreCount());
+
 }
 
 void DataPage::processEvent(uint16_t eventId) {

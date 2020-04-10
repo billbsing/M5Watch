@@ -21,13 +21,13 @@ class DataStore;
 class DataRecorder
 {
 public:
-    DataRecorder(String filename);
+    DataRecorder(String filename, IPAddress uploadServer, uint16_t uploadPort);
 
     SensorValue &getGyro() { return _gyro; }
     SensorValue &getAccel() { return _accel; }
     DataStatus getStatus() { return _status; }
-    uint16_t getStoreCount() { return _dataStore.getCount(); }
-    
+
+    const DataStoreHeader& getStoreHeader() const { return _dataStore.getHeader(); }
     void loop();
     void processEvent(uint16_t eventId);
 
@@ -43,7 +43,8 @@ private:
 
     uint16_t _avgCounter;
     DataStatus _status;
-    String _filename;
+    IPAddress _uploadServer;
+    uint16_t _uploadPort;
 
     DataStore _dataStore;
 

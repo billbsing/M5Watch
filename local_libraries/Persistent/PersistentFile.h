@@ -3,7 +3,8 @@
 
 
 #include <Arduino.h>
-#include "StreamReaderWriter.h"
+#include "StreamReader.h"
+#include "StreamWriter.h"
 
 class PersistentFile
 {
@@ -13,7 +14,7 @@ public:
     boolean writeToFile(String filename, String mode);
 
     virtual void readFromStream(Stream *stream) = 0;
-    virtual size_t writeToStream(Stream *stream) = 0;
+    virtual size_t writeToStream(Stream *stream) const = 0;
 
 };
 

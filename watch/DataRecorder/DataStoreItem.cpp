@@ -4,6 +4,9 @@
     DataStoreItem.cpp
 
 */
+#include <StreamReader.h>
+#include <StreamWriter.h>
+
 #include "DataStoreItem.h"
 
 DataStoreItem::DataStoreItem() {
@@ -26,25 +29,37 @@ void DataStoreItem::setGyro(SensorValue &sensorValue) {
     _gyro = sensorValue;
 }
 
-void DataStoreItem::readFromStream(Stream *stream) {
-    StreamReader streamReader(stream);
-    uint8_t headerId = streamReader.readByte();
-    _state.value = streamReader.readByte();
-    _timeStamp = streamReader.readDWord();
-    _index = streamReader.readWord();
+void DataStoreItem::readFromStream(Stream &stream) {
+    StreamReader reader(&stream);
+    uint8_t headerId = reader.readByte();
+    _state.value = reader.readByte();
+    _timeStamp = reader.readDWord();
+    _index = reader.readWord();
     _accel.readFromStream(stream);
     _gyro.readFromStream(stream);
 }
 
-size_t DataStoreItem::writeToStream(Stream *stream) {
-    StreamWriter streamWriter(stream);
+size_t DataStoreItem::writeToStream(Stream &stream) const {
+    StreamWriter writer(&stream);
     size_t size = 0;
     // size -> 1 + 1 + 4 + 2 + ( 6 * 4) = 34 bytes
-    size += streamWriter.writeByte(DATA_STORE_STREAM_HEADER_ID);
-    size += streamWriter.writeByte(_state.value);
-    size += streamWriter.writeDWord(_timeStamp);
-    size += streamWriter.writeWord(_index);
+    size += writer.writeByte(DATA_STORE_STREAM_ITEM_ID);
+    size += writer.writeByte(_state.value);
+    size += writer.writeDWord(_timeStamp);
+    size += writer.writeWord(_index);
     size += _accel.writeToStream(stream);
     size += _gyro.writeToStream(stream);
+    return size;
+}
+
+size_t DataStoreItem::writeTextToStream(Stream &stream) const {
+    size_t size;
+    size += stream.print(_timeStamp);
+    size += stream.print(',');
+    size += stream.print(_index);
+    size += stream.print(',');
+    size += _accel.writeTextToStream(stream);
+    size += stream.print(',');
+    size += _gyro.writeTextToStream(stream);
     return size;
 }

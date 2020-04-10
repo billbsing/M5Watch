@@ -7,7 +7,6 @@
 #ifndef SENSOR_VALUE_H
 #define SENSOR_VALUE_H
 
-#include <PersistentFile.h>
 
 class SensorValue
 {
@@ -16,8 +15,9 @@ public:
     SensorValue(const SensorValue &sensorValue);
 
     void clear();
-    void readFromStream(Stream *stream);
-    size_t writeToStream(Stream *stream);
+    void readFromStream(Stream &stream);
+    size_t writeToStream(Stream &stream) const;
+    size_t writeTextToStream(Stream &stream) const;
 
     float getX() const { return _x; }
     float *getXPtr() { return &_x; }

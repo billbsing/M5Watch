@@ -57,7 +57,7 @@ Settings settings("preferences");
 SerialDebug debug;
 WiFiManager wifiManager;
 PowerStatus powerStatus;
-DataRecorder dataRecorder(DATA_RECORDER_FILENAME);
+DataRecorder dataRecorder(DATA_RECORDER_FILENAME, IPAddress(192,168,1,250), 9090);
 
 uint32_t autoPowerOffTimeout;
 

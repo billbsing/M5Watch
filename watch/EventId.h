@@ -30,6 +30,8 @@
 #define EVENT_DATA_UPLOAD                           0x0044
 #define EVENT_DATA_DELETE                           0x0045
 #define EVENT_DATA_SAVE                             0x0046
+#define EVENT_DATA_START_UPLOAD_ITEM                0x0047
+#define EVENT_DATA_UPLOAD_ITEM                      0x0047
 
 // Page Event Id from here onwards
 #define EVENT_PAGE_START_ID                         0x8000
