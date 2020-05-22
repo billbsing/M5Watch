@@ -20,8 +20,8 @@ public:
     size_t writeDWord(const uint32_t value);
     size_t writeFloat(const float value);
     size_t writeFloat(const double value);
-    size_t writeString(const String value);
-    
+    size_t writeString(const String &value);
+
 private:
     Stream *_stream;
 

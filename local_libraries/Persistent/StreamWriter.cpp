@@ -31,12 +31,11 @@ size_t StreamWriter::writeFloat(const double value) {
     return _stream->write((uint8_t *) &value, sizeof(double));
 }
 
-size_t StreamWriter::writeString(const String value) {
-    size_t size;
-    uint16_t length = value.length();
-    writeWord(length);
+size_t StreamWriter::writeString(const String &value) {
+    uint32_t length = value.length();
+    size_t size = writeDWord(length);
     if ( length > 0) {
-        size = _stream->write(value.c_str(), length);
+        size += _stream->write(value.c_str(), length);
     }
     return size;
 }

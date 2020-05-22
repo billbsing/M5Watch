@@ -4,11 +4,16 @@
 
 */
 
+#include "M5Watch.h"
 #include "StreamReader.h"
 
 StreamReader::StreamReader(Stream *stream):
-_stream(stream) {
+_stream(stream),
+_buffer(NULL) {
 
+}
+StreamReader::~StreamReader() {
+    clearBuffer();
 }
 
 uint8_t StreamReader::readByte() {
@@ -41,16 +46,20 @@ float StreamReader::readDouble() {
     return value;
 }
 
-String StreamReader::readString() {
-    String value;
-    char *buffer;
-    uint16_t length = readWord();
-    if  ( length > 0) {
-        buffer = (char *) malloc(length + 1);
-        _stream->readBytes( (uint8_t *) buffer, length);
-        buffer[length] = 0;
-        value = String(buffer);
-        free(buffer);
+void StreamReader::clearBuffer() {
+    if (_buffer) {
+        free(_buffer);
+        _buffer = NULL;
     }
-    return value;
+}
+char *StreamReader::readString() {
+    uint32_t length = 0;
+    length = readDWord();
+    clearBuffer();
+    if  ( length > 0) {
+        _buffer = (char *) malloc(length + 1);
+        _stream->readBytes( (char *) _buffer, length);
+        _buffer[length] = 0;
+    }
+    return _buffer;
 }

@@ -14,16 +14,20 @@ class StreamReader
 public:
 
     StreamReader(Stream *stream);
-
+    ~StreamReader();
+    
     uint8_t readByte();
     uint16_t readWord();
     uint32_t readDWord();
     float readFloat();
     float readDouble();
-    String readString();
+    char *readString();
+
+    void clearBuffer();
 
 private:
     Stream *_stream;
+    char *_buffer;
 };
 
 

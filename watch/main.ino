@@ -1,6 +1,7 @@
 #include <M5StickC.h>
 #include <PageManager.h>
 #include <Preferences.h>
+#include <KeyValueDB.h>
 
 #include "RTCTime.h"
 #include "PowerStatus.h"
@@ -27,6 +28,8 @@
 #define NTP_DAYLIGHT_SAVING_OFFSET  0
 #define NTP_SERVER                  "sg.pool.ntp.org"
 #define DATA_RECORDER_FILENAME      "/data.dat"
+
+#define TEST_KEY_VALUE_DB           "/test.db"
 
 typedef struct {
     uint8_t buttonA : 1;
@@ -161,6 +164,27 @@ void setup() {
 
     // make sure we disconect wifi
     eventQueue.push(EVENT_WIFI_DISCONNECT);
+
+    SPIFFS.begin(true);
+    if (SPIFFS.exists(TEST_KEY_VALUE_DB)) {
+        debug.print("remove file %s", TEST_KEY_VALUE_DB);
+        SPIFFS.remove(TEST_KEY_VALUE_DB);
+    }
+    SPIFFS.end();
+
+    SPIFFS.begin(true);
+    KeyValueDB db(TEST_KEY_VALUE_DB);
+    debug.print("set value #1 ----------------");
+    db.setValue("Test", "Hello Test");
+    db.debugDump();
+/*
+    debug.print("set value #2 ----------------");
+    db.setValue("Test2", "Second text message");
+    db.debugDump();
+*/
+    // debug.print(db.getValue("Test"));
+    SPIFFS.end();
+
 }
 
 void loop() {
