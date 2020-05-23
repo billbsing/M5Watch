@@ -22,7 +22,7 @@ public:
     void processEvent(uint16_t eventId);
 
 private:
-    String _wifiStatus;
+    String _status;
     uint8_t _syncTimeCounter;
 };
 
