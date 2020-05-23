@@ -7,6 +7,8 @@
 #include <Page.h>
 #include <TextWidget.h>
 
+
+#define SYNC_TIME_PAGE_DOT_LENGTH       8
 class SyncTimePage: public Page
 {
 public:
@@ -21,6 +23,7 @@ public:
 
 private:
     String _wifiStatus;
+    uint8_t _syncTimeCounter;
 };
 
 
