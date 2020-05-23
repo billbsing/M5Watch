@@ -1,7 +1,6 @@
 #include <M5StickC.h>
 #include <PageManager.h>
 #include <Preferences.h>
-#include <KeyValueDB.h>
 
 #include "RTCTime.h"
 #include "PowerStatus.h"
@@ -119,9 +118,13 @@ void processEvents() {
                 M5.Axp.SetLDO2(false);
             break;
             case EVENT_RTC_SYNC_TIME:
-                configTime(NTP_GMT_OFFSET_SECONDS, NTP_DAYLIGHT_SAVING_OFFSET, NTP_SERVER);
-                rtcTime.syncTimeToLocal();
-                eventQueue.push(EVENT_RTC_SYNC_TIME_DONE);
+                if (rtcTime.syncTimeToLocal()) {
+                    eventQueue.pushDelay(EVENT_RTC_SYNC_TIME_DONE, 2 * 1000);
+                    rtcTime.setLocalTime();
+                }
+                else {
+                    eventQueue.pushDelay(EVENT_RTC_SYNC_TIME, 1000);
+                }
             break;
         }
         pageManager.processEvent(eventId);
@@ -157,33 +160,17 @@ void setup() {
     M5.Lcd.fillScreen(BLACK);
 
     M5.MPU6886.Init();
+
+    configTime(NTP_GMT_OFFSET_SECONDS, NTP_DAYLIGHT_SAVING_OFFSET, NTP_SERVER);
+
     rtcTime.read();
     rtcTime.setLocalTime();
 
     pageManager.refresh();
 
+
     // make sure we disconect wifi
     eventQueue.push(EVENT_WIFI_DISCONNECT);
-
-    SPIFFS.begin(true);
-    if (SPIFFS.exists(TEST_KEY_VALUE_DB)) {
-        debug.print("remove file %s", TEST_KEY_VALUE_DB);
-        SPIFFS.remove(TEST_KEY_VALUE_DB);
-    }
-    SPIFFS.end();
-
-    SPIFFS.begin(true);
-    KeyValueDB db(TEST_KEY_VALUE_DB);
-    debug.print("set value #1 ----------------");
-    db.setValue("Test", "Hello Test");
-    db.debugDump();
-/*
-    debug.print("set value #2 ----------------");
-    db.setValue("Test2", "Second text message");
-    db.debugDump();
-*/
-    // debug.print(db.getValue("Test"));
-    SPIFFS.end();
 
 }
 

@@ -32,4 +32,5 @@ bool RTCTime::syncTimeToLocal() {
         M5.Rtc.SetData(&_rtcDate);
         result = true;
     }
+    return result;
 }

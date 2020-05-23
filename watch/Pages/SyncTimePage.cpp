@@ -31,9 +31,9 @@ void SyncTimePage::draw(M5Display *lcd) {
 void SyncTimePage::processEvent(uint16_t eventId) {
     switch(eventId) {
         case EVENT_WIFI_CONNECTED:
-            _wifiStatus = "Connected";
+            _wifiStatus = "Sync Time ...";
             drawPage();
-            eventQueue.pushDelay(EVENT_RTC_SYNC_TIME, 2 * 1000);
+            eventQueue.pushDelay(EVENT_RTC_SYNC_TIME, 1 * 1000);
         break;
         case EVENT_WIFI_DISCONNECTED:
             _wifiStatus = "Disconnected";

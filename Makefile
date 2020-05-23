@@ -31,11 +31,11 @@ LIBS = \
 	$(LOCAL_LIBS)/Pages					\
 	$(LOCAL_LIBS)/Widgets				\
 	$(LOCAL_LIBS)/StyleSheet			\
-	$(LOCAL_LIBS)/KeyValueDB			\
 	$(LOCAL_LIBS)/Persistent
 
 
 
+#	$(LOCAL_LIBS)/KeyValueDB			
 #	$(SHARE_LIBS)/TimeLib
 
 CHIP=esp32
