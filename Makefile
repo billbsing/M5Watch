@@ -13,7 +13,7 @@ LOCAL_LIBS = local_libraries
 
 SKETCH = watch/main.ino
 # VERBOSE = 0
-SINGLE_THREAD = 1
+# SINGLE_THREAD = 1
 
 LIBS = \
 	$(ESP_LIBS)/ESP32					\

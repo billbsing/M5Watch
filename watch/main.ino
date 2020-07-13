@@ -19,6 +19,7 @@
 
 #include "PageId.h"
 #include "EventId.h"
+#include "private.h"
 
 #define SCREEN_WIDTH                160
 #define SCREEN_HEIGHT               80
@@ -59,7 +60,7 @@ Settings settings("preferences");
 SerialDebug debug;
 WiFiManager wifiManager;
 PowerStatus powerStatus;
-DataRecorder dataRecorder(DATA_RECORDER_FILENAME, IPAddress(192,168,1,250), 9090);
+DataRecorder dataRecorder(DATA_RECORDER_FILENAME, DATA_RECORDER_SERVER_HOST, DATA_RECORDER_SERVER_PORT);
 
 uint32_t autoPowerOffTimeout;
 
