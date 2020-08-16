@@ -40,6 +40,11 @@ void DataStoreHeader::addUploadCount(uint16_t value) {
     _waitForUploadCount -= value;
 }
 
+void DataStoreHeader::setNextUploadIndex(uint16_t nextUploadIndex) {
+    _nextUploadIndex = nextUploadIndex;
+    _uploadCount ++;
+    _waitForUploadCount --;
+}
 
 void DataStoreHeader::readFromStream(Stream &stream) {
     StreamReader reader(&stream);

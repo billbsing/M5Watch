@@ -104,28 +104,19 @@ size_t DataStore::getItemIndexPosition(uint32_t fileIndex) {
     return position;
 }
 
-DataStoreItem &DataStore::readItemFromFile(uint32_t fileIndex) {
+bool DataStore::readItemFromFile(uint32_t fileIndex, DataStoreItem *item, DataStoreHeader *header) {
+    bool result = false;
+    item->clear();
     if (SPIFFS.begin()) {
         File file = SPIFFS.open(_filename.c_str(), FILE_READ);
         if (file) {
-            _item.clear();
             file.seek(getItemIndexPosition(fileIndex), SeekSet);
-            _item.readFromStream(file);
-            _item.setIndexInFile(fileIndex);
-            file.close();
-        }
-        SPIFFS.end();
-    }
-    return _item;
-}
-
-bool DataStore::writeItemToFile(uint32_t fileIndex, const DataStoreItem &item) {
-    bool result = false;
-    if (SPIFFS.begin()) {
-        File file = SPIFFS.open(_filename.c_str(), FILE_WRITE);
-        if (file) {
-            file.seek(getItemIndexPosition(fileIndex), SeekSet);
-            item.writeToStream(file);
+            item->readFromStream(file);
+            item->setIndexInFile(fileIndex);
+            if (header) {
+                file.seek(0, SeekSet);
+                header->readFromStream(file);
+            }
             file.close();
             result = true;
         }
@@ -134,19 +125,81 @@ bool DataStore::writeItemToFile(uint32_t fileIndex, const DataStoreItem &item) {
     return result;
 }
 
-bool DataStore::uploadItem(IPAddress server, uint16_t port) {
+bool DataStore::writeItemToFile(uint32_t fileIndex, DataStoreItem *item, DataStoreHeader *header) {
+    bool result = false;
+    if (SPIFFS.begin()) {
+        File file = SPIFFS.open(_filename.c_str(), FILE_WRITE);
+        if (file) {
+            file.seek(getItemIndexPosition(fileIndex), SeekSet);
+            item->writeToStream(file);
+            if (header) {
+                file.seek(0, SeekSet);
+                header->writeToStream(file);
+            }
+            file.close();
+            result = true;
+        }
+        SPIFFS.end();
+    }
+    return result;
+}
+
+bool DataStore::uploadConnect(IPAddress &server, uint16_t port) {
+    debug.print("connecting %s:%d", server.toString().c_str(), port);
+    if (_client.connect(server, port) ) {
+        return true;
+    }
+    debug.print("connection failed");
+    return false;
+}
+
+bool DataStore::uploadSend() {
     uint16_t dataSize = DATA_STORE_BUFFER_SIZE;
     StreamString outStream;
     DataStoreItem item;
-    WiFiClient client;
-    if (client.connect(server, port) ) {
-        uint32_t fileIndex = _header.getNextUploadIndex();
-        item = readItemFromFile(fileIndex);
-        if (!item.isEmpty()) {
+    if (_client) {
+        _uploadIndex = _header.getNextUploadIndex();
+        debug.print("sending index %ld", _uploadIndex);
+        if (readItemFromFile(_uploadIndex, &_uploadItem, &_header) ){
             outStream.write((uint8_t *)&dataSize, sizeof(uint16_t));
-            item.writeToStream(outStream);
-            client.write(outStream);
+            _uploadItem.writeToStream(outStream);
+            _client.write(outStream);
             outStream.clear();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool DataStore::uploadReply() {
+    time_t timeoutTime = now() + 5;
+    uint8_t readBuffer[DATA_STORE_READ_PACKET_SIZE + 1];
+    debug.print("waiting for index %ld", _uploadIndex);
+    if (_uploadItem.isEmpty()) {
+        return false;
+    }
+    while(now() < timeoutTime) {
+        if (_client.available()) {
+            int packetLength = _client.read();
+            debug.print("read length: %d", packetLength);
+            if (packetLength < DATA_STORE_READ_PACKET_SIZE) {
+                memset(readBuffer, 0, DATA_STORE_READ_PACKET_SIZE);
+                _client.read(readBuffer, packetLength);
+                if ( readBuffer[0] == DATA_STORE_STREAM_HEADER_ID) {
+                    unsigned long itemIndex = readBuffer[1];
+                    debug.print("write index %ld", itemIndex);
+                    if ( itemIndex > 0) {
+                        ItemState state = _uploadItem.getState();
+                        state.isUpload = true;
+                        _uploadItem.setState(state);
+                        _header.setNextUploadIndex(_uploadIndex + 1);
+                        writeItemToFile(_uploadIndex, &_uploadItem, &_header);
+                        _uploadItem.clear();
+                        return true;
+                    }
+                    break;
+                }
+            }
         }
     }
     return false;

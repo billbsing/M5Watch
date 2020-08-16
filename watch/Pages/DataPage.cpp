@@ -8,7 +8,7 @@
 
 
 DataPage::DataPage() {
-
+    _isWaitForConnection = false;
 }
 
 void DataPage::init() {
@@ -95,6 +95,13 @@ void DataPage::processEvent(uint16_t eventId) {
         case EVENT_DATA_ON_CHANGE:
             drawPage();
         break;
+        case EVENT_WIFI_CONNECTED:
+            if ( _isWaitForConnection ) {
+                eventQueue.push(EVENT_DATA_UPLOAD);
+                _menuUpload.setText("Cancel");
+                _isWaitForConnection = false;
+            }
+        break;
     }
     if ( _menuStartStop.isEventId(eventId)) {
         if ( dataRecorder.getStatus() == dataIdle ) {
@@ -107,7 +114,24 @@ void DataPage::processEvent(uint16_t eventId) {
         }
     }
     if ( _menuUpload.isEventId(eventId)) {
-        eventQueue.push(EVENT_DATA_UPLOAD);
+        if ( dataRecorder.getStatus() == dataUpload ) {
+            eventQueue.push(EVENT_DATA_UPLOAD_CANCEL);
+            _menuUpload.setText("Upload");
+            if ( wifiManager.isConnected()) {
+                eventQueue.pushDelay(EVENT_WIFI_DISCONNECT, 500);
+            }
+        }
+        else {
+            if ( !wifiManager.isConnected()) {
+                eventQueue.pushDelay(EVENT_WIFI_CONNECT, 500);
+                _menuUpload.setText("Connect");
+                _isWaitForConnection = true;
+            }
+            else {
+                eventQueue.push(EVENT_DATA_UPLOAD);
+                _menuUpload.setText("Cancel");
+            }
+        }
     }
     if ( _menuDelete.isEventId(eventId)) {
         eventQueue.push(EVENT_DATA_DELETE);

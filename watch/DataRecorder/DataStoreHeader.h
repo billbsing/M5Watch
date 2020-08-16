@@ -27,6 +27,7 @@ public:
     void addWriteCount(uint16_t value);
     void addUploadCount(uint16_t value);
 
+    void setNextUploadIndex(uint16_t nextUploadIndex);
     // StreamData
     void readFromStream(Stream &stream);
     size_t writeToStream(Stream &stream) const;

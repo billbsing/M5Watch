@@ -47,6 +47,7 @@ public:
     void setTimeStamp(uint32_t value) { _timeStamp = value; }
 
     ItemState getState() const { return _state; }
+    void setState(ItemState value) { _state = value; }
 
     uint32_t getIndexInFile() const { return _indexInFile; }
     void setIndexInFile(uint32_t value) { _indexInFile = value; }

@@ -7,6 +7,7 @@
 #include <StreamReader.h>
 #include <StreamWriter.h>
 
+#include "M5Watch.h"
 #include "DataStoreItem.h"
 
 DataStoreItem::DataStoreItem() {
@@ -43,6 +44,7 @@ size_t DataStoreItem::writeToStream(Stream &stream) const {
     StreamWriter writer(&stream);
     size_t size = 0;
     // size -> 1 + 1 + 4 + 2 + ( 6 * 4) = 34 bytes
+    // debug.print("write: %d %ld %d", _state.value, _timeStamp, _index);
     size += writer.writeByte(DATA_STORE_STREAM_ITEM_ID);
     size += writer.writeByte(_state.value);
     size += writer.writeDWord(_timeStamp);

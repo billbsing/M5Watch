@@ -36,15 +36,20 @@ void DataRecorder::processEvent(uint16_t eventId) {
             eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
         case EVENT_DATA_UPLOAD:
-            _status = dataUpload;
-            // save any left over buffer to file
-            if ( _dataStore.getBufferCount() > 0) {
-                eventQueue.push(EVENT_DATA_SAVE);
-                eventQueue.pushDelay(EVENT_DATA_UPLOAD_ITEM, 500);
-            }
-            else {
-                eventQueue.push(EVENT_DATA_UPLOAD_ITEM);
-            }
+        _status = dataUpload;
+        // save any left over buffer to file
+        if ( _dataStore.getBufferCount() > 0) {
+            eventQueue.push(EVENT_DATA_SAVE);
+            eventQueue.pushDelay(EVENT_DATA_UPLOAD_ITEM, 500);
+        }
+        else {
+            eventQueue.push(EVENT_DATA_UPLOAD_ITEM);
+        }
+        eventQueue.push(EVENT_DATA_ON_CHANGE);
+        break;
+        case EVENT_DATA_UPLOAD_CANCEL:
+            _status = dataIdle;
+            eventQueue.remove(EVENT_DATA_UPLOAD_ITEM);
             eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;
         case EVENT_DATA_DELETE:
@@ -58,11 +63,21 @@ void DataRecorder::processEvent(uint16_t eventId) {
         case EVENT_DATA_UPLOAD_ITEM:
             // send an item to the server
             if ( _dataStore.getHeader().getWaitForUploadCount() > 0) {
-                _dataStore.uploadItem(_uploadServer, _uploadPort);
-                eventQueue.pushDelay(EVENT_DATA_UPLOAD_ITEM, 100);
+                if (!_dataStore.isUploadConnected()) {
+                    _dataStore.uploadConnect(_uploadServer, _uploadPort);
+                }
+                if (_dataStore.uploadSend()) {
+                    eventQueue.pushDelay(EVENT_DATA_UPLOAD_ITEM_REPLY, 100);
+                }
             }
             else {
                 _status = dataIdle;
+            }
+            eventQueue.push(EVENT_DATA_ON_CHANGE);
+        break;
+        case EVENT_DATA_UPLOAD_ITEM_REPLY:
+            if (_dataStore.uploadReply()) {
+                eventQueue.pushDelay(EVENT_DATA_UPLOAD_ITEM, 100);
             }
             eventQueue.push(EVENT_DATA_ON_CHANGE);
         break;

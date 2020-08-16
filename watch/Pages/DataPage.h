@@ -25,6 +25,7 @@ private:
     TextWidget _menuStartStop;
     TextWidget _menuUpload;
     TextWidget _menuDelete;
+    bool _isWaitForConnection;
 
 };
 

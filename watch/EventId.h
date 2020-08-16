@@ -28,10 +28,12 @@
 #define EVENT_DATA_START                            0x0042
 #define EVENT_DATA_STOP                             0x0043
 #define EVENT_DATA_UPLOAD                           0x0044
-#define EVENT_DATA_DELETE                           0x0045
-#define EVENT_DATA_SAVE                             0x0046
-#define EVENT_DATA_START_UPLOAD_ITEM                0x0047
-#define EVENT_DATA_UPLOAD_ITEM                      0x0047
+#define EVENT_DATA_UPLOAD_CANCEL                    0x0045
+#define EVENT_DATA_DELETE                           0x0046
+#define EVENT_DATA_SAVE                             0x0047
+#define EVENT_DATA_START_UPLOAD_ITEM                0x0048
+#define EVENT_DATA_UPLOAD_ITEM                      0x0049
+#define EVENT_DATA_UPLOAD_ITEM_REPLY                0x004A
 
 // Page Event Id from here onwards
 #define EVENT_PAGE_START_ID                         0x8000

@@ -12,9 +12,10 @@
 #include "SensorValue.h"
 #include "DataStoreItem.h"
 #include "DataStoreHeader.h"
+#include "WiFiClient.h"
 
 #define DATA_STORE_BUFFER_SIZE                  65
-
+#define DATA_STORE_READ_PACKET_SIZE             20
 
 class DataStore
 {
@@ -33,9 +34,12 @@ public:
     const DataStoreHeader& getHeader() const { return _header; }
 
     size_t getItemIndexPosition(uint32_t fileIndex);
-    DataStoreItem &readItemFromFile(uint32_t fileIndex);
-    bool writeItemToFile(uint32_t fileIndex, const DataStoreItem &item);
-    bool uploadItem(IPAddress server, uint16_t port);
+    bool readItemFromFile(uint32_t fileIndex, DataStoreItem *item,  DataStoreHeader *header);
+    bool writeItemToFile(uint32_t fileIndex, DataStoreItem *item, DataStoreHeader *header);
+    bool isUploadConnected() { return _client; }
+    bool uploadConnect(IPAddress &server, uint16_t port);
+    bool uploadSend();
+    bool uploadReply();
     void deleteFile();
 
 private:
@@ -45,7 +49,9 @@ private:
     DataStoreItem _buffer[DATA_STORE_BUFFER_SIZE];
     uint8_t _bufferIndex;
     uint8_t _bufferCount;
-    DataStoreItem _item;
+    WiFiClient _client;
+    uint32_t _uploadIndex;
+    DataStoreItem _uploadItem;
 };
 
 

@@ -13,6 +13,7 @@
 typedef enum {
     dataIdle = 0,
     dataRecord,
+    dataUploadStart,
     dataUpload
 } DataStatus;
 
