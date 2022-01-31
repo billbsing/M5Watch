@@ -13,6 +13,7 @@ PageId's
 #define PAGE_ID_SYNC_TIME               0x04
 #define PAGE_ID_DATA_PAGE               0x05
 #define PAGE_ID_WIFI_PAGE               0x06
+#define PAGE_ID_SWIM_PAGE               0x07
 
 
 #define PAGE_GROUP_BASE_ID              0x00

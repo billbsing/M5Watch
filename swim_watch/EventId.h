@@ -35,6 +35,11 @@
 #define EVENT_DATA_UPLOAD_ITEM                      0x0049
 #define EVENT_DATA_UPLOAD_ITEM_REPLY                0x004A
 
+// VibratorMotor
+#define EVENT_VIBRATOR_MOTOR_ON                     0x050
+#define EVENT_VIBRATOR_MOTOR_OFF                    0x051
+#define EVENT_VIBRATOR_MOTOR_NEXT                   0x052
+
 // Page Event Id from here onwards
 #define EVENT_PAGE_START_ID                         0x8000
 

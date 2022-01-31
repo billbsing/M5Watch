@@ -12,6 +12,7 @@
 #include "SyncTimePage.h"
 #include "DataPage.h"
 #include "WiFiPage.h"
+#include "SwimPage.h"
 
 #include "Settings.h"
 #include "SerialDebug.h"
@@ -52,6 +53,7 @@ SetSleepTimePage setSleepTimePage;
 SyncTimePage syncTimePage;
 DataPage dataPage;
 WiFiPage wifiPage;
+SwimPage swimPage;
 
 RTCTime rtcTime;
 EventQueue eventQueue;
@@ -131,6 +133,7 @@ void processEvents() {
         pageManager.processEvent(eventId);
         wifiManager.processEvent(eventId);
         dataRecorder.processEvent(eventId);
+        swimPage.processEvent(eventId);
     }
 }
 
@@ -151,6 +154,7 @@ void setup() {
     pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTimePage, PAGE_GROUP_SET_SLEEP_ID);
     pageManager.add(PAGE_ID_SYNC_TIME, &syncTimePage, PAGE_GROUP_SYNC_TIME_ID);
     pageManager.add(PAGE_ID_WIFI_PAGE, &wifiPage, PAGE_GROUP_WIFI_ID);
+    pageManager.add(PAGE_ID_SWIM_PAGE, &swimPage, PAGE_GROUP_BASE_ID);
 /*
     SPIFFS.begin(true);
     SPIFFS.format();
@@ -172,7 +176,6 @@ void setup() {
 
     // make sure we disconect wifi
     eventQueue.push(EVENT_WIFI_DISCONNECT);
-
 }
 
 void loop() {
