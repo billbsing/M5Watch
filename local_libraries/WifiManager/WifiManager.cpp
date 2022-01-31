@@ -1,4 +1,4 @@
-#include "WiFiManager.h"
+#include "WifiManager.h"
 #include "M5Watch.h"
 #include "private.h"
 

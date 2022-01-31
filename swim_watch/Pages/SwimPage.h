@@ -6,7 +6,7 @@
 
 #include <Page.h>
 #include <TextWidget.h>
-#include "VibratorMotor.h"
+#include "VibrateMotor.h"
 
 #define VIBRATOR_MOTOR_PIN            32
 
@@ -27,7 +27,7 @@ protected:
 
 private:
     TextWidget _menuStartStop;
-    VibratorMotor _vibratorMotor;
+    VibrateMotor _vibrateMotor;
 
 };
 

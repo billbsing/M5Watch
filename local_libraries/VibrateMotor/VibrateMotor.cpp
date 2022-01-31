@@ -1,24 +1,24 @@
 #include "M5Watch.h"
-#include "VibratorMotor.h"
+#include "VibrateMotor.h"
 
-VibratorMotor::VibratorMotor(uint8_t pin):
+VibrateMotor::VibrateMotor(uint8_t pin):
 _pin(pin) {
 
 }
 
-void VibratorMotor::begin() {
+void VibrateMotor::begin() {
     pinMode(_pin, OUTPUT);
     _maxCounter = 0;
     _counter = 0;
 }
 
-void VibratorMotor::signal(uint8_t counter) {
+void VibrateMotor::signal(uint8_t counter) {
     _maxCounter = counter;
     _counter = 0;
     eventQueue.pushDelay(EVENT_VIBRATOR_MOTOR_ON, 100);
 }
 
-void VibratorMotor::processEvent(uint16_t eventId) {
+void VibrateMotor::processEvent(uint16_t eventId) {
     switch(eventId) {
         case EVENT_VIBRATOR_MOTOR_ON:
             digitalWrite(_pin, HIGH);

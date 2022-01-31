@@ -6,7 +6,7 @@
 #define MENU_ITEM_PADDING               5
 
 SwimPage::SwimPage():
-_vibratorMotor(VIBRATOR_MOTOR_PIN) {
+_vibrateMotor(VIBRATOR_MOTOR_PIN) {
 
 }
 
@@ -23,7 +23,7 @@ void SwimPage::draw(M5Display *lcd) {
 }
 
 void SwimPage::begin() {
-    _vibratorMotor.begin();
+    _vibrateMotor.begin();
 }
 
 void SwimPage::end() {
@@ -34,8 +34,8 @@ void SwimPage::loadWidgets(WidgetManager *manager) {
 }
 
 void SwimPage::processEvent(uint16_t eventId) {
-    _vibratorMotor.processEvent(eventId);
+    _vibrateMotor.processEvent(eventId);
     if ( _menuStartStop.isEventId(eventId)) {
-        _vibratorMotor.signal(2);
+        _vibrateMotor.signal(2);
     }
 }

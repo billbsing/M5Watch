@@ -4,17 +4,17 @@ Settings
 
 */
 
-#ifndef VIBRATOR_MOTOR_H
-#define VIBRATOR_MOTOR_H
+#ifndef VIBRATE_MOTOR_H
+#define VIBRATE_MOTOR_H
 
 #include <Arduino.h>
 
 
 
 
-class VibratorMotor {
+class VibrateMotor {
 public:
-    VibratorMotor(uint8_t pin);
+    VibrateMotor(uint8_t pin);
     void begin();
     void signal(uint8_t counter);
     void processEvent(uint16_t eventId);
@@ -27,4 +27,4 @@ private:
 
 
 
-#endif              // VIBRATOR_MOTOR_H
+#endif              // VIBRATE_MOTOR_H

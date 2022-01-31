@@ -31,11 +31,19 @@ LIBS = \
 	$(LOCAL_LIBS)/Pages					\
 	$(LOCAL_LIBS)/Widgets				\
 	$(LOCAL_LIBS)/StyleSheet			\
-	$(LOCAL_LIBS)/Persistent
+	$(LOCAL_LIBS)/Persistent			\
+	$(LOCAL_LIBS)/RTCTime				\
+	$(LOCAL_LIBS)/AnalogClock			\
+	$(LOCAL_LIBS)/SerialDebug			\
+	$(LOCAL_LIBS)/DataRecorder			\
+	$(LOCAL_LIBS)/PowerStatus		    \
+	$(LOCAL_LIBS)/Settings			    \
+	$(LOCAL_LIBS)/VibrateMotor			\
+	$(LOCAL_LIBS)/WifiManager
 
 
 
-#	$(LOCAL_LIBS)/KeyValueDB			
+#	$(LOCAL_LIBS)/KeyValueDB
 #	$(SHARE_LIBS)/TimeLib
 
 CHIP=esp32
