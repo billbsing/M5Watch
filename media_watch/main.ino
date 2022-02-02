@@ -1,22 +1,18 @@
-#include <M5StickC.h>
+#include <MediaWatch.h>
 #include <PageManager.h>
 #include <Preferences.h>
 
 #include <RTCTime.h>
 #include <PowerStatus.h>
-#include <DataRecorder.h>
 
 #include "Pages/HomePage.h"
 #include "Pages/SettingsPage.h"
 #include "Pages/SetSleepTimePage.h"
-#include "Pages/SyncTimePage.h"
-#include "Pages/DataPage.h"
 #include "Pages/WiFiPage.h"
-#include "Pages/SwimPage.h"
 
 #include <Settings.h>
 #include <SerialDebug.h>
-#include <WiFiManager.h>
+#include <WifiManager.h>
 
 #include "PageId.h"
 #include "EventId.h"
@@ -28,9 +24,6 @@
 #define NTP_GMT_OFFSET_SECONDS      (8 * SECS_PER_HOUR)
 #define NTP_DAYLIGHT_SAVING_OFFSET  0
 #define NTP_SERVER                  "sg.pool.ntp.org"
-#define DATA_RECORDER_FILENAME      "/data.dat"
-
-#define TEST_KEY_VALUE_DB           "/test.db"
 
 typedef struct {
     uint8_t buttonA : 1;
@@ -49,20 +42,15 @@ StyleSheet styleSheet(styles);
 PageManager pageManager(&M5, SCREEN_WIDTH, SCREEN_HEIGHT, EVENT_PAGE_START_ID, &styleSheet);
 HomePage homePage;
 SettingsPage settingsPage;
-SetSleepTimePage setSleepTimePage;
-SyncTimePage syncTimePage;
-DataPage dataPage;
 WiFiPage wifiPage;
-SwimPage swimPage;
 
 RTCTime rtcTime;
 EventQueue eventQueue;
 ButtonsEnabled buttonsEnabled = {true, true, true};
 Settings settings("preferences");
 SerialDebug debug;
-WiFiManager wifiManager(WIFI_SSID, WIFI_PASSWORD);
+WifiManager wifiManager(EVENT_WIFI_CONNECT, WIFI_SSID, WIFI_PASSWORD);
 PowerStatus powerStatus;
-DataRecorder dataRecorder(DATA_RECORDER_FILENAME, DATA_RECORDER_SERVER_HOST, DATA_RECORDER_SERVER_PORT);
 
 uint32_t autoPowerOffTimeout;
 
@@ -120,6 +108,9 @@ void processEvents() {
             case EVENT_DISPLAY_OFF:
                 M5.Axp.SetLDO2(false);
             break;
+            case EVENT_WIFI_CONNECTED:
+                eventQueue.pushDelay(EVENT_RTC_SYNC_TIME, 1 * 1000);
+            break;
             case EVENT_RTC_SYNC_TIME:
                 if (rtcTime.syncTimeToLocal()) {
                     eventQueue.pushDelay(EVENT_RTC_SYNC_TIME_DONE, 2 * 1000);
@@ -132,8 +123,6 @@ void processEvents() {
         }
         pageManager.processEvent(eventId);
         wifiManager.processEvent(eventId);
-        dataRecorder.processEvent(eventId);
-        swimPage.processEvent(eventId);
     }
 }
 
@@ -144,17 +133,11 @@ void setup() {
     settings.begin(true);
     autoPowerOffTimeout = settings.getAutoPowerOffTimeout();
     settings.end();
-//    eventQueue.pushDelay(EVENT_AUTO_POWER_OFF, autoPowerOffTimeout);
 
     pageManager.init();
     pageManager.add(PAGE_ID_HOME, &homePage, PAGE_GROUP_BASE_ID);
     pageManager.add(PAGE_ID_SETTINGS, &settingsPage, PAGE_GROUP_BASE_ID);
-    pageManager.add(PAGE_ID_DATA_PAGE, &dataPage, PAGE_GROUP_BASE_ID);
-
-    pageManager.add(PAGE_ID_SET_SLEEP, &setSleepTimePage, PAGE_GROUP_SET_SLEEP_ID);
-    pageManager.add(PAGE_ID_SYNC_TIME, &syncTimePage, PAGE_GROUP_SYNC_TIME_ID);
     pageManager.add(PAGE_ID_WIFI_PAGE, &wifiPage, PAGE_GROUP_WIFI_ID);
-    pageManager.add(PAGE_ID_SWIM_PAGE, &swimPage, PAGE_GROUP_BASE_ID);
 /*
     SPIFFS.begin(true);
     SPIFFS.format();
@@ -175,13 +158,12 @@ void setup() {
 
 
     // make sure we disconect wifi
-    eventQueue.push(EVENT_WIFI_DISCONNECT);
+    eventQueue.push(EVENT_WIFI_CONNECT);
 }
 
 void loop() {
     processButtons();
     processEvents();
-    wifiManager.loop();
-    dataRecorder.loop();
+    wifiManager.loop(eventQueue);
     delay(10);
 }

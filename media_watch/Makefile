@@ -33,10 +33,8 @@ LIBS = \
 	$(LOCAL_LIBS)/RTCTime				\
 	$(LOCAL_LIBS)/AnalogClock			\
 	$(LOCAL_LIBS)/SerialDebug			\
-	$(LOCAL_LIBS)/PowerStatus		    \
-	$(LOCAL_LIBS)/DataRecorder			\
-	$(LOCAL_LIBS)/VibrateMotor			\
 	$(LOCAL_LIBS)/WifiManager			\
+	$(LOCAL_LIBS)/PowerStatus
 
 
 

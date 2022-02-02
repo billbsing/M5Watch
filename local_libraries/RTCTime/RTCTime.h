@@ -3,6 +3,7 @@
 #ifndef RTC_TIME_H
 #define RTC_TIME_H
 
+#include <arduino.h>
 #include <M5StickC.h>
 #include <TimeLib.h>
 

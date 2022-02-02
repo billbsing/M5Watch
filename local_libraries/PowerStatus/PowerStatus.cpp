@@ -5,6 +5,7 @@ PowerStatus::PowerStatus():
 _chargeStatus(0),
 _inputPowerStatus(0),
 _batteryVoltage(0),
+_batteryCurrent(0),
 _batteryPercent(0) {
 
 }
@@ -13,4 +14,5 @@ void PowerStatus::read() {
     _inputPowerStatus = M5.Axp.GetInputPowerStatus();
     _batteryVoltage = M5.Axp.GetBatVoltage();
     _batteryPercent = ((_batteryVoltage - 2.5) / 2) * 100;
+    _batteryCurrent = M5.Axp.GetBatCurrent();
 }

@@ -20,6 +20,7 @@ public:
     uint8_t getChargingStatus() { return _chargeStatus; }
     uint8_t getInputPowerStatus() { return _inputPowerStatus; }
     float getBatteryVoltage() { return _batteryVoltage; }
+    float getBatteryCurrent() { return _batteryCurrent; }
     float getBatteryPercent() { return _batteryPercent; }
     bool isCharging() { return _inputPowerStatus > 1; }
 
@@ -27,6 +28,7 @@ private:
     uint8_t _chargeStatus;
     uint8_t _inputPowerStatus;
     float _batteryVoltage;
+    float _batteryCurrent;
     float _batteryPercent;
 
 };

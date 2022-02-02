@@ -1,38 +1,42 @@
 #include "WifiManager.h"
-#include "M5Watch.h"
-#include "private.h"
+#include <SerialDebug.h>
 
-WiFiManager::WiFiManager():
+
+WifiManager::WifiManager(uint16_t eventBaseId, const char *ssid, const char *password):
+_eventBaseId(eventBaseId),
+_ssid(ssid),
+_password(password),
 _isConnectedState(false) {
 
 }
 
 
-bool WiFiManager::isConnected() {
+bool WifiManager::isConnected() {
     return WiFi.status() == WL_CONNECTED;
 }
 
-void WiFiManager::processEvent(uint16_t eventId) {
-    switch(eventId) {
-        case EVENT_WIFI_CONNECT:
-            debug.print("WiFi: connect requested");
-            WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+void WifiManager::processEvent(uint16_t eventId) {
+    int16_t wifiEvent = eventId - _eventBaseId;
+    switch(wifiEvent) {
+        case EVENT_WIFI_CONNECT_OFFSET:
+            // debug.print("WiFi: connect requested");
+            WiFi.begin(_ssid, _password);
         break;
-        case EVENT_WIFI_DISCONNECT:
-            debug.print("WiFi: disconnect requested");
+        case EVENT_WIFI_DISCONNECT_OFFSET:
+            // debug.print("WiFi: disconnect requested");
             WiFi.disconnect();
         break;
     }
 }
 
-void WiFiManager::loop() {
+void WifiManager::loop(EventQueue &eventQueue) {
     if ( isConnected() != _isConnectedState) {
         _isConnectedState = isConnected();
         if ( _isConnectedState) {
-            eventQueue.push(EVENT_WIFI_CONNECTED);
+            eventQueue.push(_eventBaseId + EVENT_WIFI_CONNECTED_OFFSET);
         }
         else {
-            eventQueue.push(EVENT_WIFI_DISCONNECTED);
+            eventQueue.push(_eventBaseId + EVENT_WIFI_DISCONNECTED_OFFSET);
         }
     }
 }

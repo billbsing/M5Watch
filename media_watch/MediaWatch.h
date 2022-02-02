@@ -4,8 +4,8 @@
 
 */
 
-#ifndef M5_WATCH_H
-#define M5_WATCH_H
+#ifndef MEDIA_WATCH_H
+#define MEDIA_WATCH_H
 
 
 
@@ -15,14 +15,12 @@
 #include <SerialDebug.h>
 #include <EventQueue.h>
 #include <PowerStatus.h>
-#include <WiFiManager.h>
-#include <DataRecorder.h>
+#include <WifiManager.h>
 
 extern Settings settings;
 extern SerialDebug debug;
 extern EventQueue eventQueue;
 extern PowerStatus powerStatus;
-extern DataRecorder dataRecorder;
-extern WiFiManager wifiManager;
+extern WifiManager wifiManager;
 
-#endif                  // M5_WATCH_H
+#endif                  // MEDIA_WATCH_H
